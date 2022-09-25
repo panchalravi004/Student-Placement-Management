@@ -4,8 +4,27 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/background_splashscreen.xml" value="0.155" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/icon_arrow_left.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_10_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_20_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_30_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_30_bottom_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_30_left_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_30_right_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_40_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_40_left_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_blue_40_top_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_green_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_green_right_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/spm_red_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_all_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_bottom_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_left_round.xml" value="0.148" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_top_round.xml" value="0.148" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/menu/student_dashboard_menu.xml" value="0.203125" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/menu/tpo_dashboard_menu.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

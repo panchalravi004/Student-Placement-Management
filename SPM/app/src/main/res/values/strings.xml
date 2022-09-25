@@ -1,3 +1,47 @@
 <resources>
     <string name="app_name">SPM</string>
+
+
+    <!--  Student String  -->
+    <string name="student_dashboard">Student Dashboard</string>
+    <string name="student_profile">Profile</string>
+
+    <!--  TPO String  -->
+    <string name="tpo_dashboard">TPO Dashboard</string>
+    <string name="tpo_profile">TPO Profile</string>
+    <string name="view_student">View Student</string>
+    <string name="manage_jobs">Manage Jobs</string>
+    <string name="manage_activity">Manage Activity</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+
+    <!--  TPO/Student Dashboard String  -->
+    <string name="students">Students</string>
+    <string name="jobs">Jobs</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="activity">Activity</string>
+    <string name="selected_students">Selected Students</string>
+    <string name="upcoming_company">Upcoming Company</string>
+    <string name="type_here">Type here to search any</string>
+
+    <string name="applied_in">Applied In</string>
+    <string name="selected_in">Selected In</string>
+    <string name="company_info">Company Info</string>
+    <string name="apply_now">Apply Now</string>
+
+    <!--  All Input String  -->
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="role_of_user">Role of User</string>
+    <string name="enter_email">Enter Email Address</string>
+    <string name="enter_number">Enter Mobile Number</string>
+
+    <!--  Some Button String  -->
+    <string name="apply">Apply</string>
+    <string name="applied">Applied</string>
+    <string name="add_new">Add New</string>
+    <string name="update">Update</string>
+    <string name="view">View</string>
+    <string name="edit">Edit</string>
+
 </resources>
