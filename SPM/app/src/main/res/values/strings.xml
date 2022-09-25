@@ -44,4 +44,11 @@
     <string name="view">View</string>
     <string name="edit">Edit</string>
 
+<!--  String array for role of user   -->
+    <string-array name="role_of_user">
+        <item>Role of User</item>
+        <item>Student</item>
+        <item>TPO</item>
+    </string-array>
+
 </resources>
