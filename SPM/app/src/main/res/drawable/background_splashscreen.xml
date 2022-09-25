@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/spm_blue_40"/>
+    <item
+        android:gravity="center"
+        android:width="120dp"
+        android:height="70dp"
+        android:drawable="@drawable/logo">
+
+<!--        <bitmap-->
+<!--            android:src="@drawable/logo"-->
+<!--            android:gravity="center"/>-->
+    </item>
+</layer-list>
