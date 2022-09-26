@@ -14,11 +14,14 @@
         android:theme="@style/Theme.SPM"
         tools:targetApi="31">
         <activity
+            android:name=".OfficerDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".SplashScreen"
             android:exported="true"

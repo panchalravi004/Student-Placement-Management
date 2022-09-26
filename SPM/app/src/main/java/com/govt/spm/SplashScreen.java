@@ -15,6 +15,6 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startActivity(new Intent(this,LoginActivity.class));
+        startActivity(new Intent(this,MainActivity.class));
     }
 }
