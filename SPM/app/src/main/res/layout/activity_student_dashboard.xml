@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudentDashboardActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="5sp"
+        android:background="@drawable/spm_blue_30_bottom_round">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+                android:background="@drawable/icon_menu_bar"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:text="@string/student_dashboard" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextTextPersonName3"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:background="@drawable/white_left_round"
+                android:text="" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spm_green_right_round"
+                app:srcCompat="@drawable/icon_search" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150sp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10sp">
+
+        <LinearLayout
+            android:layout_width="89dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp"
+            android:layout_weight="1"
+            android:background="@drawable/spm_blue_20_all_round"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginRight="20sp"
+                android:background="@drawable/spm_blue_30_all_round"
+                android:text="@string/applied_in"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginRight="10sp"
+                android:text="15"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="83dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15sp"
+            android:layout_marginRight="15sp"
+            android:layout_weight="1"
+            android:background="@drawable/spm_blue_20_all_round"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="10sp"
+                android:layout_marginRight="20sp"
+                android:background="@drawable/spm_blue_30_all_round"
+                android:text="@string/jobs"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginRight="10sp"
+                android:text="15"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:background="@drawable/spm_blue_40_all_round">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:text="@string/selected_in"
+            android:background="@drawable/spm_blue_20_all_round"/>
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:text="15" />
+
+        <ImageButton
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:background="@drawable/icon_arrow_right"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/upcoming_company"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="10sp"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_marginTop="15sp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:background="@drawable/spm_blue_10_all_round">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="30sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:text="Info It Solutions Pvt. Ltd"
+                android:background="@drawable/spm_blue_40_left_round" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:text="22-09-2022"
+                android:background="@drawable/spm_blue_30_right_round" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginTop="5sp"
+                android:text="Registration Ends On : 20-09-2022"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15sp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:background="@drawable/spm_blue_10_all_round">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="30sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:text="Info It Solutions Pvt. Ltd"
+                android:background="@drawable/spm_blue_40_left_round" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:text="22-09-2022"
+                android:background="@drawable/spm_blue_30_right_round" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginTop="5sp"
+                android:text="Registration Ends On : 20-09-2022"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15sp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:background="@drawable/spm_blue_10_all_round">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="30sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:text="Info It Solutions Pvt. Ltd"
+                android:background="@drawable/spm_blue_40_left_round" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="1"
+                android:text="22-09-2022"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:background="@drawable/spm_blue_30_right_round" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginTop="5sp"
+                android:text="Registration Ends On : 20-09-2022"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15sp"
+        android:orientation="vertical"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:background="@drawable/spm_blue_10_all_round">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="110dp"
+                android:layout_height="30sp"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="5sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:text="Info It Solutions Pvt. Ltd"
+                android:background="@drawable/spm_blue_40_left_round" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginRight="20sp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:background="@drawable/spm_blue_30_right_round"
+                android:text="22-09-2022" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginTop="5sp"
+                android:text="Registration Ends On : 20-09-2022"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
