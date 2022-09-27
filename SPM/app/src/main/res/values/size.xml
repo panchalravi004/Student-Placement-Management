@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_heading">20sp</dimen>
+    <dimen name="main_title">18sp</dimen>
+    <dimen name="sub_title">22sp</dimen>
+    <dimen name="title">15sp</dimen>
+    <dimen name="normal_text">14sp</dimen>
+</resources>

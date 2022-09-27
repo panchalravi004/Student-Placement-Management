@@ -44,4 +44,43 @@
     <string name="view">View</string>
     <string name="edit">Edit</string>
 
+    <!--  String array for role of user   -->
+    <string-array name="role_of_user">
+        <item>Role of User</item>
+        <item>Student</item>
+        <item>TPO</item>
+    </string-array>
+
+    <!--  String array for gender   -->
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+    <!--  String array for University   -->
+    <string-array name="university">
+        <item>GUNI</item>
+    </string-array>
+
+    <!--  String array for College   -->
+    <string-array name="college">
+        <item>AMPICS</item>
+        <item>DCS</item>
+    </string-array>
+
+    <!--  String array for Dept.   -->
+    <string-array name="dept">
+        <item>IT</item>
+        <item>Science</item>
+    </string-array>
+
+    <!--  String array for filter.   -->
+    <string-array name="filter">
+        <item>filter</item>
+        <item>no filter</item>
+    </string-array>
+
+
+
 </resources>

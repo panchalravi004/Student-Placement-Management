@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5sp"
+    android:background="@drawable/spm_blue_10_all_round"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="15sp"
+    android:paddingTop="10sp"
+    android:paddingRight="15sp"
+    android:paddingBottom="10sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvCompanyName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/spm_blue_40_left_round"
+            android:padding="2sp"
+            android:text="Info it Solution Pvt. ltd."
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:background="@drawable/spm_blue_30_right_round"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp">
+
+            <TextView
+                android:id="@+id/tvInterviewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="2sp"
+                android:text="22-09-2022"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="8sp"
+                android:layout_height="8sp"
+                android:layout_marginLeft="5sp"
+                android:layout_weight="1"
+                android:background="@drawable/white_all_round">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="5sp"
+        android:paddingTop="5sp"
+        android:paddingRight="5sp">
+
+        <TextView
+            android:id="@+id/tvRegisterEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="End On : 20-09-2022" />
+
+        <ImageButton
+            android:id="@+id/btnView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/spm_green_all_round"
+            android:padding="3sp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:srcCompat="@drawable/icon_eye_white" />
+
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/spm_blue_20_all_round"
+            android:padding="3sp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:srcCompat="@drawable/icon_edit_white" />
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/spm_red_all_round"
+            android:padding="3sp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:srcCompat="@drawable/icon_delete" />
+
+    </LinearLayout>
+
+</LinearLayout>
