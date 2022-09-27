@@ -51,4 +51,30 @@
         <item>TPO</item>
     </string-array>
 
+    <!--  String array for gender   -->
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+    <!--  String array for University   -->
+    <string-array name="university">
+        <item>GUNI</item>
+    </string-array>
+
+    <!--  String array for College   -->
+    <string-array name="college">
+        <item>AMPICS</item>
+        <item>DCS</item>
+    </string-array>
+
+    <!--  String array for Dept.   -->
+    <string-array name="dept">
+        <item>IT</item>
+        <item>Science</item>
+    </string-array>
+
+
+
 </resources>

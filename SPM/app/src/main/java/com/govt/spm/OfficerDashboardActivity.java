@@ -3,11 +3,11 @@ package com.govt.spm;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -26,7 +26,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_officer_dashboard);
-        btnMenuBar = (ImageButton) findViewById(R.id.btnMenuBar);
+        btnMenuBar = (ImageButton) findViewById(R.id.btnBack);
         btnSearch = (ImageButton) findViewById(R.id.btnSearch);
         etSearch = (EditText) findViewById(R.id.etSearch);
         upcoming_company_list = (ListView) findViewById(R.id.upcoming_company_list);
@@ -66,6 +66,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         if(menuItem.getTitle().equals(getResources().getString(R.string.tpo_profile))){
                             Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.tpo_profile), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getBaseContext(),OfficerProfileActivity.class));
                         }
                         if(menuItem.getTitle().equals(getResources().getString(R.string.view_student))){
                             Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.view_student), Toast.LENGTH_SHORT).show();
