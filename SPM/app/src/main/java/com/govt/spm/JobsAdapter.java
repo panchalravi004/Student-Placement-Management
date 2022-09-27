@@ -42,9 +42,9 @@ public class JobsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = LayoutInflater.from(context).inflate(R.layout.row_jobs,viewGroup,false);
 
-        cName = view.findViewById(R.id.tvCompanyName);
-        iDate = view.findViewById(R.id.tvInterviewDate);
-        rEDate = view.findViewById(R.id.tvRegisterEndDate);
+        cName = view.findViewById(R.id.tvStudentId);
+        iDate = view.findViewById(R.id.tvSemester);
+        rEDate = view.findViewById(R.id.tvStudentName);
 
         cName.setText(company_name.get(i).toString());
         iDate.setText(interview_date.get(i).toString());
