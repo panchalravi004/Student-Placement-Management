@@ -17,6 +17,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
     }
 
     public void goToDashboard(View view) {
-        startActivity(new Intent(getBaseContext(),OfficerDashboardActivity.class));
+//        startActivity(new Intent(getBaseContext(),OfficerDashboardActivity.class));
+        finish();
     }
 }

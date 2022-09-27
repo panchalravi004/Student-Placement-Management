@@ -73,6 +73,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                         }
                         if(menuItem.getTitle().equals(getResources().getString(R.string.manage_jobs))){
                             Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_jobs), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getBaseContext(),ManageJobsActivity.class));
                         }
                         if(menuItem.getTitle().equals(getResources().getString(R.string.manage_activity))){
                             Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_activity), Toast.LENGTH_SHORT).show();

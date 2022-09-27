@@ -75,6 +75,12 @@
         <item>Science</item>
     </string-array>
 
+    <!--  String array for filter.   -->
+    <string-array name="filter">
+        <item>filter</item>
+        <item>no filter</item>
+    </string-array>
+
 
 
 </resources>
