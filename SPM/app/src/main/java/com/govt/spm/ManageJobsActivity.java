@@ -2,6 +2,7 @@ package com.govt.spm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -50,5 +51,9 @@ public class ManageJobsActivity extends AppCompatActivity {
 
     public void goToDashboard(View view) {
         finish();
+    }
+
+    public void goToAddJobs(View view) {
+        startActivity(new Intent(ManageJobsActivity.this,AddJobsActivity.class));
     }
 }

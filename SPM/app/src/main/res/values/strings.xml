@@ -13,6 +13,7 @@
     <string name="view_jobs">View Jobs</string>
     <string name="manage_jobs">Manage Jobs</string>
     <string name="manage_activity">Manage Activity</string>
+    <string name="add_jobs">Add Jobs</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
 
@@ -82,5 +83,16 @@
         <item>no filter</item>
     </string-array>
 
+    <!--  String array for status.   -->
+    <string-array name="status">
+        <item>Publish</item>
+        <item>Draft</item>
+    </string-array>
+
+    <!--  String array for company sample.   -->
+    <string-array name="company">
+        <item>ABCD</item>
+        <item>ABCD</item>
+    </string-array>
 
 </resources>

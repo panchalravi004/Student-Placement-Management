@@ -133,13 +133,14 @@
                 android:text="Result : 700 Found" />
 
             <ImageButton
-                android:id="@+id/button"
+                android:id="@+id/add_job"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spm_blue_40_all_round"
                 android:elevation="5sp"
                 android:padding="5sp"
                 android:src="@drawable/icon_add_white"
+                android:onClick="goToAddJobs"
                 app:cornerRadius="20sp" />
         </LinearLayout>
     </LinearLayout>
