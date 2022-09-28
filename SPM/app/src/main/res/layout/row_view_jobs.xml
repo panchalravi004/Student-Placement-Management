@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5sp"
@@ -18,12 +19,12 @@
 
         <TextView
             android:id="@+id/tvCompanyName"
-            android:layout_width="100sp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/spm_blue_40_left_round"
             android:padding="2sp"
-            android:text="0123456789"
+            android:text="Info it Solution Pvt. ltd."
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/title" />
@@ -31,7 +32,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:background="@drawable/spm_blue_30_right_round"
             android:gravity="center"
             android:orientation="horizontal"
@@ -44,8 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="2sp"
-                android:text="MCA SEM 3 - 2022"
-                android:textAlignment="center"
+                android:text="22-09-2022"
                 android:textColor="@color/white"
                 android:textSize="@dimen/title" />
 
@@ -53,6 +53,7 @@
                 android:layout_width="8sp"
                 android:layout_height="8sp"
                 android:layout_marginLeft="5sp"
+                android:layout_weight="1"
                 android:background="@drawable/white_all_round">
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,12 +61,30 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvRegisterEndDate"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5sp"
-        android:text="Ravi Vasantbhai Panchal"
-        android:textAlignment="center"
-        android:textSize="@dimen/title" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvRegisterEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Registration End on: 20-09-2022"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/title" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="40sp"
+            android:layout_height="35sp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/spm_green"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:text="@string/apply"
+            app:cornerRadius="20sp" />
+    </LinearLayout>
 </LinearLayout>

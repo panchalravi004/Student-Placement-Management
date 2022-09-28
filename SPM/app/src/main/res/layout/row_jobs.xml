@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvStudentId"
+            android:id="@+id/tvCompanyName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -40,7 +40,7 @@
             android:paddingRight="10sp">
 
             <TextView
-                android:id="@+id/tvSemester"
+                android:id="@+id/tvInterviewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -71,7 +71,7 @@
         android:paddingRight="5sp">
 
         <TextView
-            android:id="@+id/tvStudentName"
+            android:id="@+id/tvRegisterEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"

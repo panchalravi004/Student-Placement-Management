@@ -3,22 +3,21 @@ package com.govt.spm;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class StudentDashboardActivity extends AppCompatActivity {
-
-    ListView upcoming_company_list;
-    UpcomingCompanyAdapter uca;
+public class ViewJobsActivity extends AppCompatActivity {
+    ListView view_jobs_list;
+    ViewJobsAdapter vja;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_dashboard);
+        setContentView(R.layout.activity_view_jobs);
+        view_jobs_list = (ListView) findViewById(R.id.view_jobs_list);
 
-        upcoming_company_list = (ListView) findViewById(R.id.upcoming_company_list);
-
-//        Upcoming company list set
+    //        view company list set
         ArrayList<String> company_name = new ArrayList<String>();
         ArrayList<String> interview_date = new ArrayList<String>();
         ArrayList<String> register_end_date = new ArrayList<String>();
@@ -38,7 +37,12 @@ public class StudentDashboardActivity extends AppCompatActivity {
         register_end_date.add("30-09-2022");
         register_end_date.add("30-09-2022");
 
-        uca = new UpcomingCompanyAdapter(StudentDashboardActivity.this,company_name,interview_date,register_end_date);
-        upcoming_company_list.setAdapter(uca);
+        vja = new ViewJobsAdapter(ViewJobsActivity.this,company_name,interview_date,register_end_date);
+        view_jobs_list.setAdapter(vja);
+
+    }
+
+    public void goToDashboard(View view) {
+        finish();
     }
 }

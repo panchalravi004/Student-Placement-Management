@@ -9,20 +9,20 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class JobsAdapter extends BaseAdapter {
+public class ViewJobsAdapter extends BaseAdapter {
     Context context;
     ArrayList<String> company_name;
     ArrayList<String> interview_date;
     ArrayList<String> register_end_date;
 
     TextView cName,iDate,rEDate;
-
-    public JobsAdapter(Context context,ArrayList<String> company_name,ArrayList<String> interview_date,ArrayList<String> register_end_date){
+    public ViewJobsAdapter(Context context,ArrayList<String> company_name,ArrayList<String> interview_date,ArrayList<String> register_end_date){
         this.context = context;
         this.company_name = company_name;
         this.interview_date = interview_date;
         this.register_end_date = register_end_date;
     }
+
     @Override
     public int getCount() {
         return company_name.size();
@@ -40,7 +40,8 @@ public class JobsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = LayoutInflater.from(context).inflate(R.layout.row_jobs,viewGroup,false);
+
+        view = LayoutInflater.from(context).inflate(R.layout.row_view_jobs,viewGroup,false);
 
         cName = view.findViewById(R.id.tvCompanyName);
         iDate = view.findViewById(R.id.tvInterviewDate);

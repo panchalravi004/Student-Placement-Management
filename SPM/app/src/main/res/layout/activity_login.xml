@@ -96,6 +96,7 @@
             android:paddingTop="0dp"
             android:paddingRight="30sp"
             android:paddingBottom="0dp"
+            android:onClick="goToDashboard"
             android:text="@string/login" />
 
         <Button

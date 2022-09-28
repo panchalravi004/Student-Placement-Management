@@ -10,6 +10,7 @@
     <string name="tpo_dashboard">TPO Dashboard</string>
     <string name="tpo_profile">TPO Profile</string>
     <string name="view_student">View Student</string>
+    <string name="view_jobs">View Jobs</string>
     <string name="manage_jobs">Manage Jobs</string>
     <string name="manage_activity">Manage Activity</string>
     <string name="logout">Logout</string>
