@@ -1,5 +1,6 @@
 package com.govt.spm;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,21 @@ public class StudentAdapter extends BaseAdapter {
         tvName.setText(student_name.get(i).toString());
         tvSem.setText(stud_sem_year.get(i).toString());
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
+
         return view;
     }
+
+    private void openDialog() {
+        Dialog dialog = new Dialog(context,R.style.DialogStyle);
+        dialog.setContentView(R.layout.dialog_details_student);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
+        dialog.show();
+    }
+
 }
