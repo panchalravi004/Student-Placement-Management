@@ -17,7 +17,7 @@ public class CompanyAdapter extends BaseAdapter {
     ArrayList<String> company_name;
 
     TextView cname;
-    ImageButton btnView;
+    ImageButton btnView,btnClose;
 
     public CompanyAdapter(Context context,ArrayList<String> company_name){
         this.context = context;
@@ -45,15 +45,26 @@ public class CompanyAdapter extends BaseAdapter {
         cname = view.findViewById(R.id.tvCompanyName);
         btnView = view.findViewById(R.id.btnView);
         cname.setText(company_name.get(i).toString());
-
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
         return view;
     }
 
     private void openDialog() {
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
-        dialog.setContentView(R.layout.dialog_details_jobs_post);
+        dialog.setContentView(R.layout.dialog_details_company);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
-
+        btnClose = dialog.findViewById(R.id.btnClose);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         dialog.show();
 
     }
