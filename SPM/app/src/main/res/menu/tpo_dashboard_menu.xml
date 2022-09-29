@@ -12,7 +12,7 @@
         android:title="@string/manage_jobs" />
     <item
         android:icon="@drawable/icon_activity"
-        android:title="@string/manage_activity" />
+        android:title="@string/manage_company" />
     <item
         android:icon="@drawable/icon_logout"
         android:title="@string/logout" />
