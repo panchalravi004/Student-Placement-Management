@@ -15,6 +15,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void goToDashboard(View view) {
-        startActivity(new Intent(this,OfficerDashboardActivity.class));
+        startActivity(new Intent(this,StudentDashboardActivity.class));
     }
 }
