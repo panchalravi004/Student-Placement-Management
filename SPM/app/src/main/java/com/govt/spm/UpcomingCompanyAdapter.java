@@ -1,10 +1,12 @@
 package com.govt.spm;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class UpcomingCompanyAdapter extends BaseAdapter {
     ArrayList<String> register_end_date;
 
     TextView cName,iDate,rEDate;
-
+    ImageButton btnClose;
     public UpcomingCompanyAdapter(Context context,ArrayList<String> company_name,ArrayList<String> interview_date,ArrayList<String> register_end_date){
         this.context = context;
         this.company_name = company_name;
@@ -51,6 +53,30 @@ public class UpcomingCompanyAdapter extends BaseAdapter {
         iDate.setText(interview_date.get(i).toString());
         rEDate.setText("Registration Ends On: "+register_end_date.get(i).toString());
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
+
         return view;
+    }
+    private void openDialog() {
+        Dialog dialog = new Dialog(context,R.style.DialogStyle);
+        dialog.setContentView(R.layout.dialog_details_jobs_post);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
+
+        btnClose = dialog.findViewById(R.id.btnClose);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
     }
 }

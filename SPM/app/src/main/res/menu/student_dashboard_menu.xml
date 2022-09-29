@@ -5,10 +5,10 @@
         android:title="@string/student_profile" />
     <item
         android:icon="@drawable/icon_jobs"
-        android:title="@string/manage_jobs" />
+        android:title="@string/view_jobs" />
     <item
         android:icon="@drawable/icon_activity"
-        android:title="@string/manage_activity" />
+        android:title="@string/view_activity" />
     <item
         android:icon="@drawable/icon_logout"
         android:title="@string/logout" />

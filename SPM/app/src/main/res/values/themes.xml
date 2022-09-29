@@ -35,4 +35,10 @@
         <!-- To see status bar transparent-->
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
+<!--    Dialog style  -->
+    <style name="DialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
 </resources>

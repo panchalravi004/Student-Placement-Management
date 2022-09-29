@@ -72,19 +72,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Registration End on: 20-09-2022"
+            android:text="End on: 20-09-2022"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/title" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="40sp"
+            android:layout_width="wrap_content"
             android:layout_height="35sp"
             android:layout_weight="1"
             android:backgroundTint="@color/spm_green"
             android:scrollbarAlwaysDrawHorizontalTrack="false"
             android:text="@string/apply"
             app:cornerRadius="20sp" />
+
+        <ImageButton
+            android:id="@+id/btnView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5sp"
+            android:layout_weight="2"
+            android:background="@drawable/spm_blue_40_all_round"
+            app:srcCompat="@drawable/icon_eye_white" />
     </LinearLayout>
 </LinearLayout>

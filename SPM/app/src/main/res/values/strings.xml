@@ -13,6 +13,7 @@
     <string name="view_jobs">View Jobs</string>
     <string name="manage_jobs">Manage Jobs</string>
     <string name="manage_activity">Manage Activity</string>
+    <string name="view_activity">View Activity</string>
     <string name="add_jobs">Add Jobs</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
