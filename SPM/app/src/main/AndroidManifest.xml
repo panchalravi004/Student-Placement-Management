@@ -14,6 +14,15 @@
         android:theme="@style/Theme.SPM"
         tools:targetApi="31">
         <activity
+            android:name=".AddJobsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewJobsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewStudentActivity"
+            android:exported="false" />
+        <activity
             android:name=".StudentDashboardActivity"
             android:exported="false" />
         <activity

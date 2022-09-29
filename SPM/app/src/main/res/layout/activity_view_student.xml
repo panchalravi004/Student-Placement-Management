@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:scrollbarSize="0dp"
-    tools:context=".ManageJobsActivity">
+    tools:context=".ViewStudentActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15sp"
                 android:layout_weight="0"
-                android:text="@string/manage_jobs"
+                android:text="@string/view_student"
                 android:textColor="@color/white"
                 android:textSize="@dimen/activity_heading" />
         </LinearLayout>
@@ -79,7 +78,6 @@
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -132,19 +130,8 @@
                 android:layout_weight="1"
                 android:text="Result : 700 Found" />
 
-            <ImageButton
-                android:id="@+id/add_job"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/spm_blue_40_all_round"
-                android:elevation="5sp"
-                android:padding="5sp"
-                android:src="@drawable/icon_add_white"
-                android:onClick="goToAddJobs"
-                app:cornerRadius="20sp" />
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -152,7 +139,7 @@
         android:padding="10sp">
 
         <ListView
-            android:id="@+id/jobs_list"
+            android:id="@+id/student_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"

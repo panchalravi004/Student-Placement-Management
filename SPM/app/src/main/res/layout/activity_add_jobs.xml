@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddJobsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spm_blue_30_bottom_round"
+        android:elevation="5sp"
+        android:orientation="vertical"
+        android:paddingLeft="20sp"
+        android:paddingTop="25sp"
+        android:paddingRight="20sp"
+        android:paddingBottom="15sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:onClick="goToDashboard"
+                app:srcCompat="@drawable/icon_arrow_left" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15sp"
+                android:layout_weight="1"
+                android:text="@string/add_jobs"
+                android:textColor="@color/white"
+                android:textSize="@dimen/activity_heading" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10sp">
+
+            <Spinner
+                android:id="@+id/spinner7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:background="@drawable/white_all_round"
+                android:elevation="5sp"
+                android:entries="@array/company"
+                android:padding="14sp"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:background="@drawable/white_all_round"
+                android:elevation="5sp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Jobs Description"
+                android:inputType="textMultiLine"
+                android:padding="14sp"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:background="@drawable/white_all_round"
+                android:elevation="5sp"
+                android:ems="10"
+                android:hint="Role"
+                android:inputType="textPersonName"
+                android:padding="14sp"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:background="@drawable/white_all_round"
+                android:elevation="5sp"
+                android:ems="10"
+                android:hint="Skills"
+                android:inputType="textPersonName"
+                android:padding="14sp"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="SSC"
+                    android:inputType="textPersonName"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="HSC"
+                    android:inputType="textPersonName"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="UG"
+                    android:inputType="textPersonName"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="PG"
+                    android:inputType="textPersonName"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editTextTextPersonName9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:background="@drawable/white_all_round"
+                android:elevation="5sp"
+                android:ems="10"
+                android:hint="Minimum Qualification"
+                android:inputType="textPersonName"
+                android:padding="14sp"
+                android:textAlignment="center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="Start Date"
+                    android:inputType="date"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/editTextDate2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="End Date"
+                    android:inputType="date"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/university"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spinner4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/college"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/dept"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spinner6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/status"
+                    android:padding="14sp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:backgroundTint="@color/spm_green"
+                android:text="@string/add_new"
+                app:cornerRadius="25sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -2,30 +2,22 @@ package com.govt.spm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ManageJobsActivity extends AppCompatActivity {
-    ImageButton btnSearch;
-    EditText etSearch;
-
-    ListView jobs_list;
-    JobsAdapter ja;
+public class ViewJobsActivity extends AppCompatActivity {
+    ListView view_jobs_list;
+    ViewJobsAdapter vja;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_jobs);
-        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
-        etSearch = (EditText) findViewById(R.id.etSearch);
-        jobs_list = (ListView) findViewById(R.id.jobs_list);
+        setContentView(R.layout.activity_view_jobs);
+        view_jobs_list = (ListView) findViewById(R.id.view_jobs_list);
 
-        //        jobs company list set
+    //        view company list set
         ArrayList<String> company_name = new ArrayList<String>();
         ArrayList<String> interview_date = new ArrayList<String>();
         ArrayList<String> register_end_date = new ArrayList<String>();
@@ -45,15 +37,12 @@ public class ManageJobsActivity extends AppCompatActivity {
         register_end_date.add("30-09-2022");
         register_end_date.add("30-09-2022");
 
-        ja = new JobsAdapter(ManageJobsActivity.this,company_name,interview_date,register_end_date);
-        jobs_list.setAdapter(ja);
+        vja = new ViewJobsAdapter(ViewJobsActivity.this,company_name,interview_date,register_end_date);
+        view_jobs_list.setAdapter(vja);
+
     }
 
     public void goToDashboard(View view) {
         finish();
-    }
-
-    public void goToAddJobs(View view) {
-        startActivity(new Intent(ManageJobsActivity.this,AddJobsActivity.class));
     }
 }
