@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,14 +20,20 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     ListView upcoming_company_list;
     UpcomingJobsAdapter uca;
-    ImageButton btnMenuBar;
+    ImageButton btnMenuBar,btnSearch;
+    TextView tvJobsCount,tvAppliedInCount,tvSelectedInCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_dashboard);
 
-        upcoming_company_list = (ListView) findViewById(R.id.upcoming_company_list);
-        btnMenuBar = (ImageButton) findViewById(R.id.btnMenuBar);
+        upcoming_company_list = (ListView) findViewById(R.id.list_SD_upcoming_jobs);
+        btnMenuBar = (ImageButton) findViewById(R.id.btnSDMenuBar);
+        btnSearch = (ImageButton) findViewById(R.id.btnSDSearch);
+
+        tvJobsCount = (TextView) findViewById(R.id.tvSDJobsCount);
+        tvAppliedInCount = (TextView) findViewById(R.id.tvSDAppliedInCount);
+        tvSelectedInCount = (TextView) findViewById(R.id.tvSDSelectedInCount);
 
         //Upcoming company list set
         ArrayList<String> company_name = new ArrayList<String>();

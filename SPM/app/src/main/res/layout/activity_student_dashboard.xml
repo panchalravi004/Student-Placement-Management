@@ -26,7 +26,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnMenuBar"
+                android:id="@+id/btnSDMenuBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -52,7 +52,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTextPersonName3"
+                android:id="@+id/etSDSearch"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -65,7 +65,7 @@
                 android:text="" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/btnSDSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spm_green_right_round"
@@ -110,7 +110,7 @@
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/tvSDJobsCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15sp"
@@ -146,7 +146,7 @@
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/tvSDAppliedInCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15sp"
@@ -182,7 +182,7 @@
                 android:textSize="@dimen/title" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/tvSDSelectedInCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -192,7 +192,7 @@
                 android:textSize="@dimen/sub_title" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btnSDSelectedIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -213,12 +213,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
-            android:text="@string/upcoming_company"
+            android:text="@string/upcoming_jobs"
             android:textColor="@color/black"
             android:textSize="@dimen/main_title" />
 
         <ListView
-            android:id="@+id/upcoming_company_list"
+            android:id="@+id/list_SD_upcoming_jobs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@null"
