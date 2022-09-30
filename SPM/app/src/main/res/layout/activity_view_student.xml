@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnBack"
+                android:id="@+id/btnViewStudentBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -54,7 +54,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/etSearch"
+                android:id="@+id/etViewStudentSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -68,7 +68,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <ImageButton
-                android:id="@+id/btnSearch"
+                android:id="@+id/btnViewStudentSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -91,7 +91,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spViewStudentFilterOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
@@ -103,7 +103,7 @@
                 android:textAlignment="center" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spViewStudentFilterTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
@@ -124,7 +124,7 @@
             android:paddingRight="10sp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvViewStudentResultCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
