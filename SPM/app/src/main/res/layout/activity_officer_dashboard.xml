@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnBack"
+                android:id="@+id/btnODMenuBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -53,7 +53,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/etSearch"
+                android:id="@+id/etODSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -67,7 +67,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <ImageButton
-                android:id="@+id/btnSearch"
+                android:id="@+id/btnODSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -114,7 +114,7 @@
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/tvODStudentCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15sp"
@@ -144,13 +144,13 @@
                     android:paddingTop="6sp"
                     android:paddingRight="25sp"
                     android:paddingBottom="6sp"
-                    android:text="@string/jobs"
+                    android:text="@string/company"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/tvODCompanyCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15sp"
@@ -187,13 +187,13 @@
                     android:paddingTop="6sp"
                     android:paddingRight="25sp"
                     android:paddingBottom="6sp"
-                    android:text="@string/coming_soon"
+                    android:text="@string/jobs"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/tvODJobsCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15sp"
@@ -223,13 +223,13 @@
                     android:paddingTop="6sp"
                     android:paddingRight="25sp"
                     android:paddingBottom="6sp"
-                    android:text="@string/activity"
+                    android:text="@string/coming_soon"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/title" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/tvODComingSoonCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15sp"
@@ -265,7 +265,7 @@
                 android:textSize="@dimen/title" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/tvODSelectedStudentCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -275,7 +275,7 @@
                 android:textSize="@dimen/sub_title" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/btnODSelectedStudent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -296,12 +296,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10sp"
-            android:text="@string/upcoming_company"
+            android:text="@string/upcoming_jobs"
             android:textColor="@color/black"
             android:textSize="@dimen/main_title" />
 
         <ListView
-            android:id="@+id/upcoming_company_list"
+            android:id="@+id/list_OD_upcoming_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@null"

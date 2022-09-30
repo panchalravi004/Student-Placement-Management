@@ -19,7 +19,7 @@ public class ViewJobsActivity extends AppCompatActivity {
 
     //        view company list set
         ArrayList<String> company_name = new ArrayList<String>();
-        ArrayList<String> interview_date = new ArrayList<String>();
+        ArrayList<String> college_name = new ArrayList<String>();
         ArrayList<String> register_end_date = new ArrayList<String>();
 
         company_name.add("ABCD One Technology");
@@ -27,17 +27,17 @@ public class ViewJobsActivity extends AppCompatActivity {
         company_name.add("ABCD Three Technology");
         company_name.add("ABCD Four Technology");
 
-        interview_date.add("02-10-2022");
-        interview_date.add("03-10-2022");
-        interview_date.add("04-10-2022");
-        interview_date.add("04-10-2022");
+        college_name.add("AMPICS");
+        college_name.add("AMPICS");
+        college_name.add("AMPICS");
+        college_name.add("AMPICS");
 
         register_end_date.add("28-09-2022");
         register_end_date.add("29-09-2022");
         register_end_date.add("30-09-2022");
         register_end_date.add("30-09-2022");
 
-        vja = new ViewJobsAdapter(ViewJobsActivity.this,company_name,interview_date,register_end_date);
+        vja = new ViewJobsAdapter(ViewJobsActivity.this,company_name,college_name,register_end_date);
         view_jobs_list.setAdapter(vja);
 
     }

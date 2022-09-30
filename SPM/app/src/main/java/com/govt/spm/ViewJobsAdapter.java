@@ -14,15 +14,15 @@ import java.util.ArrayList;
 public class ViewJobsAdapter extends BaseAdapter {
     Context context;
     ArrayList<String> company_name;
-    ArrayList<String> interview_date;
+    ArrayList<String> college_name;
     ArrayList<String> register_end_date;
 
-    TextView cName,iDate,rEDate;
+    TextView cName,clgName,rEDate;
     ImageButton btnClose,btnView;
-    public ViewJobsAdapter(Context context,ArrayList<String> company_name,ArrayList<String> interview_date,ArrayList<String> register_end_date){
+    public ViewJobsAdapter(Context context,ArrayList<String> company_name,ArrayList<String> college_name,ArrayList<String> register_end_date){
         this.context = context;
         this.company_name = company_name;
-        this.interview_date = interview_date;
+        this.college_name = college_name;
         this.register_end_date = register_end_date;
     }
 
@@ -46,13 +46,13 @@ public class ViewJobsAdapter extends BaseAdapter {
 
         view = LayoutInflater.from(context).inflate(R.layout.row_view_jobs,viewGroup,false);
 
-        cName = view.findViewById(R.id.tvCompanyName);
-        iDate = view.findViewById(R.id.tvInterviewDate);
-        rEDate = view.findViewById(R.id.tvRegisterEndDate);
-        btnView = view.findViewById(R.id.btnView);
+        cName = view.findViewById(R.id.tvVJACompanyName);
+        clgName = view.findViewById(R.id.tvVJACollegeName);
+        rEDate = view.findViewById(R.id.tvVJARegisterEndDate);
+        btnView = view.findViewById(R.id.btnVJAView);
 
         cName.setText(company_name.get(i).toString());
-        iDate.setText(interview_date.get(i).toString());
+        clgName.setText(college_name.get(i).toString());
         rEDate.setText("Ends On: "+register_end_date.get(i).toString());
 
 

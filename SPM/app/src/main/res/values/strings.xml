@@ -23,10 +23,11 @@
     <!--  TPO/Student Dashboard String  -->
     <string name="students">Students</string>
     <string name="jobs">Jobs</string>
+    <string name="company">Company</string>
     <string name="coming_soon">Coming Soon</string>
     <string name="activity">Activity</string>
     <string name="selected_students">Selected Students</string>
-    <string name="upcoming_company">Upcoming Company</string>
+    <string name="upcoming_jobs">Upcoming Jobs</string>
     <string name="type_here">Type here to search any</string>
 
     <string name="applied_in">Applied In</string>

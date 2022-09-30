@@ -44,9 +44,9 @@ public class StudentAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = LayoutInflater.from(context).inflate(R.layout.row_student,viewGroup,false);
 
-        tvName = view.findViewById(R.id.tvRegisterEndDate);
-        tvId = view.findViewById(R.id.tvCompanyName);
-        tvSem = view.findViewById(R.id.tvInterviewDate);
+        tvName = view.findViewById(R.id.tvStudentAdapterRegisterEndDate);
+        tvId = view.findViewById(R.id.tvStudentAdapterCompanyName);
+        tvSem = view.findViewById(R.id.tvStudentAdapterCollegeName);
 
         tvId.setText(student_id.get(i).toString());
         tvName.setText(student_name.get(i).toString());

@@ -42,8 +42,8 @@ public class CompanyAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = LayoutInflater.from(context).inflate(R.layout.row_company,viewGroup,false);
-        cname = view.findViewById(R.id.tvCompanyName);
-        btnView = view.findViewById(R.id.btnView);
+        cname = view.findViewById(R.id.tvCompanyAdapterCompanyName);
+        btnView = view.findViewById(R.id.btnCompanyAdapterView);
         cname.setText(company_name.get(i).toString());
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvCompanyName"
+            android:id="@+id/tvCompanyAdapterCompanyName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -41,7 +41,7 @@
         android:paddingRight="5sp">
 
         <ImageButton
-            android:id="@+id/btnView"
+            android:id="@+id/btnCompanyAdapterView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,7 +52,7 @@
             app:srcCompat="@drawable/icon_eye_white" />
 
         <ImageButton
-            android:id="@+id/btnEdit"
+            android:id="@+id/btnCompanyAdapterEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,7 +63,7 @@
             app:srcCompat="@drawable/icon_edit_white" />
 
         <ImageButton
-            android:id="@+id/btnDelete"
+            android:id="@+id/btnCompanyAdapterDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

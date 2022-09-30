@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -15,17 +14,17 @@ import java.util.ArrayList;
 public class JobsAdapter extends BaseAdapter {
     Context context;
     ArrayList<String> company_name;
-    ArrayList<String> interview_date;
+    ArrayList<String> college_name;
     ArrayList<String> register_end_date;
 
-    TextView cName,iDate,rEDate;
+    TextView cName,clgName,rEDate;
     ImageButton btnView,btnEdit,btnDelete;
     ImageButton btnClose;
 
-    public JobsAdapter(Context context,ArrayList<String> company_name,ArrayList<String> interview_date,ArrayList<String> register_end_date){
+    public JobsAdapter(Context context,ArrayList<String> company_name,ArrayList<String> college_name,ArrayList<String> register_end_date){
         this.context = context;
         this.company_name = company_name;
-        this.interview_date = interview_date;
+        this.college_name = college_name;
         this.register_end_date = register_end_date;
     }
     @Override
@@ -47,16 +46,16 @@ public class JobsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = LayoutInflater.from(context).inflate(R.layout.row_jobs,viewGroup,false);
 
-        cName = view.findViewById(R.id.tvCompanyName);
-        iDate = view.findViewById(R.id.tvInterviewDate);
-        rEDate = view.findViewById(R.id.tvRegisterEndDate);
-        btnView = view.findViewById(R.id.btnView);
-        btnEdit = view.findViewById(R.id.btnEdit);
-        btnDelete = view.findViewById(R.id.btnDelete);
+        cName = view.findViewById(R.id.tvJobsAdapterCompanyName);
+        clgName = view.findViewById(R.id.tvJobsAdapterCollegeName);
+        rEDate = view.findViewById(R.id.tvJobsAdapterRegisterEndDate);
+        btnView = view.findViewById(R.id.btnJobsAdapterView);
+        btnEdit = view.findViewById(R.id.btnJobsAdapterEdit);
+        btnDelete = view.findViewById(R.id.btnJobsAdapterDelete);
 
 
         cName.setText(company_name.get(i).toString());
-        iDate.setText(interview_date.get(i).toString());
+        clgName.setText(college_name.get(i).toString());
         rEDate.setText("Ends On: "+register_end_date.get(i).toString());
 
         btnView.setOnClickListener(new View.OnClickListener() {

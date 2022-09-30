@@ -11,18 +11,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class UpcomingCompanyAdapter extends BaseAdapter {
+public class UpcomingJobsAdapter extends BaseAdapter {
     Context context;
     ArrayList<String> company_name;
-    ArrayList<String> interview_date;
+    ArrayList<String> college_name;
     ArrayList<String> register_end_date;
 
-    TextView cName,iDate,rEDate;
+    TextView cName,clgName,rEDate;
     ImageButton btnClose;
-    public UpcomingCompanyAdapter(Context context,ArrayList<String> company_name,ArrayList<String> interview_date,ArrayList<String> register_end_date){
+    public UpcomingJobsAdapter(Context context, ArrayList<String> company_name, ArrayList<String> college_name, ArrayList<String> register_end_date){
         this.context = context;
         this.company_name = company_name;
-        this.interview_date = interview_date;
+        this.college_name = college_name;
         this.register_end_date = register_end_date;
     }
 
@@ -43,14 +43,14 @@ public class UpcomingCompanyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = LayoutInflater.from(context).inflate(R.layout.row_upcoming_company,viewGroup,false);
+        view = LayoutInflater.from(context).inflate(R.layout.row_upcoming_jobs,viewGroup,false);
 
-        cName = view.findViewById(R.id.tvCompanyName);
-        iDate = view.findViewById(R.id.tvInterviewDate);
-        rEDate = view.findViewById(R.id.tvRegisterEndDate);
+        cName = view.findViewById(R.id.tvUJACompanyName);
+        clgName = view.findViewById(R.id.tvUJACollegeName);
+        rEDate = view.findViewById(R.id.tvUJARegisterEndDate);
 
         cName.setText(company_name.get(i).toString());
-        iDate.setText(interview_date.get(i).toString());
+        clgName.setText(college_name.get(i).toString());
         rEDate.setText("Registration Ends On: "+register_end_date.get(i).toString());
 
         view.setOnClickListener(new View.OnClickListener() {

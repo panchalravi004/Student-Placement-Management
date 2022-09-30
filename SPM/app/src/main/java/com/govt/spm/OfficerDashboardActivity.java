@@ -12,28 +12,39 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class OfficerDashboardActivity extends AppCompatActivity {
-    ImageButton btnMenuBar, btnSearch;
-    EditText etSearch;
 
-    ListView upcoming_company_list;
-    UpcomingCompanyAdapter uca;
+    private ImageButton btnMenuBar, btnSearch, btnSelectedStudent;
+    private EditText etSearch;
+    private TextView tvStudentCount,tvCompanyCount,tvJobsCount,tvComingSoonCount;
+    private ListView upcoming_company_list;
+    UpcomingJobsAdapter uca;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_officer_dashboard);
-        btnMenuBar = (ImageButton) findViewById(R.id.btnBack);
-        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
-        etSearch = (EditText) findViewById(R.id.etSearch);
-        upcoming_company_list = (ListView) findViewById(R.id.upcoming_company_list);
 
-//        Upcoming company list set
+        btnMenuBar = (ImageButton) findViewById(R.id.btnODMenuBar);
+        btnSearch = (ImageButton) findViewById(R.id.btnODSearch);
+        btnSelectedStudent = (ImageButton) findViewById(R.id.btnODSelectedStudent);
+
+        tvStudentCount = (TextView) findViewById(R.id.tvODStudentCount);
+        tvCompanyCount = (TextView) findViewById(R.id.tvODCompanyCount);
+        tvJobsCount = (TextView) findViewById(R.id.tvODJobsCount);
+        tvComingSoonCount = (TextView) findViewById(R.id.tvODComingSoonCount);
+
+        etSearch = (EditText) findViewById(R.id.etODSearch);
+        upcoming_company_list = (ListView) findViewById(R.id.list_OD_upcoming_company);
+
+        //Upcoming company list set
         ArrayList<String> company_name = new ArrayList<String>();
-        ArrayList<String> interview_date = new ArrayList<String>();
+        ArrayList<String> college_name = new ArrayList<String>();
         ArrayList<String> register_end_date = new ArrayList<String>();
 
         company_name.add("ABCD One Technology");
@@ -41,56 +52,61 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         company_name.add("ABCD Three Technology");
         company_name.add("ABCD Four Technology");
 
-        interview_date.add("02-10-2022");
-        interview_date.add("03-10-2022");
-        interview_date.add("04-10-2022");
-        interview_date.add("04-10-2022");
+        college_name.add("AMPICS");
+        college_name.add("AMPICS");
+        college_name.add("AMPICS");
+        college_name.add("AMPICS");
 
         register_end_date.add("28-09-2022");
         register_end_date.add("29-09-2022");
         register_end_date.add("30-09-2022");
         register_end_date.add("30-09-2022");
 
-        uca = new UpcomingCompanyAdapter(OfficerDashboardActivity.this,company_name,interview_date,register_end_date);
+        uca = new UpcomingJobsAdapter(OfficerDashboardActivity.this,company_name,college_name,register_end_date);
         upcoming_company_list.setAdapter(uca);
 
-//        When click on menu bar button open popupmenu
+        //When click on menu bar button open popupmenu
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View view) {
-                PopupMenu pm = new PopupMenu(getBaseContext(),btnMenuBar);
-                pm.getMenuInflater().inflate(R.menu.tpo_dashboard_menu,pm.getMenu());
-                pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        if(menuItem.getTitle().equals(getResources().getString(R.string.tpo_profile))){
-                            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.tpo_profile), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getBaseContext(),OfficerProfileActivity.class));
-                        }
-                        if(menuItem.getTitle().equals(getResources().getString(R.string.view_student))){
-                            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.view_student), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getBaseContext(),ViewStudentActivity.class));
-                        }
-                        if(menuItem.getTitle().equals(getResources().getString(R.string.manage_jobs))){
-                            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_jobs), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getBaseContext(),ManageJobsActivity.class));
-                        }
-                        if(menuItem.getTitle().equals(getResources().getString(R.string.manage_company))){
-                            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_company), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getBaseContext(),ManageCompanyActivity.class));
-                        }
-                        if(menuItem.getTitle().equals(getResources().getString(R.string.logout))){
-                            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
-                        }
-
-                        return true;
-                    }
-                });
-                pm.setForceShowIcon(true);
-                pm.show();
+                openPopUpMenu();
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private void openPopUpMenu(){
+        PopupMenu pm = new PopupMenu(getBaseContext(),btnMenuBar);
+        pm.getMenuInflater().inflate(R.menu.tpo_dashboard_menu,pm.getMenu());
+        pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getTitle().equals(getResources().getString(R.string.tpo_profile))){
+                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.tpo_profile), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getBaseContext(),OfficerProfileActivity.class));
+                }
+                if(menuItem.getTitle().equals(getResources().getString(R.string.view_student))){
+                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.view_student), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getBaseContext(),ViewStudentActivity.class));
+                }
+                if(menuItem.getTitle().equals(getResources().getString(R.string.manage_jobs))){
+                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_jobs), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getBaseContext(),ManageJobsActivity.class));
+                }
+                if(menuItem.getTitle().equals(getResources().getString(R.string.manage_company))){
+                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_company), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getBaseContext(),ManageCompanyActivity.class));
+                }
+                if(menuItem.getTitle().equals(getResources().getString(R.string.logout))){
+                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+            }
+        });
+        pm.setForceShowIcon(true);
+        pm.show();
     }
 
 }
