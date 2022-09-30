@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnBack"
+                android:id="@+id/btnManageCompanyBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -54,7 +54,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/etSearch"
+                android:id="@+id/etManageCompanySearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -68,7 +68,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <ImageButton
-                android:id="@+id/btnSearch"
+                android:id="@+id/btnManageCompanySearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -92,7 +92,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spManageCompanyFilterOne"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
@@ -104,7 +104,7 @@
                 android:textAlignment="center" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spManageCompanyFilterTwo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
@@ -125,19 +125,19 @@
             android:paddingRight="10sp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvManageCompanyResultCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Result : 700 Found" />
 
             <ImageButton
-                android:id="@+id/add_job"
+                android:id="@+id/btnManageCompanyAddCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spm_blue_40_all_round"
                 android:elevation="5sp"
-                android:onClick="goToAddJobs"
+                android:onClick="goToAddCompany"
                 android:padding="5sp"
                 android:src="@drawable/icon_add_white"
                 app:cornerRadius="20sp" />
@@ -151,7 +151,7 @@
         android:padding="10sp">
 
         <ListView
-            android:id="@+id/company_list"
+            android:id="@+id/list_manage_company_company"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"
