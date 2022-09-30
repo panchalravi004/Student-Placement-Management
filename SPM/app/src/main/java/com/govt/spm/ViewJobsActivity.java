@@ -4,20 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ViewJobsActivity extends AppCompatActivity {
+
+    EditText etSearch;
+    ImageButton btnSearch;
+    Spinner spFilterOne,spFilterTwo;
+    TextView tvResultCount;
+
     ListView view_jobs_list;
     ViewJobsAdapter vja;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_jobs);
-        view_jobs_list = (ListView) findViewById(R.id.view_jobs_list);
+        view_jobs_list = (ListView) findViewById(R.id.list_view_jobs);
+        etSearch = (EditText) findViewById(R.id.etViewJobsSearch);
+        btnSearch = (ImageButton) findViewById(R.id.btnViewJobsSearch);
+        spFilterOne = (Spinner) findViewById(R.id.spViewJobsFilterOne);
+        spFilterTwo = (Spinner) findViewById(R.id.spViewJobsFilterTwo);
+        tvResultCount = (TextView) findViewById(R.id.tvViewJobsResultCount);
 
-    //        view company list set
+        //view company list set
         ArrayList<String> company_name = new ArrayList<String>();
         ArrayList<String> college_name = new ArrayList<String>();
         ArrayList<String> register_end_date = new ArrayList<String>();
