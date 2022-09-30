@@ -8,12 +8,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ManageJobsActivity extends AppCompatActivity {
     ImageButton btnSearch;
     EditText etSearch;
+    Spinner spFilterOne,spFilterTwo;
+    TextView tvResultCount;
 
     ListView jobs_list;
     JobsAdapter ja;
@@ -21,11 +25,14 @@ public class ManageJobsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_jobs);
-        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
-        etSearch = (EditText) findViewById(R.id.etSearch);
-        jobs_list = (ListView) findViewById(R.id.jobs_list);
+        btnSearch = (ImageButton) findViewById(R.id.btnManageJobsSearch);
+        etSearch = (EditText) findViewById(R.id.etManageJobsSearch);
+        spFilterOne = (Spinner) findViewById(R.id.spManageJobsFilterOne);
+        spFilterTwo = (Spinner) findViewById(R.id.spManageJobsFilterTwo);
+        tvResultCount = (TextView) findViewById(R.id.tvManageJobsResultCount);
+        jobs_list = (ListView) findViewById(R.id.list_manage_jobs_job);
 
-        //        jobs company list set
+        //Jobs company list set
         ArrayList<String> company_name = new ArrayList<String>();
         ArrayList<String> interview_date = new ArrayList<String>();
         ArrayList<String> register_end_date = new ArrayList<String>();
