@@ -2,6 +2,7 @@ package com.govt.spm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -28,5 +29,9 @@ public class ManageCompanyActivity extends AppCompatActivity {
 
     public void goToDashboard(View view) {
         finish();
+    }
+
+    public void goToAddJobs(View view) {
+        startActivity(new Intent(ManageCompanyActivity.this,AddCompanyActivity.class));
     }
 }

@@ -26,7 +26,9 @@
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_bottom_round.xml" value="0.148" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_left_round.xml" value="0.148" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/drawable/white_top_round.xml" value="0.148" />
-        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_add_jobs.xml" value="0.1814814814814815" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/font/actor.xml" value="0.20833333333333334" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_add_company.xml" value="0.22" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_add_jobs.xml" value="0.22" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_manage_company.xml" value="0.1814814814814815" />
@@ -39,7 +41,7 @@
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/activity_view_student.xml" value="0.33" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/dialog_details_company.xml" value="0.1814814814814815" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/dialog_details_jobs_post.xml" value="0.25" />
-        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/dialog_details_student.xml" value="0.33" />
+        <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/dialog_details_student.xml" value="0.1814814814814815" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/row_company.xml" value="0.25" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/row_jobs.xml" value="0.33" />
         <entry key="..\:/RAVI/Android/Student-Placement-Management/SPM/app/src/main/res/layout/row_student.xml" value="0.5" />

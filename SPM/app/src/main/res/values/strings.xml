@@ -16,6 +16,7 @@
     <string name="manage_company">Manage Company</string>
     <string name="view_activity">View Activity</string>
     <string name="add_jobs">Add Jobs</string>
+    <string name="add_company">Add Company</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
 
@@ -95,6 +96,12 @@
     <string-array name="company">
         <item>ABCD</item>
         <item>ABCD</item>
+    </string-array>
+
+    <!--  String array for city.   -->
+    <string-array name="city">
+        <item>Himmatnagar</item>
+        <item>Mehsana</item>
     </string-array>
 
 </resources>
