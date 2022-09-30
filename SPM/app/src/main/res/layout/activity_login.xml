@@ -49,7 +49,7 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/etUsernameLogin"
+            android:id="@+id/etUserIdLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20sp"
@@ -74,36 +74,26 @@
             android:padding="15sp"
             android:textAlignment="center" />
 
-        <Spinner
-            android:id="@+id/spRoleofUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20sp"
-            android:background="@drawable/white_all_round"
-            android:elevation="4sp"
-            android:entries="@array/role_of_user"
-            android:padding="15sp"
-            android:textAlignment="center" />
-
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20sp"
-            android:background="@drawable/spm_blue_30_all_round"
             android:elevation="10sp"
+            android:onClick="doLogin"
             android:paddingLeft="30sp"
             android:paddingTop="0dp"
             android:paddingRight="30sp"
             android:paddingBottom="0dp"
-            android:onClick="goToDashboard"
-            android:text="@string/login" />
+            android:text="@string/login"
+            app:cornerRadius="20sp" />
 
         <Button
             android:id="@+id/btnNewUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginTop="15sp"
             android:background="@drawable/spm_blue_30_left_round"
             android:text="New User" />
     </LinearLayout>
