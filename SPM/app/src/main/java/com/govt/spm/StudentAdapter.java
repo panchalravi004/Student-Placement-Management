@@ -5,12 +5,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class StudentAdapter extends BaseAdapter {
+public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder> {
     Context context;
     ArrayList<String> student_id;
     ArrayList<String> student_name;
@@ -25,41 +27,40 @@ public class StudentAdapter extends BaseAdapter {
         this.stud_sem_year = stud_sem_year;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public StudentAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.row_student,parent,false);
+        return new VHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull StudentAdapter.VHolder holder, int position) {
+        tvId.setText(student_id.get(position));
+        tvName.setText(student_name.get(position));
+        tvSem.setText(stud_sem_year.get(position));
+
+    }
+
+    @Override
+    public int getItemCount() {
         return student_id.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = LayoutInflater.from(context).inflate(R.layout.row_student,viewGroup,false);
-
-        tvName = view.findViewById(R.id.tvStudentAdapterRegisterEndDate);
-        tvId = view.findViewById(R.id.tvStudentAdapterCompanyName);
-        tvSem = view.findViewById(R.id.tvStudentAdapterCollegeName);
-
-        tvId.setText(student_id.get(i).toString());
-        tvName.setText(student_name.get(i).toString());
-        tvSem.setText(stud_sem_year.get(i).toString());
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
-        });
-
-        return view;
+    public class VHolder extends RecyclerView.ViewHolder {
+        public VHolder(@NonNull View itemView) {
+            super(itemView);
+            tvName=(TextView) itemView.findViewById(R.id.tvStudentAdapterName);
+            tvId=(TextView) itemView.findViewById(R.id.tvStudentAdapterRollNo);
+            tvSem=(TextView) itemView.findViewById(R.id.tvStudentAdapterCourseSemYear);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openDialog();
+                }
+            });
+        }
     }
 
     private void openDialog() {
@@ -68,5 +69,4 @@ public class StudentAdapter extends BaseAdapter {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
         dialog.show();
     }
-
 }

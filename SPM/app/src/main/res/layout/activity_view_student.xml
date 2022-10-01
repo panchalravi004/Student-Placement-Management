@@ -132,19 +132,31 @@
 
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="10sp">
 
-        <ListView
-            android:id="@+id/student_list"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleViewStudent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="15sp"
+            android:layout_weight="1"
             android:padding="5sp"
-            android:scrollbarSize="0dp" />
+            android:scrollbarSize="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ProgressBar
+            android:id="@+id/pbLoadMore"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
     </LinearLayout>
 </LinearLayout>
