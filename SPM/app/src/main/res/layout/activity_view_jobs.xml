@@ -139,14 +139,21 @@
         android:orientation="vertical"
         android:padding="10sp">
 
-        <ListView
-            android:id="@+id/list_view_jobs"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleViewViewJobs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null"
-            android:dividerHeight="15sp"
-            android:padding="5sp"
-            android:scrollbarSize="0dp" />
+            android:layout_weight="1"
+            android:padding="5sp" />
+
+        <ProgressBar
+            android:id="@+id/pbLoadMoreViewJobs"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </LinearLayout>

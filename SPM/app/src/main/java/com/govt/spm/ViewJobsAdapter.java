@@ -9,9 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
-public class ViewJobsAdapter extends BaseAdapter {
+public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolder> {
     Context context;
     ArrayList<String> company_name;
     ArrayList<String> college_name;
@@ -26,46 +29,44 @@ public class ViewJobsAdapter extends BaseAdapter {
         this.register_end_date = register_end_date;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public ViewJobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.row_view_jobs,parent,false);
+        return new VHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewJobsAdapter.VHolder holder, int position) {
+        cName.setText(company_name.get(position).toString());
+        clgName.setText(college_name.get(position).toString());
+        rEDate.setText("Ends On: "+register_end_date.get(position).toString());
+    }
+
+    @Override
+    public int getItemCount() {
         return company_name.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
+    public class VHolder extends RecyclerView.ViewHolder {
+        public VHolder(@NonNull View itemView) {
+            super(itemView);
+            cName = itemView.findViewById(R.id.tvVJACompanyName);
+            clgName = itemView.findViewById(R.id.tvVJACollegeName);
+            rEDate = itemView.findViewById(R.id.tvVJARegisterEndDate);
+            btnView = itemView.findViewById(R.id.btnVJAView);
+            btnView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openDialog();
+                }
+            });
+        }
     }
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-
-        view = LayoutInflater.from(context).inflate(R.layout.row_view_jobs,viewGroup,false);
-
-        cName = view.findViewById(R.id.tvVJACompanyName);
-        clgName = view.findViewById(R.id.tvVJACollegeName);
-        rEDate = view.findViewById(R.id.tvVJARegisterEndDate);
-        btnView = view.findViewById(R.id.btnVJAView);
-
-        cName.setText(company_name.get(i).toString());
-        clgName.setText(college_name.get(i).toString());
-        rEDate.setText("Ends On: "+register_end_date.get(i).toString());
-
-
-        btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
-        });
-
-        return view;
-    }
     private void openDialog() {
+
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_jobs_post);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
