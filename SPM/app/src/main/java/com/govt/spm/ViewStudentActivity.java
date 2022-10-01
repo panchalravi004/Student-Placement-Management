@@ -23,7 +23,6 @@ public class ViewStudentActivity extends AppCompatActivity {
     EditText etSearch;
     Spinner spFilterOne,spFilterTwo;
 
-    ListView student_list;
     RecyclerView student_rv;
     LinearLayoutManager manager;
     StudentAdapter sa;
@@ -45,7 +44,6 @@ public class ViewStudentActivity extends AppCompatActivity {
         spFilterTwo = (Spinner) findViewById(R.id.spViewStudentFilterTwo);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMore);
 
-//        student_list = (ListView) findViewById(R.id.student_list);
         student_rv = (RecyclerView) findViewById(R.id.recycleViewStudent);
         manager = new LinearLayoutManager(this);
 
@@ -103,7 +101,7 @@ public class ViewStudentActivity extends AppCompatActivity {
                 scrolledOutItems = manager.findFirstVisibleItemPosition();
                 if(isScrolling && (currentItem + scrolledOutItems == totalItem)){
                     isScrolling = false;
-                    if(totalItem!=totaldbitem){
+                    if(totalItem<=totaldbitem){
                         fetchData();
                     }
                 }
