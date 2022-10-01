@@ -55,54 +55,54 @@
             android:padding="10sp">
 
             <Spinner
-                android:id="@+id/spinner7"
+                android:id="@+id/spAddJobCompany"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
+                android:layout_margin="15sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:entries="@array/company"
-                android:padding="14sp"
+                android:padding="10sp"
                 android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
+                android:id="@+id/etAddJobDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
+                android:layout_margin="15sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Jobs Description"
                 android:inputType="textMultiLine"
-                android:padding="14sp"
+                android:padding="10sp"
                 android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/etAddJobRole"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
+                android:layout_margin="15sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:ems="10"
                 android:hint="Role"
                 android:inputType="textPersonName"
-                android:padding="14sp"
+                android:padding="10sp"
                 android:textAlignment="center" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName4"
+                android:id="@+id/etAddJobSkills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
+                android:layout_margin="15sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:ems="10"
                 android:hint="Skills"
                 android:inputType="textPersonName"
-                android:padding="14sp"
+                android:padding="10sp"
                 android:textAlignment="center" />
 
             <LinearLayout
@@ -111,31 +111,31 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName5"
+                    android:id="@+id/etAddJobSSC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
                     android:hint="SSC"
                     android:inputType="textPersonName"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName6"
+                    android:id="@+id/etAddJobHSC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
                     android:hint="HSC"
                     android:inputType="textPersonName"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -145,45 +145,45 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName7"
+                    android:id="@+id/etAddJobUG"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
                     android:hint="UG"
                     android:inputType="textPersonName"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName8"
+                    android:id="@+id/etAddJobPG"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
                     android:hint="PG"
                     android:inputType="textPersonName"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
             <EditText
-                android:id="@+id/editTextTextPersonName9"
+                android:id="@+id/etAddJobMinQualification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
+                android:layout_margin="15sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:ems="10"
                 android:hint="Minimum Qualification"
                 android:inputType="textPersonName"
-                android:padding="14sp"
+                android:padding="10sp"
                 android:textAlignment="center" />
 
             <LinearLayout
@@ -192,31 +192,31 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editTextDate"
+                    android:id="@+id/etAddJobStartDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
                     android:hint="Start Date"
                     android:inputType="date"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
 
                 <EditText
-                    android:id="@+id/editTextDate2"
+                    android:id="@+id/etAddJobEndDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
                     android:hint="End Date"
                     android:inputType="date"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -226,27 +226,27 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/spinner3"
+                    android:id="@+id/spAddJobUniversity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/university"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
 
                 <Spinner
-                    android:id="@+id/spinner4"
+                    android:id="@+id/spAddJobCollege"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/college"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -256,32 +256,32 @@
                 android:orientation="horizontal">
 
                 <Spinner
-                    android:id="@+id/spinner5"
+                    android:id="@+id/spAddJobDept"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/dept"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
 
                 <Spinner
-                    android:id="@+id/spinner6"
+                    android:id="@+id/spAddJobStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
+                    android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/status"
-                    android:padding="14sp"
+                    android:padding="10sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btnAddJobAddNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
