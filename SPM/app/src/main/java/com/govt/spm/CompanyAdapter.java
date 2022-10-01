@@ -10,9 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
-public class CompanyAdapter extends BaseAdapter {
+public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder> {
     Context context;
     ArrayList<String> company_name;
 
@@ -24,37 +27,41 @@ public class CompanyAdapter extends BaseAdapter {
         this.company_name = company_name;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public CompanyAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.row_company,parent,false);
+        return new VHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CompanyAdapter.VHolder holder, int position) {
+        cname.setText(company_name.get(position).toString());
+    }
+
+    @Override
+    public int getItemCount() {
         return company_name.size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
+    public class VHolder extends RecyclerView.ViewHolder {
+        public VHolder(@NonNull View itemView) {
+            super(itemView);
+            cname = itemView.findViewById(R.id.tvCompanyAdapterCompanyName);
+            btnView = itemView.findViewById(R.id.btnCompanyAdapterView);
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = LayoutInflater.from(context).inflate(R.layout.row_company,viewGroup,false);
-        cname = view.findViewById(R.id.tvCompanyAdapterCompanyName);
-        btnView = view.findViewById(R.id.btnCompanyAdapterView);
-        cname.setText(company_name.get(i).toString());
-        btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
-        });
-        return view;
+            btnView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openDialog();
+                }
+            });
+        }
     }
 
     private void openDialog() {
+
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_company);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
