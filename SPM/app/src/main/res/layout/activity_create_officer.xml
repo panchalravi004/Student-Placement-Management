@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/spm_blue_40"
+    android:orientation="vertical"
+    tools:context=".CreateOfficerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20sp"
+        android:paddingTop="25sp"
+        android:paddingRight="20sp"
+        android:paddingBottom="20sp">
+
+        <ImageButton
+            android:id="@+id/btnCreateTPOBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:onClick="goToBack"
+            app:srcCompat="@drawable/icon_arrow_left" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15sp"
+            android:layout_weight="1"
+            android:text="@string/create_tpo"
+            android:textColor="@color/white"
+            android:textSize="@dimen/activity_heading" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_top_round"
+        android:elevation="5sp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20sp">
+
+        <EditText
+            android:id="@+id/etCreateTPOID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:background="@drawable/white_all_round"
+            android:elevation="5sp"
+            android:ems="10"
+            android:hint="Enter TPO ID"
+            android:inputType="textPersonName"
+            android:padding="15sp"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/etCreateTPOEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:background="@drawable/white_all_round"
+            android:elevation="5sp"
+            android:ems="10"
+            android:hint="Enter TPO Email"
+            android:inputType="textPersonName"
+            android:padding="15sp"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/etCreateTPOPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:background="@drawable/white_all_round"
+            android:elevation="5sp"
+            android:ems="10"
+            android:hint="Enter TPO Password"
+            android:inputType="textPassword"
+            android:padding="15sp"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btnCreateTPOCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:text="Create "
+            app:cornerRadius="20sp" />
+    </LinearLayout>
+</LinearLayout>

@@ -19,6 +19,8 @@
     <string name="add_company">Add Company</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
+    <string name="create_tpo">Create TPO Account</string>
+
 
     <!--  TPO/Student Dashboard String  -->
     <string name="students">Students</string>
