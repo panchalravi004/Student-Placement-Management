@@ -20,6 +20,8 @@
     <string name="logout">Logout</string>
     <string name="login">Login</string>
     <string name="create_tpo">Create TPO Account</string>
+    <string name="create_tpo_profile">Create TPO Profile</string>
+
 
 
     <!--  TPO/Student Dashboard String  -->
