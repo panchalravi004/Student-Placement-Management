@@ -94,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="15sp"
+            android:onClick="goToCreateAccount"
             android:background="@drawable/spm_blue_30_left_round"
             android:text="New User" />
     </LinearLayout>

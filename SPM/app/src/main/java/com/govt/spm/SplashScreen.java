@@ -19,8 +19,8 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(userPref.contains("userId")){
-            if(userPref.getString("role","role").equals("TPO")){
+        if(userPref.contains("user_id")){
+            if(userPref.getString("role","role").equals("FACULTY")){
                 startActivity(new Intent(this,OfficerDashboardActivity.class));
             }
             else if(userPref.getString("role","role").equals("STUDENT")){
