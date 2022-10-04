@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,7 +24,9 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     private EditText etSearch;
     private TextView tvStudentCount,tvCompanyCount,tvJobsCount,tvComingSoonCount;
     private ListView upcoming_company_list;
-    UpcomingJobsAdapter uca;
+    private UpcomingJobsAdapter uca;
+    private SharedPreferences userPref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,9 @@ public class OfficerDashboardActivity extends AppCompatActivity {
 
         etSearch = (EditText) findViewById(R.id.etODSearch);
         upcoming_company_list = (ListView) findViewById(R.id.list_OD_upcoming_company);
+
+        userPref = getSharedPreferences("user",MODE_PRIVATE);
+        editor = userPref.edit();
 
         //Upcoming company list set
         ArrayList<String> company_name = new ArrayList<String>();
@@ -100,6 +106,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                 }
                 if(menuItem.getTitle().equals(getResources().getString(R.string.logout))){
                     Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
+                    logout();
                 }
 
                 return true;
@@ -107,6 +114,12 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         });
         pm.setForceShowIcon(true);
         pm.show();
+    }
+
+    private void logout() {
+        editor.clear();
+        editor.apply();
+        finish();
     }
 
 }

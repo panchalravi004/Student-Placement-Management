@@ -70,13 +70,12 @@
 
     <!--  String array for University   -->
     <string-array name="university">
-        <item>GUNI</item>
+        <item>GUNI TEST</item>
     </string-array>
 
     <!--  String array for College   -->
     <string-array name="college">
-        <item>AMPICS</item>
-        <item>DCS</item>
+        <item>Select University First</item>
     </string-array>
 
     <!--  String array for Dept.   -->

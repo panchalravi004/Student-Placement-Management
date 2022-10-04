@@ -72,11 +72,14 @@ public class CreateOfficerActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             Toast.makeText(CreateOfficerActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            if(jsonObject.getString("error_flag").equals("EXISTING_USER")){
-                                startActivity(new Intent(CreateOfficerActivity.this,CreateOfficerProfileActivity.class));
-                                finish();
-                            }
-                            if(jsonObject.getString("success_code").equals("REG_SUCCESS")){
+
+
+                            if(jsonObject.getBoolean("error")){
+                                if(jsonObject.getString("error_flag").equals("EXISTING_USER")){
+                                    startActivity(new Intent(CreateOfficerActivity.this,CreateOfficerProfileActivity.class));
+                                    finish();
+                                }
+                            }else{
                                 startActivity(new Intent(CreateOfficerActivity.this,CreateOfficerProfileActivity.class));
                                 finish();
                             }
