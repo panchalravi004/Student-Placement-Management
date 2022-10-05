@@ -114,7 +114,7 @@
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/university"
-                    android:padding="15sp"
+                    android:padding="5sp"
                     android:textAlignment="center" />
 
                 <Spinner
@@ -125,7 +125,7 @@
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/college"
-                    android:padding="15sp"
+                    android:padding="5sp"
                     android:textAlignment="center" />
 
                 <Spinner
@@ -136,7 +136,7 @@
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:entries="@array/dept"
-                    android:padding="15sp"
+                    android:padding="5sp"
                     android:textAlignment="center" />
 
                 <Button

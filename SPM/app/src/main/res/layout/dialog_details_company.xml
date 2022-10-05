@@ -22,7 +22,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tvCInfoName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
@@ -41,7 +41,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/tvCInfoDomain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
@@ -50,7 +50,7 @@
             android:textSize="@dimen/title" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/tvCInfoAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
@@ -91,14 +91,14 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView21"
+                        android:id="@+id/tvCInfoHR1Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ravi Panchal"
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/textView22"
+                        android:id="@+id/tvCInfoHR1Email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ravi@gmail.com"
@@ -112,14 +112,14 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView23"
+                        android:id="@+id/tvCInfoHR2Name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ravi Panchal"
                         android:textColor="@color/black" />
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/tvCInfoHR2Email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ravi@gmail.com"
@@ -137,12 +137,46 @@
                 android:textSize="@dimen/main_title" />
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/tvCInfoAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="This is the demo post of the jobs"
                 android:textAlignment="center"
                 android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15sp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/spm_blue_20_all_round"
+                    android:paddingLeft="20sp"
+                    android:paddingTop="5sp"
+                    android:paddingRight="20sp"
+                    android:paddingBottom="5sp"
+                    app:srcCompat="@drawable/icon_edit_white" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/spm_red_all_round"
+                    android:paddingLeft="20sp"
+                    android:paddingTop="5sp"
+                    android:paddingRight="20sp"
+                    android:paddingBottom="5sp"
+                    app:srcCompat="@drawable/icon_delete" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

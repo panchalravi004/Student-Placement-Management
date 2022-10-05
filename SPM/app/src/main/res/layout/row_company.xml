@@ -15,6 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -22,12 +23,24 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/spm_blue_40_all_round"
-            android:padding="2sp"
+            android:background="@drawable/spm_blue_30_left_round"
+            android:gravity="center"
+            android:paddingLeft="15sp"
             android:text="Info it Solution Pvt. ltd."
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="@color/white"
             android:textSize="@dimen/title" />
+
+        <ImageButton
+            android:id="@+id/btnCompanyAdapterView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spm_green_right_round"
+            android:paddingLeft="15sp"
+            android:paddingTop="3sp"
+            android:paddingRight="15sp"
+            android:paddingBottom="3sp"
+            app:srcCompat="@drawable/icon_eye_white" />
 
     </LinearLayout>
 
@@ -40,39 +53,14 @@
         android:paddingTop="5sp"
         android:paddingRight="5sp">
 
-        <ImageButton
-            android:id="@+id/btnCompanyAdapterView"
+        <TextView
+            android:id="@+id/tvCompanyAdapterCompanyDomain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/spm_green_all_round"
-            android:padding="3sp"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            app:srcCompat="@drawable/icon_eye_white" />
-
-        <ImageButton
-            android:id="@+id/btnCompanyAdapterEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/spm_blue_20_all_round"
-            android:padding="3sp"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            app:srcCompat="@drawable/icon_edit_white" />
-
-        <ImageButton
-            android:id="@+id/btnCompanyAdapterDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/spm_red_all_round"
-            android:padding="3sp"
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            app:srcCompat="@drawable/icon_delete" />
-
+            android:paddingLeft="15sp"
+            android:text="www.demo.com"
+            android:textAlignment="viewStart" />
     </LinearLayout>
 
 </LinearLayout>

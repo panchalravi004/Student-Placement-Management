@@ -2,17 +2,17 @@ package com.govt.spm;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,18 +25,30 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.lang.ref.ReferenceQueue;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class OfficerProfileActivity extends AppCompatActivity {
 
-    private EditText etId,etEmail,etMobile,etName;
-    private Spinner spGender,spUniversity,spCollege,spDept;
+    private EditText etId,etEmail,etMobile,etName,etGender,etUniv;
+    private Spinner spCollege,spDept;
     private Button btnUpdate;
+    private ConstraintLayout createPost,updatePost,deletePost;
     static  final String TAG = "SPM_ERROR";
     private ProgressDialog dialog;
     private SharedPreferences userPref;
-    private static final String[] GENDER = {"M","F"};
+
+    private JSONArray jsonCollege;
+    private JSONArray jsonDept;
+
+    private ArrayAdapter<String> adapterCollege;
+    private ArrayAdapter<String> adapterDept;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,19 +57,47 @@ public class OfficerProfileActivity extends AppCompatActivity {
         etEmail = (EditText) findViewById(R.id.etTPOEmail);
         etMobile = (EditText) findViewById(R.id.etTPOMobile);
         etName = (EditText) findViewById(R.id.etTPOName);
+        etGender = (EditText) findViewById(R.id.etTPOGender);
+        etUniv = (EditText) findViewById(R.id.etTPOUniversity);
 
-        spGender = (Spinner) findViewById(R.id.spTPOGender);
-        spUniversity = (Spinner) findViewById(R.id.spTPOUniversity);
         spCollege = (Spinner) findViewById(R.id.spTPOCollege);
         spDept = (Spinner) findViewById(R.id.spTPODept);
+
+        createPost=(ConstraintLayout) findViewById(R.id.create_post);
+        updatePost=(ConstraintLayout) findViewById(R.id.update_post);
+        deletePost=(ConstraintLayout) findViewById(R.id.delete_post);
 
         btnUpdate = (Button) findViewById(R.id.btnTPOUpdateProfile);
         dialog = new ProgressDialog(OfficerProfileActivity.this);
 
         userPref = getSharedPreferences("user",MODE_PRIVATE);
-        //Fetch TPO Profile data
-        fetchProfileData(userPref.getString("user_id","user_id"));
 
+        jsonCollege = new JSONArray();
+        jsonDept = new JSONArray();
+
+        setPositions(userPref.getString("univ_id","univ_id"),userPref.getString("college_id","college_id"),userPref.getString("dept_id","dept_id"));
+
+        //fetch colleges on university selects
+        fetchColleges(userPref.getString("univ_id","univ_id"));
+
+        //fetch dept on college select
+        spCollege.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject collegeJo = null;
+                try {
+                    collegeJo = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition()));
+                    fetchCollegeWiseDept(collegeJo.getString("college_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+        //set Profile Data
+        setProfile();
         //Update TPO Profile when click
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,15 +108,66 @@ public class OfficerProfileActivity extends AppCompatActivity {
             }
         });
     }
+    private void setProfile(){
+        etId.setText(userPref.getString("user_id","user_id"));
+        etEmail.setText(userPref.getString("email","email"));
+        etName.setText(userPref.getString("name","name"));
+        etMobile.setText(userPref.getString("mob","mob"));
+        etUniv.setText(userPref.getString("univ","univ"));
 
-    private void fetchProfileData(String user_id) {
-        Log.i(TAG, "fetchProfileData: Request Sending...");
+        String gn = userPref.getString("gender","gender");
+
+
+        if(userPref.getString("CAN_MAKE_JOB_POST","CAN_MAKE_JOB_POST").equals("0")){
+            createPost.setBackground(getDrawable(R.drawable.spm_red_all_round));
+        }else{
+            createPost.setBackground(getDrawable(R.drawable.spm_green_all_round));
+        }
+        if(userPref.getString("CAN_UPDATE_COMPANY","CAN_UPDATE_COMPANY").equals("0")){
+            updatePost.setBackground(getDrawable(R.drawable.spm_red_all_round));
+        }else{
+            updatePost.setBackground(getDrawable(R.drawable.spm_green_all_round));
+        }
+        if(userPref.getString("CAN_REJECT_JOB_APPLICATION","CAN_REJECT_JOB_APPLICATION").equals("0")){
+            deletePost.setBackground(getDrawable(R.drawable.spm_red_all_round));
+        }else{
+            deletePost.setBackground(getDrawable(R.drawable.spm_green_all_round));
+        }
+
+        if(gn.equals("M")){
+            etGender.setText("Male");
+        }else{
+            etGender.setText("FeMale");
+        }
+
+    }
+    private void updateTPOProfile(){
+        dialog.setMessage("Updating...");
+        dialog.show();
+        String tpoID = etId.getText().toString();
+        String email = etEmail.getText().toString();
+        String mobile = etMobile.getText().toString();
+        String college = null;
+        String dept = null;
+        try {
+            JSONObject collegeJo = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition()));
+            college = collegeJo.getString("college_id");
+            JSONObject deptJo = new JSONObject(jsonDept.getString(spDept.getSelectedItemPosition()));
+            dept = deptJo.getString("dept_id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String finalCollege = college;
+        String finalDept = dept;
+
         StringRequest request = new StringRequest(
                 Request.Method.POST,
-                Constants.GET_COUNTRY,
+                Constants.UPDATE_USER_PROFILE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        dialog.dismiss();
                         Log.i(TAG, "onResponse: "+response);
                     }
                 },
@@ -85,25 +176,26 @@ public class OfficerProfileActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i(TAG, "onErrorResponse: "+error.getMessage());
                     }
-                });
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("user_role",userPref.getString("role","role"));
+                param.put("user_id",tpoID);
+                param.put("user_mob",mobile);
+                param.put("email",email);
+                param.put("dept_id",finalDept);
+                param.put("college_id",finalCollege);
+
+                return param;
+            }
+        };
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(retryPolicy);
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(OfficerProfileActivity.this);
         requestQueue.add(request);
-
-    }
-
-    private void updateTPOProfile(){
-        String tpoID = etId.getText().toString();
-        String email = etEmail.getText().toString();
-        String name = etName.getText().toString();
-        String mobile = etMobile.getText().toString();
-        String gender = GENDER[spGender.getSelectedItemPosition()];
-        String university = spUniversity.getSelectedItem().toString();
-        String college = spCollege.getSelectedItem().toString();
-        String dept = spDept.getSelectedItem().toString();
-        Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show();
     }
 
     private boolean validate(){
@@ -132,7 +224,150 @@ public class OfficerProfileActivity extends AppCompatActivity {
         return true;
     }
 
+    //Fetch colleges as per university
+    private void fetchColleges(String univ_id){
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_COLLEGES,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "onResponse: "+response);
+                        try {
+                            ArrayList<String> collegesList = new ArrayList<>();
+                            adapterCollege = new ArrayAdapter<String>(OfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,collegesList);
+                            spCollege.setAdapter(adapterCollege);
+                            jsonCollege = new JSONArray(response);
+
+                            if(new JSONObject(jsonCollege.getString(0)).has("error")){
+                                if(new JSONObject(jsonCollege.getString(0)).getBoolean("error")){
+                                    collegesList.clear();
+                                    collegesList.add(new String("There is no Data"));
+                                }
+                            }else{
+                                collegesList.clear();
+                                for(int i=0;i<jsonCollege.length();i++){
+                                    JSONObject jo = new JSONObject(jsonCollege.getString(i));
+                                    collegesList.add(jo.getString("college_name"));
+//                                    Log.i(TAG, "onResponse: "+jo.getString("college_name"));
+                                }
+                            }
+                            adapterCollege.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("univ_id",univ_id);
+                return params;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(OfficerProfileActivity.this);
+        requestQueue.add(request);
+    }
+
+    //Fetch Dept as per Colleges
+    private void fetchCollegeWiseDept(String college_id){
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_DEPARTMENTS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "onResponse: "+response);
+                        try {
+                            ArrayList<String> deptsList = new ArrayList<>();
+                            adapterDept = new ArrayAdapter<String>(OfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,deptsList);
+                            spDept.setAdapter(adapterDept);
+                            jsonDept = new JSONArray(response);
+
+                            if(new JSONObject(jsonDept.getString(0)).has("error")){
+                                if(new JSONObject(jsonDept.getString(0)).getBoolean("error")){
+                                    deptsList.clear();
+                                    deptsList.add(new String("There is no Data"));
+                                }
+                            }else{
+                                deptsList.clear();
+                                for(int i=0;i<jsonDept.length();i++){
+                                    JSONObject jo = new JSONObject(jsonDept.getString(i));
+                                    deptsList.add(jo.getString("dept_name"));
+//                                    Log.i(TAG, "onResponse: "+jo.getString("dept_name"));
+                                }
+                            }
+                            adapterDept.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("college_id",college_id);
+                return params;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(OfficerProfileActivity.this);
+        requestQueue.add(request);
+    }
+
     public void goToDashboard(View view) {
         finish();
+    }
+
+    private void setPositions(String univ_id,String college_id,String dept_id){
+
+
+        fetchColleges(univ_id);
+        for(int i=0;i<jsonCollege.length();i++){
+            try {
+                JSONObject jo = new JSONObject(jsonCollege.getString(i));
+                if(college_id.equals(jo.getString("college_id"))){
+                    spCollege.setSelection(i);
+                    adapterCollege.notifyDataSetChanged();
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        fetchCollegeWiseDept(college_id);
+        for(int i=0;i<jsonDept.length();i++){
+            try {
+                JSONObject jo = new JSONObject(jsonDept.getString(i));
+                if(dept_id.equals(jo.getString("dept_id"))){
+                    spDept.setSelection(i);
+                    adapterDept.notifyDataSetChanged();
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

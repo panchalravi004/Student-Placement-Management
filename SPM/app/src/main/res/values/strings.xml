@@ -65,7 +65,6 @@
     <string-array name="gender">
         <item>Male</item>
         <item>Female</item>
-        <item>Other</item>
     </string-array>
 
     <!--  String array for University   -->
@@ -88,6 +87,12 @@
     <string-array name="filter">
         <item>filter</item>
         <item>no filter</item>
+    </string-array>
+
+    <string-array name="cmp_filter">
+        <item>All</item>
+        <item>1300</item>
+        <item>6335</item>
     </string-array>
 
     <!--  String array for status.   -->

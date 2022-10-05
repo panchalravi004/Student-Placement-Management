@@ -95,6 +95,19 @@ public class LoginActivity extends AppCompatActivity {
 
                                 editor.putString("user_id",jsonObject.getString("id"));
                                 editor.putString("role",jsonObject.getString("user_role"));
+                                editor.putString("name",jsonObject.getString("Name"));
+                                editor.putString("email",jsonObject.getString("Email"));
+                                editor.putString("mob",jsonObject.getString("Mob"));
+                                editor.putString("gender",jsonObject.getString("Gender"));
+                                editor.putString("univ",jsonObject.getString("University"));
+                                editor.putString("college",jsonObject.getString("College"));
+                                editor.putString("dept",jsonObject.getString("Department"));
+                                editor.putString("univ_id",jsonObject.getString("univ_id"));
+                                editor.putString("college_id",jsonObject.getString("college_id"));
+                                editor.putString("dept_id",jsonObject.getString("dept_id"));
+                                editor.putString("CAN_UPDATE_COMPANY",jsonObject.getString("CAN_UPDATE_COMPANY"));
+                                editor.putString("CAN_MAKE_JOB_POST",jsonObject.getString("CAN_MAKE_JOB_POST"));
+                                editor.putString("CAN_REJECT_JOB_APPLICATION",jsonObject.getString("CAN_REJECT_JOB_APPLICATION"));
                                 editor.apply();
 
                                 if(jsonObject.getString("user_role").equals("FACULTY")){

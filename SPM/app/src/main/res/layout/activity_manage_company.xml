@@ -99,7 +99,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
-                android:entries="@array/filter"
+                android:entries="@array/cmp_filter"
                 android:padding="5sp"
                 android:textAlignment="center" />
 

@@ -71,6 +71,7 @@
                     android:textSize="@dimen/title" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/create_post"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginLeft="5sp"
@@ -90,6 +91,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/update_post"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginLeft="5sp"
@@ -109,6 +111,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/delete_post"
                     android:layout_width="20sp"
                     android:layout_height="20sp"
                     android:layout_marginLeft="5sp"
@@ -149,6 +152,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/white_all_round"
                         android:elevation="5sp"
+                        android:enabled="false"
                         android:hint="Enter ID"
                         android:inputType="textPersonName"
                         android:paddingTop="10sp"
@@ -182,6 +186,26 @@
 
                 <TableRow
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <EditText
+                        android:id="@+id/etTPOGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="5sp"
+                        android:hint="Gender"
+                        android:enabled="false"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15sp"
                     android:layout_marginBottom="15sp"
@@ -192,7 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:background="@drawable/white_all_round"
                         android:elevation="5sp"
                         android:hint="@string/enter_number"
@@ -201,18 +225,6 @@
                         android:paddingBottom="10sp"
                         android:textAlignment="center" />
 
-                    <Spinner
-                        android:id="@+id/spTPOGender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
-                        android:entries="@array/gender"
-                        android:paddingTop="10sp"
-                        android:paddingBottom="10sp"
-                        android:textAlignment="center" />
                 </TableRow>
 
                 <TableRow
@@ -240,6 +252,27 @@
 
                 <TableRow
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <EditText
+                        android:id="@+id/etTPOUniversity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="3"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="5sp"
+                        android:ems="10"
+                        android:hint="University"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:enabled="false"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15sp"
                     android:layout_marginBottom="15sp"
@@ -253,19 +286,6 @@
                         android:orientation="horizontal">
 
                         <Spinner
-                            android:id="@+id/spTPOUniversity"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:layout_weight="1"
-                            android:background="@drawable/white_all_round"
-                            android:elevation="5sp"
-                            android:entries="@array/university"
-                            android:paddingTop="10sp"
-                            android:paddingBottom="10sp"
-                            android:textAlignment="center" />
-
-                        <Spinner
                             android:id="@+id/spTPOCollege"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -277,28 +297,21 @@
                             android:paddingTop="10sp"
                             android:paddingBottom="10sp"
                             android:textAlignment="center" />
+
+                        <Spinner
+                            android:id="@+id/spTPODept"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5sp"
+                            android:layout_weight="1"
+                            android:background="@drawable/white_all_round"
+                            android:elevation="5sp"
+                            android:entries="@array/dept"
+                            android:paddingTop="10sp"
+                            android:paddingBottom="10sp"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15sp"
-                    android:layout_marginBottom="15sp">
-
-                    <Spinner
-                        android:id="@+id/spTPODept"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
-                        android:entries="@array/dept"
-                        android:paddingTop="10sp"
-                        android:paddingBottom="10sp"
-                        android:textAlignment="center" />
                 </TableRow>
 
                 <TableRow
