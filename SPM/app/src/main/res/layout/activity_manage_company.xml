@@ -94,7 +94,7 @@
             <Spinner
                 android:id="@+id/spManageCompanyFilterCountry"
                 android:layout_width="100sp"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_margin="5sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
@@ -105,7 +105,7 @@
             <Spinner
                 android:id="@+id/spManageCompanyFilterState"
                 android:layout_width="100sp"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_margin="5sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
@@ -116,7 +116,7 @@
             <Spinner
                 android:id="@+id/spManageCompanyFilterCity"
                 android:layout_width="100sp"
-                android:layout_height="wrap_content"
+                android:layout_height="30sp"
                 android:layout_margin="5sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
