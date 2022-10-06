@@ -92,11 +92,10 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spManageCompanyFilterOne"
-                android:layout_width="wrap_content"
+                android:id="@+id/spManageCompanyFilterCountry"
+                android:layout_width="100sp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:layout_weight="1"
+                android:layout_margin="5sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:entries="@array/cmp_filter"
@@ -104,11 +103,21 @@
                 android:textAlignment="center" />
 
             <Spinner
-                android:id="@+id/spManageCompanyFilterTwo"
-                android:layout_width="wrap_content"
+                android:id="@+id/spManageCompanyFilterState"
+                android:layout_width="100sp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:layout_weight="1"
+                android:layout_margin="5sp"
+                android:background="@drawable/white_all_round"
+                android:elevation="5sp"
+                android:entries="@array/filter"
+                android:padding="5sp"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/spManageCompanyFilterCity"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:entries="@array/filter"

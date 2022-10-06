@@ -1,38 +1,58 @@
 package com.govt.spm;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewStudentActivity extends AppCompatActivity {
-    ImageButton btnSearch;
-    EditText etSearch;
-    Spinner spFilterOne,spFilterTwo;
+    private ImageButton btnSearch;
+    private EditText etSearch;
+    private Spinner spFilterOne,spFilterTwo;
 
-    RecyclerView student_rv;
-    LinearLayoutManager manager;
-    StudentAdapter sa;
-    ProgressBar pbLoadMore;
-    ArrayList<String> sid;
-    ArrayList<String> sname;
-    ArrayList<String> ssem;
+    private RecyclerView student_rv;
+    private LinearLayoutManager manager;
+    private StudentAdapter sa;
+    private ProgressBar pbLoadMore;
 
-    Boolean isScrolling = false;
-    int currentItem,totalItem,scrolledOutItems,totaldbitem;
+    private static final String TAG = "SPM_ERROR";
+    private JSONArray jsonStudent;
+
+    private Boolean isScrolling = false;
+    private int currentItem,totalItem,scrolledOutItems,totaldbitem;
+    private SharedPreferences userPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,44 +66,12 @@ public class ViewStudentActivity extends AppCompatActivity {
 
         student_rv = (RecyclerView) findViewById(R.id.recycleViewStudent);
         manager = new LinearLayoutManager(this);
-
+        userPref = getSharedPreferences("user",MODE_PRIVATE);
 
         totaldbitem = 10;
 
-        sid = new ArrayList<String>();
-        sname = new ArrayList<String>();
-        ssem = new ArrayList<String>();
+        getStudents();
 
-        sid.add("1234560001");
-        sid.add("1234560002");
-        sid.add("1234560003");
-        sid.add("1234560004");
-        sid.add("1234560001");
-        sid.add("1234560002");
-        sid.add("1234560003");
-        sid.add("1234560004");
-
-        sname.add("Ravi Panchal");
-        sname.add("Richesh Gaurav");
-        sname.add("Priyank Sukhadiya");
-        sname.add("Banti Shrivastav");
-        sname.add("Ravi Panchal");
-        sname.add("Richesh Gaurav");
-        sname.add("Priyank Sukhadiya");
-        sname.add("Banti Shrivastav");
-
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-        ssem.add("MCA SEM 3 2022");
-
-        sa = new StudentAdapter(ViewStudentActivity.this,sid,sname,ssem);
-        student_rv.setAdapter(sa);
-        student_rv.setLayoutManager(manager);
         student_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -116,14 +104,66 @@ public class ViewStudentActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                sid.add("1234560005");
-                sname.add("Jack Fusion");
-                ssem.add("MCA SEM 3 2022");
-                sa.notifyDataSetChanged();
+//                sid.add("1234560005");
+//                sname.add("Jack Fusion");
+//                ssem.add("MCA SEM 3 2022");
+//                sa.notifyDataSetChanged();
 
                 pbLoadMore.setVisibility(View.GONE);
             }
         }, 5000);
+    }
+
+    private void getStudents(){
+        pbLoadMore.setVisibility(View.VISIBLE);
+
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_STUDENT_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        pbLoadMore.setVisibility(View.GONE);
+                        Log.i(TAG, "onResponse: "+response);
+                        try {
+
+                            jsonStudent = new JSONArray(response);
+
+                            TextView tvCount = (TextView) findViewById(R.id.tvViewStudentResultCount);
+                            tvCount.setText("Result : "+ jsonStudent.length()+" Found");
+
+                            sa = new StudentAdapter(ViewStudentActivity.this,jsonStudent);
+                            student_rv.setAdapter(sa);
+                            student_rv.setLayoutManager(manager);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("univ_id",userPref.getString("univ_id","univ_id"));
+                param.put("college_id",userPref.getString("college_id","college_id"));
+                param.put("dept_id",userPref.getString("dept_id","dept_id"));
+
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(ViewStudentActivity.this);
+        requestQueue.add(request);
     }
 
     public void goToDashboard(View view) {

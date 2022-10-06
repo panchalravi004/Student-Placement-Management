@@ -73,7 +73,7 @@
                         android:text="Company Name" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName10"
+                        android:id="@+id/etAddCompanyName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -103,7 +103,7 @@
                         android:text="HR 1 Name" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName11"
+                        android:id="@+id/etAddCompanyHR1Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -133,7 +133,7 @@
                         android:text="HR 1 Email" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName12"
+                        android:id="@+id/etAddCompanyHR1Email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -163,7 +163,7 @@
                         android:text="HR 2 Name" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName13"
+                        android:id="@+id/etAddCompanyHR2Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -193,7 +193,7 @@
                         android:text="HR 2 Email" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName14"
+                        android:id="@+id/etAddCompanyHR2Email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -223,7 +223,7 @@
                         android:text="About" />
 
                     <EditText
-                        android:id="@+id/editTextTextMultiLine2"
+                        android:id="@+id/etAddCompanyAbout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -254,7 +254,7 @@
                         android:text="Web Domain" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName15"
+                        android:id="@+id/etAddCompanyDomain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -284,7 +284,7 @@
                         android:text="Address" />
 
                     <EditText
-                        android:id="@+id/editTextTextMultiLine3"
+                        android:id="@+id/etAddCompanyAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -308,7 +308,45 @@
                     android:padding="5sp">
 
                     <Spinner
-                        android:id="@+id/spCity"
+                        android:id="@+id/spAddCompanyCountry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="5sp"
+                        android:entries="@array/city"
+                        android:padding="5sp"
+                        android:textAlignment="center" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:padding="5sp">
+
+                    <Spinner
+                        android:id="@+id/spAddCompanyState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="5sp"
+                        android:entries="@array/city"
+                        android:padding="5sp"
+                        android:textAlignment="center" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:padding="5sp">
+
+                    <Spinner
+                        android:id="@+id/spAddCompanyCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
@@ -322,11 +360,18 @@
             </TableLayout>
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnAddCompanyAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/spm_green"
                 android:text="ADD"
+                app:cornerRadius="20sp" />
+            <Button
+                android:id="@+id/btnAddCompanyUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/spm_green"
+                android:text="UPDATE"
                 app:cornerRadius="20sp" />
         </LinearLayout>
     </ScrollView>

@@ -288,6 +288,14 @@
                 android:backgroundTint="@color/spm_green"
                 android:text="@string/add_new"
                 app:cornerRadius="25sp" />
+            <Button
+                android:id="@+id/btnAddJobUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:backgroundTint="@color/spm_green"
+                android:text="@string/update"
+                app:cornerRadius="25sp" />
         </LinearLayout>
     </ScrollView>
 

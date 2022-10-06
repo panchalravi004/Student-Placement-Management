@@ -109,8 +109,7 @@
 
     <!--  String array for city.   -->
     <string-array name="city">
-        <item>Himmatnagar</item>
-        <item>Mehsana</item>
+        <item>No Data Found</item>
     </string-array>
 
 </resources>

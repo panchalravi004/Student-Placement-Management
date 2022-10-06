@@ -33,7 +33,7 @@
                     app:cardCornerRadius="30sp">
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/ivStudentInfoProfileImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:srcCompat="@tools:sample/avatars" />
@@ -46,7 +46,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView62"
+                        android:id="@+id/tvStudentInfoName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ravi Vasantbhai Panchal"
@@ -54,7 +54,7 @@
                         android:textSize="@dimen/main_title" />
 
                     <TextView
-                        android:id="@+id/textView63"
+                        android:id="@+id/tvStudentInfoEnrollNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="01234675"
@@ -62,7 +62,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView64"
+                        android:id="@+id/tvStudentInfoEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ravi@gmail.com"
@@ -70,7 +70,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView65"
+                        android:id="@+id/tvStudentInfoMobileNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="+91123456789"
@@ -78,7 +78,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView66"
+                        android:id="@+id/tvStudentInfoAdd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Hadiyol, Sabrkantha, Gujarat 383001"
@@ -109,7 +109,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView30"
+                        android:id="@+id/tvStudentInfoPrimarySkill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -134,7 +134,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView32"
+                        android:id="@+id/tvStudentInfoSecondarySkill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -159,7 +159,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView67"
+                        android:id="@+id/tvStudentInfoTertiarySkill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -184,7 +184,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView53"
+                        android:id="@+id/tvStudentInfoDept"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -209,7 +209,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView51"
+                        android:id="@+id/tvStudentInfoAcadamicYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -234,7 +234,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView34"
+                        android:id="@+id/tvStudentInfoSSCPer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -243,7 +243,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView69"
+                        android:id="@+id/tvStudentInfoSSCYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -268,7 +268,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView36"
+                        android:id="@+id/tvStudentInfoHSCPer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -277,7 +277,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView70"
+                        android:id="@+id/tvStudentInfoHSCYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -302,7 +302,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView39"
+                        android:id="@+id/tvStudentInfoUGPer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -311,7 +311,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView71"
+                        android:id="@+id/tvStudentInfoUGYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -336,7 +336,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView41"
+                        android:id="@+id/tvStudentInfoPGPer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -345,7 +345,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView72"
+                        android:id="@+id/tvStudentInfoPGYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -370,7 +370,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView43"
+                        android:id="@+id/tvStudentInfoHSCStream"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -395,7 +395,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView45"
+                        android:id="@+id/tvStudentInfoUGStream"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -420,7 +420,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView47"
+                        android:id="@+id/tvStudentInfoPGStream"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -445,7 +445,7 @@
                         android:textSize="@dimen/title" />
 
                     <TextView
-                        android:id="@+id/textView49"
+                        android:id="@+id/tvStudentInfoCurrentSem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
