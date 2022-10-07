@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
+                <TextView
                     android:id="@+id/etAddJobStartDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -200,12 +200,11 @@
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
-                    android:hint="Start Date"
-                    android:inputType="date"
+                    android:text="Start Date"
                     android:padding="10sp"
                     android:textAlignment="center" />
 
-                <EditText
+                <TextView
                     android:id="@+id/etAddJobEndDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,8 +213,7 @@
                     android:background="@drawable/white_all_round"
                     android:elevation="5sp"
                     android:ems="10"
-                    android:hint="End Date"
-                    android:inputType="date"
+                    android:text="End Date"
                     android:padding="10sp"
                     android:textAlignment="center" />
             </LinearLayout>

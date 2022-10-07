@@ -45,7 +45,7 @@ public class AddCompanyActivity extends AppCompatActivity {
     private JSONArray jsonCountry;
     private JSONArray jsonState;
     private JSONArray jsonCity;
-
+    private Intent myIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +67,12 @@ public class AddCompanyActivity extends AppCompatActivity {
 
         dialog = new ProgressDialog(AddCompanyActivity.this);
 
-        Intent i = getIntent();
-        if(i.getStringExtra("ACTION").equals("ADD")){
+        myIntent = getIntent();
+        if(myIntent.getStringExtra("ACTION").equals("ADD")){
             btnAdd.setVisibility(View.VISIBLE);
             btnUpdate.setVisibility(View.GONE);
-        }else if(i.getStringExtra("ACTION").equals("UPDATE")){
-            setProfile(i.getStringExtra("COMPANY_ID"));
+        }else if(myIntent.getStringExtra("ACTION").equals("UPDATE")){
+            setProfile(myIntent.getStringExtra("COMPANY_ID"));
             btnAdd.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.VISIBLE);
         }
@@ -89,6 +89,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 try {
                     JSONObject jo = new JSONObject(jsonCountry.getString(spCountry.getSelectedItemPosition()));
                     fetchState(jo.getString("country_id"));
+                    Log.i(TAG, "onItemSelected: "+jo.getString("country_name"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -115,7 +116,7 @@ public class AddCompanyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(validate()){
-                    addUpdateCompany("UPDATE",i.getStringExtra("COMPANY_ID"));
+                    addUpdateCompany("UPDATE",myIntent.getStringExtra("COMPANY_ID"));
                 }
             }
         });
@@ -263,16 +264,29 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+//                        Log.i(TAG, "onResponse: "+response);
                         try {
                             ArrayList<String> country = new ArrayList<>();
                             jsonCountry = new JSONArray(response);
 
                             for(int i=0;i<jsonCountry.length();i++){
                                 JSONObject jo = new JSONObject(jsonCountry.getString(i));
-                                country.add(jo.getString("country_name"));
+                                if(myIntent.getStringExtra("ACTION").equals("UPDATE")){
+                                    if(myIntent.getStringExtra("COUNTRY_ID").equals(jo.getString("country_id"))){
+                                        country.add(0,jo.getString("country_name"));
+                                        JSONObject temp = new JSONObject(jsonCountry.getString(i));
+                                        jsonCountry.remove(i);
+                                        jsonCountry.put(0,temp);
+
+                                    }else{
+                                        country.add(jo.getString("country_name"));
+                                    }
+                                }else{
+                                    country.add(jo.getString("country_name"));
+                                }
 //                                Log.i(TAG, "onResponse: "+jo.getString("univ_name"));
                             }
+                            Log.i(TAG, "onResponse: "+jsonCountry);
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddCompanyActivity.this, android.R.layout.simple_spinner_dropdown_item,country);
                             spCountry.setAdapter(adapter);
@@ -302,16 +316,30 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+//                        Log.i(TAG, "onResponse: "+response);
                         try {
                             ArrayList<String> state = new ArrayList<>();
                             jsonState = new JSONArray(response);
 
                             for(int i=0;i<jsonState.length();i++){
                                 JSONObject jo = new JSONObject(jsonState.getString(i));
-                                state.add(jo.getString("state_name"));
+                                if(myIntent.getStringExtra("ACTION").equals("UPDATE")){
+                                    if(myIntent.getStringExtra("STATE_ID").equals(jo.getString("state_id"))){
+                                        state.add(0,jo.getString("state_name"));
+                                        JSONObject temp = new JSONObject(jsonState.getString(i));
+                                        jsonState.remove(i);
+                                        jsonState.put(0,temp);
+                                    }else{
+                                        state.add(jo.getString("state_name"));
+                                    }
+                                }else{
+                                    state.add(jo.getString("state_name"));
+                                }
 //                                Log.i(TAG, "onResponse: "+jo.getString("univ_name"));
                             }
+                            Log.i(TAG, "onResponse: "+jsonState.length());
+
+                            Log.i(TAG, "onResponse: "+state.size());
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddCompanyActivity.this, android.R.layout.simple_spinner_dropdown_item,state);
                             spState.setAdapter(adapter);
@@ -349,16 +377,29 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+//                        Log.i(TAG, "onResponse: "+response);
                         try {
                             ArrayList<String> city = new ArrayList<>();
                             jsonCity = new JSONArray(response);
 
                             for(int i=0;i<jsonCity.length();i++){
                                 JSONObject jo = new JSONObject(jsonCity.getString(i));
-                                city.add(jo.getString("city_name"));
+                                if(myIntent.getStringExtra("ACTION").equals("UPDATE")){
+                                    if(myIntent.getStringExtra("CITY_ID").equals(jo.getString("city_id"))){
+                                        city.add(0,jo.getString("city_name"));
+                                        JSONObject temp = new JSONObject(jsonCity.getString(i));
+                                        jsonCity.remove(i);
+                                        jsonCity.put(0,temp);
+
+                                    }else{
+                                        city.add(jo.getString("city_name"));
+                                    }
+                                }else{
+                                    city.add(jo.getString("city_name"));
+                                }
 //                                Log.i(TAG, "onResponse: "+jo.getString("city_name"));
                             }
+                            Log.i(TAG, "onResponse: "+jsonCity);
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddCompanyActivity.this, android.R.layout.simple_spinner_dropdown_item,city);
                             spCity.setAdapter(adapter);

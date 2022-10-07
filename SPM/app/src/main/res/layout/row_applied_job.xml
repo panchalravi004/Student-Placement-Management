@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvVJACompanyName"
+            android:id="@+id/tvAppliedJobCompanyName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -40,7 +40,7 @@
             android:paddingRight="10sp">
 
             <TextView
-                android:id="@+id/tvVJACollegeName"
+                android:id="@+id/tvAppliedJobCollegeName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -68,7 +68,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvVJARegisterEndDate"
+            android:id="@+id/tvAppliedJobRegisterEndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,7 +80,7 @@
 
 
         <ImageButton
-            android:id="@+id/btnVJAView"
+            android:id="@+id/btnAppliedJobView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

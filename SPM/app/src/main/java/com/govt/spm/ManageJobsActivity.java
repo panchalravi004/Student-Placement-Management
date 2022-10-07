@@ -1,11 +1,13 @@
 package com.govt.spm;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -19,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,9 +35,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ManageJobsActivity extends AppCompatActivity {
-    private ImageButton btnSearch;
+    private ImageButton btnSearch,btnAdd;
     private EditText etSearch;
     private Spinner spFilterOne,spFilterTwo;
     private TextView tvResultCount;
@@ -49,6 +54,7 @@ public class ManageJobsActivity extends AppCompatActivity {
     private int totalItem;
     private int scrollOutItem;
     private int totalDbItem;
+    private SharedPreferences userPref;
 
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonJob;
@@ -58,6 +64,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_jobs);
         btnSearch = (ImageButton) findViewById(R.id.btnManageJobsSearch);
+        btnAdd = (ImageButton) findViewById(R.id.btnManageJobsAddJobs);
         etSearch = (EditText) findViewById(R.id.etManageJobsSearch);
         spFilterOne = (Spinner) findViewById(R.id.spManageJobsFilterOne);
         spFilterTwo = (Spinner) findViewById(R.id.spManageJobsFilterTwo);
@@ -66,11 +73,17 @@ public class ManageJobsActivity extends AppCompatActivity {
 
         jobs_rv = (RecyclerView) findViewById(R.id.recycleViewManageJobs);
         manager = new LinearLayoutManager(this);
+        userPref = getSharedPreferences("user",MODE_PRIVATE);
 
         totalDbItem = 12;
+        if(userPref.getString("CAN_MAKE_JOB_POST","CAN_MAKE_JOB_POST").equals("0")){
+            btnAdd.setVisibility(View.GONE);
+        }else{
+            btnAdd.setVisibility(View.VISIBLE);
+        }
 
         //CALL METHOD
-        getJobList();
+        getJobList(userPref.getString("univ_id","univ_id"));
         //LISTENER
         jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -110,7 +123,8 @@ public class ManageJobsActivity extends AppCompatActivity {
         },5000);
     }
 
-    private void getJobList(){
+    private void getJobList(String univ_id){
+        pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.GET_JOB_LIST,
@@ -119,6 +133,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.i(TAG, "onResponse: "+response);
                         try {
+                            pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
                             TextView count = (TextView) findViewById(R.id.tvManageJobsResultCount);
                             count.setText("Result : "+jsonJob.length()+" Found");
@@ -135,8 +150,15 @@ public class ManageJobsActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i(TAG, "onErrorResponse: "+error.getMessage());
                     }
-                }
-        );
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("univ_id",univ_id);
+                return param;
+            }
+        };
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(retryPolicy);
         request.setShouldCache(false);

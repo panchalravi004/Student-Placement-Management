@@ -8,7 +8,7 @@
         android:title="@string/view_jobs" />
     <item
         android:icon="@drawable/icon_activity"
-        android:title="@string/view_activity" />
+        android:title="@string/applied_in" />
     <item
         android:icon="@drawable/icon_logout"
         android:title="@string/logout" />

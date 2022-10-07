@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,9 +125,10 @@ public class ViewStudentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         pbLoadMore.setVisibility(View.GONE);
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "onResponse: student list"+response);
                         try {
 
+//                            JSONObject jsonObject = new JSONObject(response);
                             jsonStudent = new JSONArray(response);
 
                             TextView tvCount = (TextView) findViewById(R.id.tvViewStudentResultCount);

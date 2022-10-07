@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,10 +42,10 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
     JSONArray jobs;
     SharedPreferences userPref;
     ImageButton btnClose;
-    private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate,tvUniv,tvCollege,tvDept;
+    private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
 
     private static final String TAG = "SPM_ERROR";
-
+    Button btnShare,btnApply;
     public JobsAdapter(Context context,JSONArray jobs){
         this.context = context;
         this.jobs = jobs;
@@ -64,6 +65,23 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             JSONObject jo = new JSONObject(jobs.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
             holder.clgName.setText(jo.getString("min_qualification"));
+
+            if(holder.userPref.getString("user_id","user_id").equals(jo.getString("creator_id"))){
+                if(holder.userPref.getString("CAN_UPDATE_COMPANY","CAN_UPDATE_COMPANY").equals("0")){
+                    holder.btnEdit.setVisibility(View.GONE);
+                }else{
+                    holder.btnEdit.setVisibility(View.VISIBLE);
+                }
+                if(holder.userPref.getString("CAN_REJECT_JOB_APPLICATION","CAN_REJECT_JOB_APPLICATION").equals("0")){
+                    holder.btnDelete.setVisibility(View.GONE);
+                }else{
+                    holder.btnDelete.setVisibility(View.VISIBLE);
+                }
+            }else{
+                holder.btnEdit.setVisibility(View.GONE);
+                holder.btnDelete.setVisibility(View.GONE);
+            }
+
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     Constants.GET_COMPANY_PROFILE,
@@ -73,7 +91,12 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                             Log.i(TAG, "onResponse: "+response);
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
-                                holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME"));
+                                if(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME").length()>20){
+                                    holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME").substring(0,25)+"...");
+                                }else{
+                                    holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME"));
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -147,6 +170,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
     public class VHolder extends RecyclerView.ViewHolder{
         TextView cName,clgName,rEDate;
         ImageButton btnView,btnEdit,btnDelete;
+        SharedPreferences userPref;
         public VHolder(@NonNull View itemView) {
             super(itemView);
             cName = itemView.findViewById(R.id.tvJobsAdapterCompanyName);
@@ -155,6 +179,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             btnView = itemView.findViewById(R.id.btnJobsAdapterView);
             btnEdit = itemView.findViewById(R.id.btnJobsAdapterEdit);
             btnDelete = itemView.findViewById(R.id.btnJobsAdapterDelete);
+            userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
 
         }
     }
@@ -175,7 +200,9 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
 
         btnClose = dialog.findViewById(R.id.btnClose);
-
+        btnShare = dialog.findViewById(R.id.btnJobPostShare);
+        btnApply = dialog.findViewById(R.id.btnJobPostApply);
+        btnApply.setVisibility(View.GONE);
         tvCompanyName = (TextView) dialog.findViewById(R.id.tvJobPostCompanyName);
         tvCompanyDomain = (TextView) dialog.findViewById(R.id.tvJobPostCompanyDomain);
         tvCompanyAddress = (TextView) dialog.findViewById(R.id.tvJobPostCompanyAddress);
@@ -193,10 +220,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         tvMinQuali = (TextView) dialog.findViewById(R.id.tvJobPostMINQuali);
         tvSDate = (TextView) dialog.findViewById(R.id.tvJobPostSDate);
         tvEDate = (TextView) dialog.findViewById(R.id.tvJobPostEDate);
-        tvUniv = (TextView) dialog.findViewById(R.id.tvJobPostUniv);
-        tvCollege = (TextView) dialog.findViewById(R.id.tvJobPostCollege);
-        tvDept = (TextView) dialog.findViewById(R.id.tvJobPostDept);
-
 
         //show fetch data here
         StringRequest crequest = new StringRequest(
@@ -266,9 +289,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                             tvMinQuali.setText(new JSONObject(jsonArray.getString(0)).getString("MIN_QUALIFICATION"));
                             tvSDate.setText(new JSONObject(jsonArray.getString(0)).getString("REG_START_DATE"));
                             tvEDate.setText(new JSONObject(jsonArray.getString(0)).getString("REG_END_DATE"));
-                            tvUniv.setText(jo.getString("univ_id"));
-                            tvCollege.setText(jo.getString("college_id"));
-                            tvDept.setText(jo.getString("dept_id"));
 
                         } catch (JSONException e) {
                             e.printStackTrace();

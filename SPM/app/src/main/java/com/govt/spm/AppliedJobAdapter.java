@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolder> {
+public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VHolder> {
     Context context;
     JSONArray job;
 
@@ -45,21 +45,21 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
     ImageButton btnClose;
     Button btnShare,btnApply;
     static final String TAG = "SPM_ERROR";
-    public ViewJobsAdapter(Context context,JSONArray job){
+    public AppliedJobAdapter(Context context,JSONArray job){
         this.context = context;
         this.job = job;
     }
 
     @NonNull
     @Override
-    public ViewJobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AppliedJobAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.row_view_jobs,parent,false);
         return new VHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewJobsAdapter.VHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VHolder holder, int position) {
         try {
             JSONObject jo = new JSONObject(job.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
@@ -166,16 +166,6 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
 
         SharedPreferences userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
 
-        btnApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    applyInJob(jo.getString("job_id"),userPref.getString("stud_id","stud_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         //show fetch data here
         StringRequest crequest = new StringRequest(
@@ -287,50 +277,4 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
 
     }
 
-    private void applyInJob(String job_id, String stud_id) {
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.APPLY_FOR_JOB,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            if(jsonObject.getBoolean("error")){
-                                Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-
-                param.put("job_id",job_id);
-                param.put("stud_id",stud_id);
-
-                return param;
-            }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(request);
-
-    }
 }

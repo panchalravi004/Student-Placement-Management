@@ -93,27 +93,65 @@ public class LoginActivity extends AppCompatActivity {
 
                             if(!jsonObject.getBoolean("error")){
 
-                                editor.putString("user_id",jsonObject.getString("id"));
-                                editor.putString("role",jsonObject.getString("user_role"));
-                                editor.putString("name",jsonObject.getString("Name"));
-                                editor.putString("email",jsonObject.getString("Email"));
-                                editor.putString("mob",jsonObject.getString("Mob"));
-                                editor.putString("gender",jsonObject.getString("Gender"));
-                                editor.putString("univ",jsonObject.getString("University"));
-                                editor.putString("college",jsonObject.getString("College"));
-                                editor.putString("dept",jsonObject.getString("Department"));
-                                editor.putString("univ_id",jsonObject.getString("univ_id"));
-                                editor.putString("college_id",jsonObject.getString("college_id"));
-                                editor.putString("dept_id",jsonObject.getString("dept_id"));
-                                editor.putString("CAN_UPDATE_COMPANY",jsonObject.getString("CAN_UPDATE_COMPANY"));
-                                editor.putString("CAN_MAKE_JOB_POST",jsonObject.getString("CAN_MAKE_JOB_POST"));
-                                editor.putString("CAN_REJECT_JOB_APPLICATION",jsonObject.getString("CAN_REJECT_JOB_APPLICATION"));
-                                editor.apply();
-
                                 if(jsonObject.getString("user_role").equals("FACULTY")){
+                                    editor.putString("user_id",jsonObject.getString("id"));
+                                    editor.putString("role",jsonObject.getString("user_role"));
+                                    editor.putString("name",jsonObject.getString("Name"));
+                                    editor.putString("email",jsonObject.getString("Email"));
+                                    editor.putString("mob",jsonObject.getString("Mob"));
+                                    editor.putString("gender",jsonObject.getString("Gender"));
+                                    editor.putString("univ",jsonObject.getString("University"));
+                                    editor.putString("college",jsonObject.getString("College"));
+                                    editor.putString("dept",jsonObject.getString("Department"));
+                                    editor.putString("univ_id",jsonObject.getString("univ_id"));
+                                    editor.putString("college_id",jsonObject.getString("college_id"));
+                                    editor.putString("dept_id",jsonObject.getString("dept_id"));
+                                    editor.putString("CAN_UPDATE_COMPANY",jsonObject.getString("CAN_UPDATE_COMPANY"));
+                                    editor.putString("CAN_MAKE_JOB_POST",jsonObject.getString("CAN_MAKE_JOB_POST"));
+                                    editor.putString("CAN_REJECT_JOB_APPLICATION",jsonObject.getString("CAN_REJECT_JOB_APPLICATION"));
+                                    editor.apply();
                                     startActivity(new Intent(LoginActivity.this,OfficerDashboardActivity.class));
                                     finish();
                                 }if(jsonObject.getString("user_role").equals("STUDENT")){
+                                    editor.putString("stud_id",jsonObject.getString("stud_id"));
+                                    editor.putString("role",jsonObject.getString("user_role"));
+                                    editor.putString("name",jsonObject.getString("stud_name"));
+                                    editor.putString("photo",jsonObject.getString("stud_photo"));
+                                    editor.putString("mob",jsonObject.getString("stud_mob"));
+                                    editor.putString("gender",jsonObject.getString("stud_gender"));
+                                    editor.putString("stud_address",jsonObject.getString("stud_address"));
+                                    editor.putString("country",jsonObject.getString("country"));
+                                    editor.putString("state",jsonObject.getString("state"));
+                                    editor.putString("city",jsonObject.getString("city"));
+                                    editor.putString("zip_code",jsonObject.getString("Zip_code"));
+                                    editor.putString("primary_skill",jsonObject.getString("primary_skill"));
+                                    editor.putString("secondary_skill",jsonObject.getString("secondary_skill"));
+                                    editor.putString("tertiary_skill",jsonObject.getString("tertiary_skill"));
+                                    editor.putString("university",jsonObject.getString("University"));
+                                    editor.putString("univ_id",jsonObject.getString("univ_id"));
+                                    editor.putString("college",jsonObject.getString("College"));
+                                    editor.putString("college_id",jsonObject.getString("college_id"));
+                                    editor.putString("dept",jsonObject.getString("Department"));
+                                    editor.putString("dept_id",jsonObject.getString("dept_id"));
+                                    editor.putString("academic_session",jsonObject.getString("academic_session"));
+                                    editor.putString("session_start_month",jsonObject.getString("session_start_month"));
+                                    editor.putString("academic_level",jsonObject.getString("academic_level"));
+                                    editor.putString("ssc_score",jsonObject.getString("ssc_score"));
+                                    editor.putString("ssc_pass_yr",jsonObject.getString("ssc_pass_yr"));
+                                    editor.putString("hsc_score",jsonObject.getString("hsc_score"));
+                                    editor.putString("hsc_stream",jsonObject.getString("hsc_stream"));
+                                    editor.putString("hsc_pass_yr",jsonObject.getString("hsc_pass_yr"));
+                                    editor.putString("ug_score",jsonObject.getString("ug_score"));
+                                    editor.putString("ug_stream",jsonObject.getString("ug_stram"));
+                                    editor.putString("ug_pass_yr",jsonObject.getString("ug_pass_yr"));
+                                    editor.putString("pg_score",jsonObject.getString("pg_score"));
+                                    editor.putString("pg_stream",jsonObject.getString("pg_stream"));
+                                    editor.putString("pg_pass_yr",jsonObject.getString("pg_pass_yr"));
+                                    editor.putString("can_update_sem_result",jsonObject.getString("can_update_sem_result"));
+                                    editor.putString("can_update_profile",jsonObject.getString("can_update_profile"));
+                                    editor.putString("stud_dob",jsonObject.getString("stud_dob"));
+                                    editor.putString("role",jsonObject.getString("user_role"));
+                                    editor.apply();
                                     startActivity(new Intent(LoginActivity.this,StudentDashboardActivity.class));
                                     finish();
                                 }

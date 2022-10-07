@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -37,9 +38,10 @@ import java.util.Map;
 
 public class AddJobsActivity extends AppCompatActivity {
 
-    private EditText etDescription,etRole,etSkill,etSSC,etHSC,etUG,etPG,etMinQualification,etStartDate,etEndDate;
+    private EditText etDescription,etRole,etSkill,etSSC,etHSC,etUG,etPG,etMinQualification;
     private Spinner spCompany,spUniversity,spCollege,spDept,spStatus;
     private Button btnAddNew,btnUpdate;
+    private TextView etStartDate,etEndDate;
 
     private static final String TAG = "SPM_ERROR";
     private ProgressDialog dialog;
@@ -64,8 +66,8 @@ public class AddJobsActivity extends AppCompatActivity {
         etUG = (EditText) findViewById(R.id.etAddJobUG);
         etPG = (EditText) findViewById(R.id.etAddJobPG);
         etMinQualification = (EditText) findViewById(R.id.etAddJobMinQualification);
-        etStartDate = (EditText) findViewById(R.id.etAddJobStartDate);
-        etEndDate = (EditText) findViewById(R.id.etAddJobEndDate);
+        etStartDate = (TextView) findViewById(R.id.etAddJobStartDate);
+        etEndDate = (TextView) findViewById(R.id.etAddJobEndDate);
 
         spCompany = (Spinner) findViewById(R.id.spAddJobCompany);
         spUniversity = (Spinner) findViewById(R.id.spAddJobUniversity);
@@ -145,7 +147,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddJobsActivity.this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1)+"-"+String.valueOf(i2));
+                        etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
                     }
                 }, 2022, 10, 2);
                 dpd.show();
@@ -157,7 +159,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddJobsActivity.this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1)+"-"+String.valueOf(i2));
+                        etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
                     }
                 }, 2022, 10, 2);
                 dpd.show();

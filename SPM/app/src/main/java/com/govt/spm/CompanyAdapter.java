@@ -61,16 +61,17 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
     public void onBindViewHolder(@NonNull CompanyAdapter.VHolder holder, int position) {
         try {
             JSONObject jo = new JSONObject(company.getString(position));
-            holder.cname.setText(jo.getString("company_name"));
+            if(jo.getString("company_name").length()>20){
+                holder.cname.setText(jo.getString("company_name").substring(0,30)+"...");
+            }else{
+                holder.cname.setText(jo.getString("company_name"));
+            }
+
             holder.domain.setText(jo.getString("web_domain"));
             holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-                        openDialog(new JSONObject(company.getString(holder.getAdapterPosition())).getString("company_id"),new JSONObject(company.getString(holder.getAdapterPosition())).getString("creator_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    openDialog(jo);
                 }
             });
         } catch (JSONException e) {
@@ -106,7 +107,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
         }
     }
 
-    private void openDialog(String company_id,String creator_id) {
+    private void openDialog(JSONObject jo) {
 
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_company);
@@ -125,12 +126,16 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
         tvAbout= dialog.findViewById(R.id.tvCInfoAbout);
 
         SharedPreferences userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        if(userPref.getString("user_id","user_id").equals(creator_id)){
-            btnEdit.setVisibility(View.VISIBLE);
-            btnDelete.setVisibility(View.VISIBLE);
-        }else{
-            btnEdit.setVisibility(View.GONE);
-            btnDelete.setVisibility(View.GONE);
+        try {
+            if(userPref.getString("user_id","user_id").equals(jo.getString("creator_id"))){
+                btnEdit.setVisibility(View.VISIBLE);
+                btnDelete.setVisibility(View.VISIBLE);
+            }else{
+                btnEdit.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         StringRequest request = new StringRequest(
@@ -163,7 +168,15 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
                                 public void onClick(View view) {
                                     Intent i = new Intent(context,AddCompanyActivity.class);
                                     i.putExtra("ACTION","UPDATE");
-                                    i.putExtra("COMPANY_ID",company_id);
+                                    try {
+                                        i.putExtra("COMPANY_ID",jo.getString("company_id"));
+                                        i.putExtra("COUNTRY_ID",jo.getString("country_id"));
+                                        i.putExtra("STATE_ID",jo.getString("state_id"));
+                                        i.putExtra("CITY_ID",jo.getString("city_id"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
                                     dialog.dismiss();
                                     context.startActivity(i);
                                 }
@@ -172,7 +185,11 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
                                 @Override
                                 public void onClick(View view) {
                                     dialog.dismiss();
-                                    deleteCompany(company_id,creator_id,"DELETE");
+                                    try {
+                                        deleteCompany(jo.getString("company_id"),jo.getString("creator_id"),"DELETE");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
 
@@ -193,7 +210,11 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> param = new HashMap<>();
-                param.put("company_id",company_id);
+                try {
+                    param.put("company_id",jo.getString("company_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 return param;
             }
         };

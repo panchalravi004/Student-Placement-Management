@@ -370,69 +370,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/textView48"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="university"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-
-                    <TextView
-                        android:id="@+id/tvJobPostUniv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="GUNI"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textView50"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="College"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-
-                    <TextView
-                        android:id="@+id/tvJobPostCollege"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="AMPICS"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textView52"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="dept"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-
-                    <TextView
-                        android:id="@+id/tvJobPostDept"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="IT"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
                 </TableRow>
 
             </TableLayout>
@@ -441,7 +378,13 @@
                 android:id="@+id/btnJobPostShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:text="share" />
+            <Button
+                android:id="@+id/btnJobPostApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="apply" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

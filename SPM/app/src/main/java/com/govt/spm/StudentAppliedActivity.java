@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,12 +30,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewJobsActivity extends AppCompatActivity {
-
+public class StudentAppliedActivity extends AppCompatActivity {
     private EditText etSearch;
     private ImageButton btnSearch;
     private Spinner spFilterOne,spFilterTwo;
@@ -56,21 +53,22 @@ public class ViewJobsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_jobs);
-        view_jobs_rv = (RecyclerView) findViewById(R.id.recycleViewViewJobs);
-        etSearch = (EditText) findViewById(R.id.etViewJobsSearch);
-        btnSearch = (ImageButton) findViewById(R.id.btnViewJobsSearch);
-        spFilterOne = (Spinner) findViewById(R.id.spViewJobsFilterOne);
-        spFilterTwo = (Spinner) findViewById(R.id.spViewJobsFilterTwo);
-        tvResultCount = (TextView) findViewById(R.id.tvViewJobsResultCount);
-        pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreViewJobs);
+        setContentView(R.layout.activity_student_applied);
+        view_jobs_rv = (RecyclerView) findViewById(R.id.recycleViewStudentApplied);
+        etSearch = (EditText) findViewById(R.id.etStudentAppliedSearch);
+        btnSearch = (ImageButton) findViewById(R.id.btnStudentAppliedSearch);
+        spFilterOne = (Spinner) findViewById(R.id.spStudentAppliedFilterOne);
+        spFilterTwo = (Spinner) findViewById(R.id.spStudentAppliedFilterTwo);
+        tvResultCount = (TextView) findViewById(R.id.tvStudentAppliedResultCount);
+        pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreStudentApplied);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
 
         totalDBItem = 10;
         jsonJob = new JSONArray();
+
         //CALL METHOD
-        getJobList(userPref.getString("univ_id","univ_id"));
+        getAppliedJobList(userPref.getString("stud_id","stud_id"));
 
         //LISTENER
         view_jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -96,7 +94,6 @@ public class ViewJobsActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void fetchData() {
@@ -112,11 +109,11 @@ public class ViewJobsActivity extends AppCompatActivity {
         }, 5000);
     }
 
-    private void getJobList(String univ_id){
+    private void getAppliedJobList(String stud_id){
         pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
-                Constants.GET_JOB_LIST,
+                Constants.GET_APPLIED_JOB_LIST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -124,11 +121,11 @@ public class ViewJobsActivity extends AppCompatActivity {
                         try {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
-                            TextView count = (TextView) findViewById(R.id.tvViewJobsResultCount);
-                            count.setText("Result : "+jsonJob.length()+" Found");
-                            vja = new ViewJobsAdapter(ViewJobsActivity.this,jsonJob);
-                            view_jobs_rv.setAdapter(vja);
-                            view_jobs_rv.setLayoutManager(manager);
+//                            TextView count = (TextView) findViewById(R.id.tvViewJobsResultCount);
+//                            count.setText("Result : "+jsonJob.length()+" Found");
+//                            vja = new ViewJobsAdapter(StudentAppliedActivity.this,jsonJob);
+//                            view_jobs_rv.setAdapter(vja);
+//                            view_jobs_rv.setLayoutManager(manager);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -144,14 +141,14 @@ public class ViewJobsActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> param = new HashMap<>();
-                param.put("univ_id",univ_id);
+                param.put("stud_id",stud_id);
                 return param;
             }
         };
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(retryPolicy);
         request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(ViewJobsActivity.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(StudentAppliedActivity.this);
         requestQueue.add(request);
     }
 

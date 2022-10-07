@@ -75,8 +75,6 @@ public class OfficerProfileActivity extends AppCompatActivity {
         jsonCollege = new JSONArray();
         jsonDept = new JSONArray();
 
-        setPositions(userPref.getString("univ_id","univ_id"),userPref.getString("college_id","college_id"),userPref.getString("dept_id","dept_id"));
-
         //fetch colleges on university selects
         fetchColleges(userPref.getString("univ_id","univ_id"));
 
@@ -169,6 +167,13 @@ public class OfficerProfileActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         dialog.dismiss();
                         Log.i(TAG, "onResponse: "+response);
+                        try {
+                            JSONObject jo = new JSONObject(response);
+                            Toast.makeText(OfficerProfileActivity.this, jo.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -248,7 +253,12 @@ public class OfficerProfileActivity extends AppCompatActivity {
                                 collegesList.clear();
                                 for(int i=0;i<jsonCollege.length();i++){
                                     JSONObject jo = new JSONObject(jsonCollege.getString(i));
-                                    collegesList.add(jo.getString("college_name"));
+//                                    if(userPref.getString("college_id","college_id").equals(jo.getString("college_id"))){
+//                                        collegesList.add(0,jo.getString("college_name"));
+//                                    }else{
+                                        collegesList.add(jo.getString("college_name"));
+//                                    }
+
 //                                    Log.i(TAG, "onResponse: "+jo.getString("college_name"));
                                 }
                             }
@@ -304,7 +314,12 @@ public class OfficerProfileActivity extends AppCompatActivity {
                                 deptsList.clear();
                                 for(int i=0;i<jsonDept.length();i++){
                                     JSONObject jo = new JSONObject(jsonDept.getString(i));
-                                    deptsList.add(jo.getString("dept_name"));
+//                                    if(userPref.getString("dept_id","dept_id").equals(jo.getString("dept_id"))){
+//                                        deptsList.add(0,jo.getString("dept_name"));
+//                                    }else{
+                                        deptsList.add(jo.getString("dept_name"));
+//                                    }
+
 //                                    Log.i(TAG, "onResponse: "+jo.getString("dept_name"));
                                 }
                             }
@@ -340,34 +355,4 @@ public class OfficerProfileActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setPositions(String univ_id,String college_id,String dept_id){
-
-
-        fetchColleges(univ_id);
-        for(int i=0;i<jsonCollege.length();i++){
-            try {
-                JSONObject jo = new JSONObject(jsonCollege.getString(i));
-                if(college_id.equals(jo.getString("college_id"))){
-                    spCollege.setSelection(i);
-                    adapterCollege.notifyDataSetChanged();
-                    break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        fetchCollegeWiseDept(college_id);
-        for(int i=0;i<jsonDept.length();i++){
-            try {
-                JSONObject jo = new JSONObject(jsonDept.getString(i));
-                if(dept_id.equals(jo.getString("dept_id"))){
-                    spDept.setSelection(i);
-                    adapterDept.notifyDataSetChanged();
-                    break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

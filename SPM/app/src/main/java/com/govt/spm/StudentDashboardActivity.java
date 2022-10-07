@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -22,6 +23,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
     UpcomingJobsAdapter uca;
     ImageButton btnMenuBar,btnSearch;
     TextView tvJobsCount,tvAppliedInCount,tvSelectedInCount;
+
+    private SharedPreferences userPref;
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,9 @@ public class StudentDashboardActivity extends AppCompatActivity {
         tvJobsCount = (TextView) findViewById(R.id.tvSDJobsCount);
         tvAppliedInCount = (TextView) findViewById(R.id.tvSDAppliedInCount);
         tvSelectedInCount = (TextView) findViewById(R.id.tvSDSelectedInCount);
+
+        userPref = getSharedPreferences("user",MODE_PRIVATE);
+        editor = userPref.edit();
 
         //Upcoming company list set
         ArrayList<String> company_name = new ArrayList<String>();
@@ -82,11 +89,13 @@ public class StudentDashboardActivity extends AppCompatActivity {
                     Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.view_jobs), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getBaseContext(),ViewJobsActivity.class));
                 }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.view_activity))){
-                    Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.view_activity), Toast.LENGTH_SHORT).show();
+                if(menuItem.getTitle().equals(getResources().getString(R.string.applied_in))){
+                    Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.applied_in), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getBaseContext(),StudentAppliedActivity.class));
                 }
                 if(menuItem.getTitle().equals(getResources().getString(R.string.logout))){
                     Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
+                    logout();
                 }
 
                 return true;
@@ -94,5 +103,10 @@ public class StudentDashboardActivity extends AppCompatActivity {
         });
         pm.setForceShowIcon(true);
         pm.show();
+    }
+    private void logout() {
+        editor.clear();
+        editor.apply();
+        finish();
     }
 }
