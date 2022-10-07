@@ -26,4 +26,8 @@ public class Constants {
     public static final String GET_STUDENT_LIST = ROOT_URL+"getStudentsList.php";
     public static final String APPLY_FOR_JOB = ROOT_URL+"applyForJob.php";
     public static final String GET_APPLIED_JOB_LIST = ROOT_URL+"getAppliedJobList.php";
+
+    public static final String GET_JOB_APLICANT = ROOT_URL+"getJobApplications.php";
+    public static final String UPDATE_JOB_APLICANT_STATUS = ROOT_URL+"updateJobAppStatus.php";
+
 }

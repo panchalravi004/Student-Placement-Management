@@ -374,17 +374,34 @@
 
             </TableLayout>
 
-            <Button
-                android:id="@+id/btnJobPostShare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                android:text="share" />
-            <Button
-                android:id="@+id/btnJobPostApply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="apply" />
+                <Button
+                    android:id="@+id/btnJobPostShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_margin="5sp"
+                    android:text="share" />
+
+                <Button
+                    android:id="@+id/btnJobPostApply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:text="apply" />
+
+                <Button
+                    android:id="@+id/btnJobPostViewAplicant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:text="View Aplicant" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

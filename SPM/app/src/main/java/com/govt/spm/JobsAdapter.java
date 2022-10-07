@@ -45,7 +45,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
     private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
 
     private static final String TAG = "SPM_ERROR";
-    Button btnShare,btnApply;
+    Button btnShare,btnApply,btnShowAplicant;
     public JobsAdapter(Context context,JSONArray jobs){
         this.context = context;
         this.jobs = jobs;
@@ -202,6 +202,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         btnClose = dialog.findViewById(R.id.btnClose);
         btnShare = dialog.findViewById(R.id.btnJobPostShare);
         btnApply = dialog.findViewById(R.id.btnJobPostApply);
+        btnShowAplicant = dialog.findViewById(R.id.btnJobPostViewAplicant);
         btnApply.setVisibility(View.GONE);
         tvCompanyName = (TextView) dialog.findViewById(R.id.tvJobPostCompanyName);
         tvCompanyDomain = (TextView) dialog.findViewById(R.id.tvJobPostCompanyDomain);
@@ -318,6 +319,20 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
+
+        btnShowAplicant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent i = new Intent(context,ViewAplicantActivity.class);
+                try {
+                    i.putExtra("JOB_ID",jo.getString("job_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(i);
+            }
+        });
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
