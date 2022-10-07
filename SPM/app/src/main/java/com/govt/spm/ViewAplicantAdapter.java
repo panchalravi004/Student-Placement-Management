@@ -146,4 +146,8 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
         }
     }
 
+    private void openDialog(){
+
+    }
+
 }

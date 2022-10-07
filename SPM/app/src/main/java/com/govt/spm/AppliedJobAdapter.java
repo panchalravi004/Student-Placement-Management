@@ -42,7 +42,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
 
 
     ImageButton btnClose;
-    Button btnShare,btnApply;
+    Button btnShare,btnApply,btnShowAplicant;
     static final String TAG = "SPM_ERROR";
     public AppliedJobAdapter(Context context,JSONArray job){
         this.context = context;
@@ -106,8 +106,10 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         btnClose = dialog.findViewById(R.id.btnClose);
         btnShare = dialog.findViewById(R.id.btnJobPostShare);
         btnApply = dialog.findViewById(R.id.btnJobPostApply);
+        btnShowAplicant = dialog.findViewById(R.id.btnJobPostViewAplicant);
         btnShare.setVisibility(View.GONE);
         btnApply.setVisibility(View.GONE);
+        btnShowAplicant.setVisibility(View.GONE);
         tvCompanyName = (TextView) dialog.findViewById(R.id.tvJobPostCompanyName);
         tvCompanyDomain = (TextView) dialog.findViewById(R.id.tvJobPostCompanyDomain);
         tvCompanyAddress = (TextView) dialog.findViewById(R.id.tvJobPostCompanyAddress);
