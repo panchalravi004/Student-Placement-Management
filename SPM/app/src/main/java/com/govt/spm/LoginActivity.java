@@ -150,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.putString("can_update_sem_result",jsonObject.getString("can_update_sem_result"));
                                     editor.putString("can_update_profile",jsonObject.getString("can_update_profile"));
                                     editor.putString("stud_dob",jsonObject.getString("stud_dob"));
-                                    editor.putString("role",jsonObject.getString("user_role"));
                                     editor.apply();
                                     startActivity(new Intent(LoginActivity.this,StudentDashboardActivity.class));
                                     finish();

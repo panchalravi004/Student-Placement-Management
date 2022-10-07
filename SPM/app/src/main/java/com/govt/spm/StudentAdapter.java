@@ -9,19 +9,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder> {
     Context context;
     JSONArray student;
-    TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvDept,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
-
+    TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
+    private static final String TAG = "SPM_ERROR";
     public StudentAdapter(Context context,JSONArray student){
         this.context = context;
         this.student = student;
@@ -95,7 +107,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
         tvPrimarySkill = dialog.findViewById(R.id.tvStudentInfoPrimarySkill);
         tvSecondarySkill = dialog.findViewById(R.id.tvStudentInfoSecondarySkill);
         tvTertiarySkill = dialog.findViewById(R.id.tvStudentInfoTertiarySkill);
-        tvDept = dialog.findViewById(R.id.tvStudentInfoDept);
         tvAcadamicYear = dialog.findViewById(R.id.tvStudentInfoAcadamicYear);
         tvSSCPer = dialog.findViewById(R.id.tvStudentInfoSSCPer);
         tvSSCYear = dialog.findViewById(R.id.tvStudentInfoSSCYear);
@@ -110,32 +121,65 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
         tvPGStream = dialog.findViewById(R.id.tvStudentInfoPGStream);
         tvCurrentSem = dialog.findViewById(R.id.tvStudentInfoCurrentSem);
 
-        try {
-            tvName.setText(info.getString("stud_name"));
-            tvEnrollNo.setText(info.getString("stud_id"));
-            tvMobile.setText(info.getString("stud_mob"));
-            tvAdd.setText(info.getString("stud_address"));
-            tvPrimarySkill.setText(info.getString("primary_skill"));
-            tvSecondarySkill.setText(info.getString("secondary_skill"));
-            tvTertiarySkill.setText(info.getString("tertiary_skill"));
-            tvDept.setText(info.getString("dept_id"));
-            tvAcadamicYear.setText(info.getString("academic_session"));
-            tvSSCPer.setText(info.getString("ssc_score"));
-            tvSSCYear.setText(info.getString("ssc_pass_yr"));
-            tvHSCPer.setText(info.getString("hsc_score"));
-            tvHSCYear.setText(info.getString("hsc_pass_yr"));
-            tvUGPer.setText(info.getString("ug_score"));
-            tvUGYear.setText(info.getString("ug_pass_yr"));
-            tvPGPer.setText(info.getString("pg_score"));
-            tvPGYear.setText(info.getString("pg_pass_yr"));
-            tvHSCStream.setText(info.getString("hsc_stream"));
-            tvUGStream.setText(info.getString("ug_stram"));
-            tvPGStream.setText(info.getString("pg_stream"));
-            tvCurrentSem.setText(info.getString("sem"));
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_STUDENT_PROFILE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "onResponse: "+response);
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            tvName.setText(new JSONObject(jsonArray.getString(0)).getString("stud_name"));
+                            tvEnrollNo.setText(new JSONObject(jsonArray.getString(0)).getString("stud_id"));
+                            tvMobile.setText(new JSONObject(jsonArray.getString(0)).getString("stud_mob"));
+                            tvAdd.setText(new JSONObject(jsonArray.getString(0)).getString("stud_address"));
+                            tvPrimarySkill.setText(new JSONObject(jsonArray.getString(0)).getString("primary_skill"));
+                            tvSecondarySkill.setText(new JSONObject(jsonArray.getString(0)).getString("secondary_skill"));
+                            tvTertiarySkill.setText(new JSONObject(jsonArray.getString(0)).getString("tertiary_skill"));
+                            tvAcadamicYear.setText(new JSONObject(jsonArray.getString(0)).getString("academic_session"));
+                            tvSSCPer.setText(new JSONObject(jsonArray.getString(0)).getString("ssc_score"));
+                            tvSSCYear.setText(new JSONObject(jsonArray.getString(0)).getString("ssc_pass_yr"));
+                            tvHSCPer.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_score"));
+                            tvHSCYear.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_pass_yr"));
+                            tvUGPer.setText(new JSONObject(jsonArray.getString(0)).getString("ug_score"));
+                            tvUGYear.setText(new JSONObject(jsonArray.getString(0)).getString("ug_pass_yr"));
+                            tvPGPer.setText(new JSONObject(jsonArray.getString(0)).getString("pg_score"));
+                            tvPGYear.setText(new JSONObject(jsonArray.getString(0)).getString("pg_pass_yr"));
+                            tvHSCStream.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_stream"));
+                            tvUGStream.setText(new JSONObject(jsonArray.getString(0)).getString("ug_stram"));
+                            tvPGStream.setText(new JSONObject(jsonArray.getString(0)).getString("pg_stream"));
+                            tvCurrentSem.setText(new JSONObject(jsonArray.getString(0)).getString("sem"));
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                try {
+                    param.put("stud_id",info.getString("stud_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
+
 
         dialog.show();
     }

@@ -14,7 +14,7 @@
         android:elevation="5sp"
         android:orientation="vertical"
         android:paddingLeft="20sp"
-        android:paddingTop="25sp"
+        android:paddingTop="35sp"
         android:paddingRight="20sp"
         android:paddingBottom="15sp">
 
@@ -57,7 +57,7 @@
             <Spinner
                 android:id="@+id/spAddJobCompany"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35sp"
                 android:layout_margin="15sp"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"

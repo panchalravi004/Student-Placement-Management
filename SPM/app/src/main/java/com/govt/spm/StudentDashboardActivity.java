@@ -84,6 +84,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 if(menuItem.getTitle().equals(getResources().getString(R.string.student_profile))){
                     Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.student_profile), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getBaseContext(),StudentProfileActivity.class));
                 }
                 if(menuItem.getTitle().equals(getResources().getString(R.string.view_jobs))){
                     Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.view_jobs), Toast.LENGTH_SHORT).show();

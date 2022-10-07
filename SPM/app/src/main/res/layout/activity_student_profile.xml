@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".StudentProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spm_blue_30_bottom_round"
+        android:elevation="5sp"
+        android:orientation="vertical"
+        android:paddingLeft="20sp"
+        android:paddingTop="35sp"
+        android:paddingRight="20sp"
+        android:paddingBottom="15sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnTPOBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="@null"
+                android:onClick="goToDashboard"
+                app:srcCompat="@drawable/icon_arrow_left" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15sp"
+                android:layout_weight="0"
+                android:text="Student Profile"
+                android:textColor="@color/white"
+                android:textSize="@dimen/activity_heading" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="15sp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="80sp"
+                    android:layout_height="80sp"
+                    android:elevation="5sp"
+                    app:cardCornerRadius="50sp">
+
+                    <ImageView
+                        android:id="@+id/ivStudentProfileImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Your ID" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter ID"
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textView5Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Name" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter Name"
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewmob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mobile" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileMobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter Mobile"
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Gender" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter Gender"
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewadd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Address" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter Address"
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewcountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Country" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewstate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="State" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewcity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="City" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewzip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Zip Code" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileZipCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewpskill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Primary Skill" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfilePrimarySkill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewsskill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Secondary Skill" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileSecondarySkill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/etStudentProfiletskill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tertiary Skill" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileTertiarySkill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewuni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="University" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileUniversity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewclg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="College" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileCollege"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewDept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Department" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileDept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewacdsession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Academic Session" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileACDSession"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewssc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="SSC" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileSSCScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileSSCYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewhsc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="HSC" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileHSCScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileHSCYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewUG"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="UG" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileUGScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileUGYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewPG"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="PG" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfilePGScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfilePGYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10sp">
+
+                    <TextView
+                        android:id="@+id/textViewdob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="DOB" />
+
+                    <EditText
+                        android:id="@+id/etStudentProfileDOB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_all_round"
+                        android:elevation="2sp"
+                        android:ems="10"
+                        android:hint="Enter "
+                        android:inputType="textPersonName"
+                        android:padding="4sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btnStudentProfileUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/spm_green"
+                android:text="@string/update"
+                app:cornerRadius="30sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

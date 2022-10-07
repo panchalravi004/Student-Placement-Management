@@ -15,7 +15,7 @@
         android:elevation="5sp"
         android:orientation="vertical"
         android:paddingLeft="20sp"
-        android:paddingTop="25sp"
+        android:paddingTop="35sp"
         android:paddingRight="20sp"
         android:paddingBottom="15sp">
 

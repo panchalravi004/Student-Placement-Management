@@ -175,31 +175,6 @@
                     android:layout_marginBottom="5sp">
 
                     <TextView
-                        android:id="@+id/textView52"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="dept"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-
-                    <TextView
-                        android:id="@+id/tvStudentInfoDept"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="IT"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/title" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5sp"
-                    android:layout_marginBottom="5sp">
-
-                    <TextView
                         android:id="@+id/textView50"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -228,7 +203,6 @@
                         android:id="@+id/textView35"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="SSC"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -262,7 +236,6 @@
                         android:id="@+id/textView37"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="HSC"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -296,7 +269,6 @@
                         android:id="@+id/textView38"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="UG"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -330,7 +302,6 @@
                         android:id="@+id/textView40"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="PG"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -364,16 +335,17 @@
                         android:id="@+id/textView42"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="HSC Stream"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
 
                     <TextView
                         android:id="@+id/tvStudentInfoHSCStream"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120sp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:maxWidth="200sp"
+                        android:singleLine="true"
                         android:text="commerce"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -389,16 +361,17 @@
                         android:id="@+id/textView44"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="UG Stream"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
 
                     <TextView
                         android:id="@+id/tvStudentInfoUGStream"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120sp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:maxWidth="200sp"
+                        android:singleLine="true"
                         android:text="commerce"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -414,16 +387,17 @@
                         android:id="@+id/textView46"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="PG Stream"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
 
                     <TextView
                         android:id="@+id/tvStudentInfoPGStream"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120sp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:maxWidth="200sp"
+                        android:singleLine="true"
                         android:text="IT"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
