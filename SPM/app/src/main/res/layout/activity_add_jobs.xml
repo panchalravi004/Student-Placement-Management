@@ -62,7 +62,7 @@
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
                 android:entries="@array/company"
-                android:padding="10sp"
+                android:padding="6sp"
                 android:textAlignment="center" />
 
             <EditText
@@ -76,7 +76,7 @@
                 android:gravity="start|top"
                 android:hint="Jobs Description"
                 android:inputType="textMultiLine"
-                android:padding="10sp"
+                android:padding="6sp"
                 android:textAlignment="center" />
 
             <EditText
@@ -89,7 +89,7 @@
                 android:ems="10"
                 android:hint="Role"
                 android:inputType="textPersonName"
-                android:padding="10sp"
+                android:padding="6sp"
                 android:textAlignment="center" />
 
             <EditText
@@ -102,7 +102,7 @@
                 android:ems="10"
                 android:hint="Skills"
                 android:inputType="textPersonName"
-                android:padding="10sp"
+                android:padding="6sp"
                 android:textAlignment="center" />
 
             <LinearLayout
@@ -121,7 +121,7 @@
                     android:ems="10"
                     android:hint="SSC"
                     android:inputType="textPersonName"
-                    android:padding="10sp"
+                    android:padding="6sp"
                     android:textAlignment="center" />
 
                 <EditText
@@ -135,7 +135,7 @@
                     android:ems="10"
                     android:hint="HSC"
                     android:inputType="textPersonName"
-                    android:padding="10sp"
+                    android:padding="6sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -155,7 +155,7 @@
                     android:ems="10"
                     android:hint="UG"
                     android:inputType="textPersonName"
-                    android:padding="10sp"
+                    android:padding="6sp"
                     android:textAlignment="center" />
 
                 <EditText
@@ -169,7 +169,7 @@
                     android:ems="10"
                     android:hint="PG"
                     android:inputType="textPersonName"
-                    android:padding="10sp"
+                    android:padding="6sp"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -183,7 +183,7 @@
                 android:ems="10"
                 android:hint="Minimum Qualification"
                 android:inputType="textPersonName"
-                android:padding="10sp"
+                android:padding="6sp"
                 android:textAlignment="center" />
 
             <LinearLayout
@@ -226,7 +226,7 @@
                 <Spinner
                     android:id="@+id/spAddJobUniversity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35sp"
                     android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
@@ -238,7 +238,7 @@
                 <Spinner
                     android:id="@+id/spAddJobCollege"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35sp"
                     android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
@@ -256,7 +256,7 @@
                 <Spinner
                     android:id="@+id/spAddJobDept"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35sp"
                     android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"
@@ -268,7 +268,7 @@
                 <Spinner
                     android:id="@+id/spAddJobStatus"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35sp"
                     android:layout_margin="15sp"
                     android:layout_weight="1"
                     android:background="@drawable/white_all_round"

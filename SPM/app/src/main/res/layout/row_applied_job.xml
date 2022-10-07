@@ -68,12 +68,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvAppliedJobRegisterEndDate"
+            android:id="@+id/tvAppliedJobStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="15sp"
-            android:text="End on: 20-09-2022"
+            android:text="PENDING"
             android:textAlignment="viewStart"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/title" />

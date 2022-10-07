@@ -43,7 +43,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
     private LinearLayoutManager manager;
     private ProgressBar pbLoadMore;
     private Boolean isScrolling = false;
-    private ViewJobsAdapter vja;
+    private AppliedJobAdapter vja;
 
     private int currentItem,totalItem,scrollOutItem,totalDBItem;
     private SharedPreferences userPref;
@@ -121,11 +121,11 @@ public class StudentAppliedActivity extends AppCompatActivity {
                         try {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
-//                            TextView count = (TextView) findViewById(R.id.tvViewJobsResultCount);
-//                            count.setText("Result : "+jsonJob.length()+" Found");
-//                            vja = new ViewJobsAdapter(StudentAppliedActivity.this,jsonJob);
-//                            view_jobs_rv.setAdapter(vja);
-//                            view_jobs_rv.setLayoutManager(manager);
+                            TextView count = (TextView) findViewById(R.id.tvStudentAppliedResultCount);
+                            count.setText("Result : "+jsonJob.length()+" Found");
+                            vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
+                            view_jobs_rv.setAdapter(vja);
+                            view_jobs_rv.setLayoutManager(manager);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

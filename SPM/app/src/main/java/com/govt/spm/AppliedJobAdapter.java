@@ -41,7 +41,6 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
     private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
 
 
-    TextView cName,clgName,rEDate;
     ImageButton btnClose;
     Button btnShare,btnApply;
     static final String TAG = "SPM_ERROR";
@@ -54,7 +53,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
     @Override
     public AppliedJobAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_view_jobs,parent,false);
+        View view = inflater.inflate(R.layout.row_applied_job,parent,false);
         return new VHolder(view);
     }
 
@@ -62,51 +61,13 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
     public void onBindViewHolder(@NonNull VHolder holder, int position) {
         try {
             JSONObject jo = new JSONObject(job.getString(position));
-            holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
-            holder.clgName.setText(jo.getString("min_qualification"));
-            StringRequest request = new StringRequest(
-                    Request.Method.POST,
-                    Constants.GET_COMPANY_PROFILE,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.i(TAG, "onResponse: "+response);
-                            try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                if(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME").length()>20){
-                                    holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME").substring(0,25)+"...");
-                                }else{
-                                    holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME"));
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                        }
-                    }){
-                @Nullable
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> param = new HashMap<>();
-                    try {
-                        param.put("company_id",jo.getString("company_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    return param;
-                }
-            };
-            DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            request.setRetryPolicy(retryPolicy);
-            request.setShouldCache(false);
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(request);
+            holder.jobStatus.setText(jo.getString("AppStat"));
+            holder.clgName.setText(jo.getString("MIN_QUALIFICATION"));
+            if(jo.getString("COMPANY_NAME").length()>20){
+                holder.cName.setText(jo.getString("COMPANY_NAME").substring(0,25)+"...");
+            }else{
+                holder.cName.setText(jo.getString("COMPANY_NAME"));
+            }
             holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -124,14 +85,14 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
-        TextView cName,clgName,rEDate;
+        TextView cName,clgName,jobStatus;
         ImageButton btnView;
         public VHolder(@NonNull View itemView) {
             super(itemView);
-            cName = itemView.findViewById(R.id.tvVJACompanyName);
-            clgName = itemView.findViewById(R.id.tvVJACollegeName);
-            rEDate = itemView.findViewById(R.id.tvVJARegisterEndDate);
-            btnView = itemView.findViewById(R.id.btnVJAView);
+            cName = itemView.findViewById(R.id.tvAppliedJobCompanyName);
+            clgName = itemView.findViewById(R.id.tvAppliedJobCollegeName);
+            jobStatus = itemView.findViewById(R.id.tvAppliedJobStatus);
+            btnView = itemView.findViewById(R.id.btnAppliedJobView);
 
         }
     }
@@ -146,6 +107,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         btnShare = dialog.findViewById(R.id.btnJobPostShare);
         btnApply = dialog.findViewById(R.id.btnJobPostApply);
         btnShare.setVisibility(View.GONE);
+        btnApply.setVisibility(View.GONE);
         tvCompanyName = (TextView) dialog.findViewById(R.id.tvJobPostCompanyName);
         tvCompanyDomain = (TextView) dialog.findViewById(R.id.tvJobPostCompanyDomain);
         tvCompanyAddress = (TextView) dialog.findViewById(R.id.tvJobPostCompanyAddress);
@@ -165,6 +127,21 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         tvEDate = (TextView) dialog.findViewById(R.id.tvJobPostEDate);
 
         SharedPreferences userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
+
+        try {
+            tvDescription.setText(jo.getString("JOB_DESC"));
+            tvRole.setText(jo.getString("ROLE"));
+            tvSkill.setText(jo.getString("SKILLS"));
+            tvSSC.setText(jo.getString("REQ_SSC_SCORE"));
+            tvHSC.setText(jo.getString("REQ_HSC_SCORE"));
+            tvUG.setText(jo.getString("REQ_UG_SCORE"));
+            tvPG.setText(jo.getString("REQ_PG_SCORE"));
+            tvMinQuali.setText(jo.getString("MIN_QUALIFICATION"));
+            tvSDate.setText(jo.getString("REG_START_DATE"));
+            tvEDate.setText(jo.getString("REG_END_DATE"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         //show fetch data here
@@ -202,7 +179,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> param = new HashMap<>();
                 try {
-                    param.put("company_id",jo.getString("company_id"));
+                    param.put("company_id",jo.getString("COMPANY_ID"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -214,57 +191,6 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         crequest.setShouldCache(false);
         RequestQueue crequestQueue = Volley.newRequestQueue(context);
         crequestQueue.add(crequest);
-
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_JOB_DETAIL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-
-                            tvDescription.setText(new JSONObject(jsonArray.getString(0)).getString("JOB_DESC"));
-                            tvRole.setText(new JSONObject(jsonArray.getString(0)).getString("ROLE"));
-                            tvSkill.setText(new JSONObject(jsonArray.getString(0)).getString("SKILLS"));
-                            tvSSC.setText(new JSONObject(jsonArray.getString(0)).getString("REQ_SSC_SCORE"));
-                            tvHSC.setText(new JSONObject(jsonArray.getString(0)).getString("REQ_HSC_SCORE"));
-                            tvUG.setText(new JSONObject(jsonArray.getString(0)).getString("REQ_UG_SCORE"));
-                            tvPG.setText(new JSONObject(jsonArray.getString(0)).getString("REQ_PG_SCORE"));
-                            tvMinQuali.setText(new JSONObject(jsonArray.getString(0)).getString("MIN_QUALIFICATION"));
-                            tvSDate.setText(new JSONObject(jsonArray.getString(0)).getString("REG_START_DATE"));
-                            tvEDate.setText(new JSONObject(jsonArray.getString(0)).getString("REG_END_DATE"));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                try {
-                    param.put("job_id",jo.getString("job_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return param;
-            }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(request);
-
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
