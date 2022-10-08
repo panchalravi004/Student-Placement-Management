@@ -1,22 +1,30 @@
 package com.govt.spm;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Environment;
+import android.telephony.cdma.CdmaCellLocation;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -28,13 +36,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.File;
+//import org.apache.commons.io.FileUtils;
+import org.json.*;
 
 public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
     Context context;
@@ -333,7 +349,16 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                 context.startActivity(i);
             }
         });
-
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    getExcelData(jo.getString("job_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -342,6 +367,74 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         });
 
         dialog.show();
+    }
+
+    private void getExcelData(String job_id) {
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_JOB_APLICANT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "onResponse: "+response);
+//                        File file = new File("/");
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+                                ActivityCompat.requestPermissions((Activity) context,new String[]{
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+
+                                String filename = "test.csv";
+                                String csv = CDL.toString(jsonArray);
+                                Log.i(TAG, "Excel onResponse: "+csv);
+                                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                                FileOutputStream fos;
+                                try {
+//                                    dir.mkdir();
+                                    File file = new File(dir,filename);
+//                                    file.createNewFile();
+                                    fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
+                                    fos.write(csv.getBytes());
+//                                    fos.flush();
+                                    fos.close();
+                                    Log.i(TAG, "onResponse: Saved");
+                                    Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("job_id",job_id);
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
+
+
     }
 
     private void deleteJobPost(String job_id,String creator_id,String command){

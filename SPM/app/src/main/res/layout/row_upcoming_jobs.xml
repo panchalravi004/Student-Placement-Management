@@ -22,16 +22,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/spm_blue_40_left_round"
-            android:padding="2sp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15sp"
             android:text="Info it Solution Pvt. ltd."
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textColor="@color/white"
             android:textSize="@dimen/title" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="120sp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@drawable/spm_blue_30_right_round"
             android:gravity="center"
             android:orientation="horizontal"

@@ -1,12 +1,16 @@
 package com.govt.spm;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -16,17 +20,40 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OfficerDashboardActivity extends AppCompatActivity {
 
     private ImageButton btnMenuBar, btnSearch, btnSelectedStudent;
     private EditText etSearch;
     private TextView tvStudentCount,tvCompanyCount,tvJobsCount,tvComingSoonCount;
-    private ListView upcoming_company_list;
+    private RecyclerView view_jobs_rv;
+    private LinearLayoutManager manager;
     private UpcomingJobsAdapter uca;
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
+    private static final String TAG = "SPM_ERROR";
+
+    private JSONArray jsonJob;
+    private UpcomingJobsAdapter uja;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,33 +70,16 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         tvComingSoonCount = (TextView) findViewById(R.id.tvODComingSoonCount);
 
         etSearch = (EditText) findViewById(R.id.etODSearch);
-        upcoming_company_list = (ListView) findViewById(R.id.list_OD_upcoming_company);
-
+        view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_company);
+//        view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_jobs);
+        manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
 
-        //Upcoming company list set
-        ArrayList<String> company_name = new ArrayList<String>();
-        ArrayList<String> college_name = new ArrayList<String>();
-        ArrayList<String> register_end_date = new ArrayList<String>();
+        jsonJob = new JSONArray();
 
-        company_name.add("ABCD One Technology");
-        company_name.add("ABCD Two Technology");
-        company_name.add("ABCD Three Technology");
-        company_name.add("ABCD Four Technology");
-
-        college_name.add("AMPICS");
-        college_name.add("AMPICS");
-        college_name.add("AMPICS");
-        college_name.add("AMPICS");
-
-        register_end_date.add("28-09-2022");
-        register_end_date.add("29-09-2022");
-        register_end_date.add("30-09-2022");
-        register_end_date.add("30-09-2022");
-
-        uca = new UpcomingJobsAdapter(OfficerDashboardActivity.this,company_name,college_name,register_end_date);
-        upcoming_company_list.setAdapter(uca);
+        //CALL METHOD
+        getJobList(userPref.getString("univ_id","univ_id"));
 
         //When click on menu bar button open popupmenu
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +124,78 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         });
         pm.setForceShowIcon(true);
         pm.show();
+    }
+
+    private void getJobList(String univ_id){
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_JOB_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "onResponse: "+response);
+                        try {
+                            jsonJob = new JSONArray(response);
+
+                            JSONArray sorted = new JSONArray();
+
+                            List list = new ArrayList();
+                            for(int i = 0; i < jsonJob.length(); i++) {
+                                list.add(jsonJob.getJSONObject(i));
+                            }
+                            Log.i(TAG, "onResponse: unsorted "+jsonJob);
+
+                            Collections.sort(list, new Comparator<JSONObject>() {
+
+                                private static final String KEY_NAME = "reg_end_date";
+                                @Override
+                                public int compare(JSONObject a, JSONObject b) {
+
+                                    String str1 = new String();
+                                    String str2 = new String();
+                                    try {
+                                        str1 = (String)a.get(KEY_NAME);
+                                        str2 = (String)b.get(KEY_NAME);
+
+                                    } catch(JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    return str1.compareTo(str2);
+                                }
+                            });
+                            for(int i = 0; i < jsonJob.length(); i++) {
+                                sorted.put(list.get(i));
+                            }
+                            Log.i(TAG, "onResponse: sorted "+sorted);
+
+
+                            uja = new UpcomingJobsAdapter(OfficerDashboardActivity.this,sorted);
+                            view_jobs_rv.setAdapter(uja);
+                            view_jobs_rv.setLayoutManager(manager);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("univ_id",univ_id);
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(OfficerDashboardActivity.this);
+        requestQueue.add(request);
     }
 
     private void logout() {

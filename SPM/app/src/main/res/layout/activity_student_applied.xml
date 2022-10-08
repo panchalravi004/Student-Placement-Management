@@ -101,7 +101,8 @@
                 android:elevation="5sp"
                 android:entries="@array/filter"
                 android:padding="5sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/spStudentAppliedFilterTwo"
@@ -113,7 +114,8 @@
                 android:elevation="5sp"
                 android:entries="@array/filter"
                 android:padding="5sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Result : 700 Found" />
+                android:text="Result : 0 Found" />
 
         </LinearLayout>
     </LinearLayout>

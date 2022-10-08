@@ -217,7 +217,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/main_title" />
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_SD_upcoming_jobs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

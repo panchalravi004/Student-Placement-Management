@@ -101,7 +101,8 @@
                 android:elevation="5sp"
                 android:entries="@array/filter"
                 android:padding="5sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/spViewJobsFilterTwo"
@@ -113,7 +114,8 @@
                 android:elevation="5sp"
                 android:entries="@array/filter"
                 android:padding="5sp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout

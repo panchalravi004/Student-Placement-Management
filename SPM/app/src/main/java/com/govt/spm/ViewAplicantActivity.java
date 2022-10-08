@@ -14,11 +14,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -31,7 +34,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +45,7 @@ public class ViewAplicantActivity extends AppCompatActivity {
     private EditText etSearch;
     private ImageButton btnSearch;
     private TextView tvTtitle;
+    private CheckBox isSelected;
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
@@ -53,6 +59,8 @@ public class ViewAplicantActivity extends AppCompatActivity {
     private JSONArray jsonJob;
     private Intent myInt;
 
+    FileOutputStream fos;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +73,11 @@ public class ViewAplicantActivity extends AppCompatActivity {
         tvTtitle = (TextView) findViewById(R.id.tvViewAplicantTitle);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
+        isSelected = (CheckBox) findViewById(R.id.cbViewAplicantSelected);
         myInt = getIntent();
         totalDBItem = 10;
         jsonJob = new JSONArray();
+
 
         //CALL METHOD
         getJobAplicant(myInt.getStringExtra("JOB_ID"));
@@ -124,9 +134,40 @@ public class ViewAplicantActivity extends AppCompatActivity {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
 
+                            TextView te = (TextView) findViewById(R.id.tvViewAplicantResultCount);
+                            te.setText("Result : "+jsonJob.length()+" Found");
                             vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,jsonJob);
                             view_jobs_rv.setAdapter(vaa);
                             view_jobs_rv.setLayoutManager(manager);
+
+                            isSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                    try {
+                                        if(b){
+                                            JSONArray temp = filterGetSelected(jsonJob);
+                                            te.setText("Result : "+temp.length()+" Found");
+                                            vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,temp);
+                                            view_jobs_rv.setAdapter(vaa);
+                                            view_jobs_rv.setLayoutManager(manager);
+                                            vaa.notifyDataSetChanged();
+                                        }else{
+
+                                            te.setText("Result : "+jsonJob.length()+" Found");
+                                            vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,new JSONArray(response));
+                                            view_jobs_rv.setAdapter(vaa);
+                                            view_jobs_rv.setLayoutManager(manager);
+                                            vaa.notifyDataSetChanged();
+
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -151,6 +192,22 @@ public class ViewAplicantActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ViewAplicantActivity.this);
         requestQueue.add(request);
+    }
+    private JSONArray filterGetSelected(JSONArray jsonJob){
+        JSONArray result = new JSONArray();
+
+        for (int i = 0; i < jsonJob.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(jsonJob.getString(i));
+                if(jo.getString("is_placed").equals("1")){
+                    result.put(jo);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
     }
 
     public void goToBack(View view) {
