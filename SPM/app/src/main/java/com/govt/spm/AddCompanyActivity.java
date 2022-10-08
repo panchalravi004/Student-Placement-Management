@@ -3,16 +3,23 @@ package com.govt.spm;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,11 +49,19 @@ public class AddCompanyActivity extends AppCompatActivity {
     private Spinner spCountry,spState,spCity;
     private SharedPreferences userPref;
     private ProgressDialog dialog;
+    private ImageView img;
+    private ImageButton btnSelect,btnUpload;
 
     private JSONArray jsonCountry;
     private JSONArray jsonState;
     private JSONArray jsonCity;
     private Intent myIntent;
+
+    private final int PICK_IMAGE_REQUEST = 22;
+    private Uri filePath;
+    private Bitmap bitmap;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +80,11 @@ public class AddCompanyActivity extends AppCompatActivity {
         spCity = (Spinner) findViewById(R.id.spAddCompanyCity);
         btnAdd = (Button) findViewById(R.id.btnAddCompanyAdd);
         btnUpdate = (Button) findViewById(R.id.btnAddCompanyUpdate);
-
+        
+        img = (ImageView) findViewById(R.id.ivAddCompanyImage);
+        btnSelect = (ImageButton) findViewById(R.id.btnAddCompanySelect);
+        btnUpload = (ImageButton) findViewById(R.id.btnAddCompanyUploadImage);
+        
         dialog = new ProgressDialog(AddCompanyActivity.this);
 
         myIntent = getIntent();
@@ -130,6 +150,104 @@ public class AddCompanyActivity extends AppCompatActivity {
             }
         });
 
+        btnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage();
+            }
+        });
+
+    }
+
+    private void uploadImage() {
+        if(filePath != null) {
+            ProgressDialog pd = new ProgressDialog(this);
+            pd.setMessage("Uploading...");
+            pd.show();
+//            Toast.makeText(this, (CharSequence) filePath, Toast.LENGTH_SHORT).show();
+
+            StringRequest request = new StringRequest(
+                    Request.Method.POST,
+                    Constants.UPLOAD_IMAGE,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            pd.dismiss();
+                            Log.i(TAG, "onResponse: "+response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        }
+                    }){
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("uploaded_file", String.valueOf(bitmap));
+                    return params;
+                }
+            };
+            DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            request.setRetryPolicy(retryPolicy);
+            request.setShouldCache(false);
+            RequestQueue requestQueue = Volley.newRequestQueue(AddCompanyActivity.this);
+            requestQueue.add(request);
+        }
+    }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private void selectImage() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(i,"Select Image From Here..."),
+                PICK_IMAGE_REQUEST);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
+                img.setImageBitmap(bitmap);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setProfile(String company_id){
@@ -481,3 +599,4 @@ public class AddCompanyActivity extends AppCompatActivity {
         finish();
     }
 }
+

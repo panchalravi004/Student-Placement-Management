@@ -54,6 +54,46 @@
             android:orientation="vertical"
             android:padding="10sp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnAddCompanySelect"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/spm_green_all_round"
+                    android:padding="5sp"
+                    app:srcCompat="@drawable/icon_camera_white" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="60sp"
+                    android:layout_height="60sp"
+                    android:layout_margin="5sp"
+                    android:elevation="5sp"
+                    app:cardCornerRadius="60sp">
+
+                    <ImageView
+                        android:id="@+id/ivAddCompanyImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </androidx.cardview.widget.CardView>
+
+                <ImageButton
+                    android:id="@+id/btnAddCompanyUploadImage"
+                    android:layout_width="80sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/spm_blue_30_all_round"
+                    android:padding="5sp"
+                    app:srcCompat="@drawable/icon_upload_white" />
+            </LinearLayout>
+
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

@@ -31,4 +31,7 @@ public class Constants {
     public static final String GET_JOB_APLICANT = ROOT_URL+"getJobApplications.php";
     public static final String UPDATE_JOB_APLICANT_STATUS = ROOT_URL+"updateJobAppStatus.php";
 
+    public static final String UPLOAD_IMAGE = ROOT_URL+"UploadBrowser.php";
+
+
 }
