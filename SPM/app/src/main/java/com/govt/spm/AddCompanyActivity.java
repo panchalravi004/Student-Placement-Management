@@ -197,6 +197,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("file_name","ravi.jpeg");
+                    params.put("upload_type",Constants.UPLOAD_TYPE_BROWSER);
                     params.put("uploaded_file", getBitmapString(bitmap));
                     return params;
                 }

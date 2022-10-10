@@ -31,7 +31,12 @@ public class Constants {
     public static final String GET_JOB_APLICANT = ROOT_URL+"getJobApplications.php";
     public static final String UPDATE_JOB_APLICANT_STATUS = ROOT_URL+"updateJobAppStatus.php";
 
-    public static final String UPLOAD_IMAGE = ROOT_URL+"UploadBrowser.php";
+    public static final String UPLOAD_IMAGE = ROOT_URL+"UploadFile.php";
+
+    // File-Upload Identifier Params
+    public static final String UPLOAD_TYPE_BROWSER = "cmp_browser";
+    public static final String UPLOAD_TYPE_PROFILE = "profile_pic";
+    public static final String UPLOAD_TYPE_RESUME = "stud_resume";
 
 
 }
