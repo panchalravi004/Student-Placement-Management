@@ -85,7 +85,6 @@
     <!--  String array for filter.   -->
     <string-array name="filter">
         <item>filter</item>
-        <item>no filter</item>
     </string-array>
 
     <string-array name="cmp_filter">

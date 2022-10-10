@@ -72,7 +72,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         jsonJob = new JSONArray();
 
         //CALL METHOD
-        getJobList(userPref.getString("univ_id","univ_id"));
+//        getJobList(userPref.getString("univ_id","univ_id"));
 
         //When click on menu bar button open popupmenu
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +82,13 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 openPopUpMenu();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //CALL METHOD
+        getJobList(userPref.getString("univ_id","univ_id"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)

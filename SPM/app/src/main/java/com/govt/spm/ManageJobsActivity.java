@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,9 +40,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ManageJobsActivity extends AppCompatActivity {
-    private ImageButton btnSearch,btnAdd;
+    private ImageButton btnSearch,btnAdd,btnFilter;
     private EditText etSearch;
-    private Spinner spFilterOne,spFilterTwo;
     private TextView tvResultCount;
 
     private RecyclerView jobs_rv;
@@ -66,8 +66,6 @@ public class ManageJobsActivity extends AppCompatActivity {
         btnSearch = (ImageButton) findViewById(R.id.btnManageJobsSearch);
         btnAdd = (ImageButton) findViewById(R.id.btnManageJobsAddJobs);
         etSearch = (EditText) findViewById(R.id.etManageJobsSearch);
-        spFilterOne = (Spinner) findViewById(R.id.spManageJobsFilterOne);
-        spFilterTwo = (Spinner) findViewById(R.id.spManageJobsFilterTwo);
         tvResultCount = (TextView) findViewById(R.id.tvManageJobsResultCount);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreManageJobs);
 
@@ -83,7 +81,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         }
 
         //CALL METHOD
-        getJobList(userPref.getString("univ_id","univ_id"));
+//        getJobList(userPref.getString("univ_id","univ_id"));
         //LISTENER
         jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -110,6 +108,12 @@ public class ManageJobsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getJobList(userPref.getString("univ_id","univ_id"));
     }
 
     private void fetchData(){
@@ -140,6 +144,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                             ja = new JobsAdapter(ManageJobsActivity.this,jsonJob);
                             jobs_rv.setAdapter(ja);
                             jobs_rv.setLayoutManager(manager);
+                            setFilter(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -164,6 +169,19 @@ public class ManageJobsActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageJobsActivity.this);
         requestQueue.add(request);
+    }
+
+    private void setFilter(String response){
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog dialog = new Dialog(ManageJobsActivity.this,R.style.DialogStyle);
+                dialog.setContentView(R.layout.dialog_details_jobs_post);
+                dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
+
+            }
+        });
+
     }
 
     public void goToDashboard(View view) {

@@ -148,11 +148,8 @@ public class OfficerProfileActivity extends AppCompatActivity {
         String college = null;
         String dept = null;
         try {
-            JSONObject collegeJo = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition()));
-            college = collegeJo.getString("college_id");
-            JSONObject deptJo = new JSONObject(jsonDept.getString(spDept.getSelectedItemPosition()));
-            dept = deptJo.getString("dept_id");
-
+            college = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition())).getString("college_id");
+            dept = new JSONObject(jsonDept.getString(spDept.getSelectedItemPosition())).getString("dept_id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -311,20 +308,12 @@ public class OfficerProfileActivity extends AppCompatActivity {
                                     deptsList.add(new String("There is no Data"));
                                 }
                             }else{
-                                deptsList.clear();
                                 for(int i=0;i<jsonDept.length();i++){
                                     JSONObject jo = new JSONObject(jsonDept.getString(i));
-//                                    if(userPref.getString("dept_id","dept_id").equals(jo.getString("dept_id"))){
-//                                        deptsList.add(0,jo.getString("dept_name"));
-//                                    }else{
-                                        deptsList.add(jo.getString("dept_name"));
-//                                    }
-
-//                                    Log.i(TAG, "onResponse: "+jo.getString("dept_name"));
+                                    deptsList.add(jo.getString("dept_name"));
                                 }
                             }
                             adapterDept.notifyDataSetChanged();
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

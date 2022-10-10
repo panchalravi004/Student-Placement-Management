@@ -89,8 +89,8 @@ public class ManageCompanyActivity extends AppCompatActivity {
         jsonCity = new JSONArray();
 
         //call methods
-        getCompanies();
-        fetchCountry();
+//        getCompanies();
+//        fetchCountry();
 
         //listener
         company_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -115,6 +115,13 @@ public class ManageCompanyActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCompanies();
+        fetchCountry();
     }
 
     private void fetchData() {
@@ -149,95 +156,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                             ca = new CompanyAdapter(ManageCompanyActivity.this, new JSONArray(response));
                             company_rv.setAdapter(ca);
                             company_rv.setLayoutManager(manager);
-
-                            //First Filter For Country
-                            spFilterCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    try {
-                                        if(String.valueOf(i).equals("0")){
-                                            jsonCompany = new JSONArray(response);
-                                            tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                                            ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
-                                            company_rv.setAdapter(ca);
-                                            company_rv.setLayoutManager(manager);
-                                            ca.notifyDataSetChanged();
-                                        }else{
-                                            jsonCompany = filterByCountry(new JSONArray(response),new JSONObject(jsonCountry.getString(i-1)).getString("country_name"),new JSONObject(jsonCountry.getString(i-1)).getString("country_id"));
-                                            tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                                            ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
-                                            company_rv.setAdapter(ca);
-                                            company_rv.setLayoutManager(manager);
-                                            ca.notifyDataSetChanged();
-                                            //Fetch State
-                                            JSONObject jo = new JSONObject(jsonCountry.getString(i-1));
-                                            fetchState(jo.getString("country_id"));
-                                            //Second Filter By State
-                                            spFilterState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                @Override
-                                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                    try{
-                                                        if(String.valueOf(i).equals("0")){
-                                                            tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                                                            ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
-                                                            company_rv.setAdapter(ca);
-                                                            company_rv.setLayoutManager(manager);
-                                                            ca.notifyDataSetChanged();
-                                                        }else {
-                                                            JSONArray jsonStateCompany = filterByState(jsonCompany, new JSONObject(jsonState.getString(i - 1)).getString("state_name"), new JSONObject(jsonState.getString(i - 1)).getString("state_id"));
-                                                            tvCount.setText("Result : " + jsonStateCompany.length() + " Found");
-                                                            ca = new CompanyAdapter(ManageCompanyActivity.this, jsonStateCompany);
-                                                            company_rv.setAdapter(ca);
-                                                            company_rv.setLayoutManager(manager);
-                                                            ca.notifyDataSetChanged();
-                                                            //Fetch City
-                                                            JSONObject jo = new JSONObject(jsonState.getString(i - 1));
-                                                            fetchCity(jo.getString("state_id"));
-                                                            spFilterCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                                @Override
-                                                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                                    try{
-                                                                        if(String.valueOf(i).equals("0")){
-                                                                            tvCount.setText("Result : "+ jsonStateCompany.length()+" Found");
-                                                                            ca = new CompanyAdapter(ManageCompanyActivity.this, jsonStateCompany);
-                                                                            company_rv.setAdapter(ca);
-                                                                            company_rv.setLayoutManager(manager);
-                                                                            ca.notifyDataSetChanged();
-                                                                        }else {
-                                                                            JSONArray jsonCityCompany = filterByCity(jsonStateCompany, new JSONObject(jsonCity.getString(i - 1)).getString("city_name"), new JSONObject(jsonCity.getString(i - 1)).getString("city_id"));
-                                                                            tvCount.setText("Result : " + jsonCityCompany.length() + " Found");
-                                                                            ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCityCompany);
-                                                                            company_rv.setAdapter(ca);
-                                                                            company_rv.setLayoutManager(manager);
-                                                                            ca.notifyDataSetChanged();
-                                                                        }
-                                                                    } catch (JSONException e) {
-                                                                        e.printStackTrace();
-                                                                    }
-                                                                }
-
-                                                                @Override
-                                                                public void onNothingSelected(AdapterView<?> adapterView) {}
-                                                            });
-                                                        }
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onNothingSelected(AdapterView<?> adapterView) {}
-                                            });
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {}
-                            });
+                            setFilterSpinner(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -255,6 +174,97 @@ public class ManageCompanyActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageCompanyActivity.this);
         requestQueue.add(request);
+    }
+
+    private void setFilterSpinner(String response){
+        TextView tvCount = (TextView) findViewById(R.id.tvManageCompanyResultCount);
+        spFilterCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    if(String.valueOf(i).equals("0")){
+                        jsonCompany = new JSONArray(response);
+                        tvCount.setText("Result : "+ jsonCompany.length()+" Found");
+                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
+                        company_rv.setAdapter(ca);
+                        company_rv.setLayoutManager(manager);
+                        ca.notifyDataSetChanged();
+                    }else{
+                        jsonCompany = filterByCountry(new JSONArray(response),new JSONObject(jsonCountry.getString(i-1)).getString("country_name"),new JSONObject(jsonCountry.getString(i-1)).getString("country_id"));
+                        tvCount.setText("Result : "+ jsonCompany.length()+" Found");
+                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
+                        company_rv.setAdapter(ca);
+                        company_rv.setLayoutManager(manager);
+                        ca.notifyDataSetChanged();
+                        //Fetch State
+                        JSONObject jo = new JSONObject(jsonCountry.getString(i-1));
+                        fetchState(jo.getString("country_id"));
+                        //Second Filter By State
+                        spFilterState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                try{
+                                    if(String.valueOf(i).equals("0")){
+                                        tvCount.setText("Result : "+ jsonCompany.length()+" Found");
+                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
+                                        company_rv.setAdapter(ca);
+                                        company_rv.setLayoutManager(manager);
+                                        ca.notifyDataSetChanged();
+                                    }else {
+                                        JSONArray jsonStateCompany = filterByState(jsonCompany, new JSONObject(jsonState.getString(i - 1)).getString("state_name"), new JSONObject(jsonState.getString(i - 1)).getString("state_id"));
+                                        tvCount.setText("Result : " + jsonStateCompany.length() + " Found");
+                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonStateCompany);
+                                        company_rv.setAdapter(ca);
+                                        company_rv.setLayoutManager(manager);
+                                        ca.notifyDataSetChanged();
+                                        //Fetch City
+                                        JSONObject jo = new JSONObject(jsonState.getString(i - 1));
+                                        fetchCity(jo.getString("state_id"));
+                                        spFilterCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                            @Override
+                                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                                try{
+                                                    if(String.valueOf(i).equals("0")){
+                                                        tvCount.setText("Result : "+ jsonStateCompany.length()+" Found");
+                                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonStateCompany);
+                                                        company_rv.setAdapter(ca);
+                                                        company_rv.setLayoutManager(manager);
+                                                        ca.notifyDataSetChanged();
+                                                    }else {
+                                                        JSONArray jsonCityCompany = filterByCity(jsonStateCompany, new JSONObject(jsonCity.getString(i - 1)).getString("city_name"), new JSONObject(jsonCity.getString(i - 1)).getString("city_id"));
+                                                        tvCount.setText("Result : " + jsonCityCompany.length() + " Found");
+                                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCityCompany);
+                                                        company_rv.setAdapter(ca);
+                                                        company_rv.setLayoutManager(manager);
+                                                        ca.notifyDataSetChanged();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onNothingSelected(AdapterView<?> adapterView) {}
+                                        });
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {}
+                        });
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
     }
 
     private JSONArray filterByCountry(JSONArray allCompany,String country_name,String country_id) {

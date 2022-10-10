@@ -383,29 +383,35 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
 
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                                 ActivityCompat.requestPermissions((Activity) context,new String[]{
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
                                 String filename = "test.csv";
                                 String csv = CDL.toString(jsonArray);
                                 Log.i(TAG, "Excel onResponse: "+csv);
-                                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                                FileOutputStream fos;
+                                File dir = Environment.getExternalStoragePublicDirectory("MyNewDir");
+//                                FileOutputStream fos;
                                 try {
-//                                    dir.mkdir();
-                                    File file = new File(dir,filename);
-//                                    file.createNewFile();
-                                    fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
+                                    dir.mkdirs();
+                                } catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                File contentFile = new File(dir,filename);
+                                try {
+                                    FileOutputStream fos = new FileOutputStream(contentFile);
                                     fos.write(csv.getBytes());
-//                                    fos.flush();
-                                    fos.close();
-                                    Log.i(TAG, "onResponse: Saved");
                                     Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
+
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
+
+//                                fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
+//                                fos = new FileOutputStream(file);
+//                                fos.write(csv.getBytes());
+//                                fos.close();
+//                                Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {

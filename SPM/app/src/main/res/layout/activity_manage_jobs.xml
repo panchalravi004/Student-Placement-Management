@@ -89,37 +89,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="clip_horizontal|center"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/spManageJobsFilterOne"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:layout_weight="1"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
-                android:entries="@array/filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
-
-            <Spinner
-                android:id="@+id/spManageJobsFilterTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:layout_weight="1"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
-                android:entries="@array/filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingLeft="10sp"
@@ -133,14 +102,27 @@
                 android:text="Result : 700 Found" />
 
             <ImageButton
-                android:id="@+id/btnManageJobsAddJobs"
+                android:id="@+id/btnManageJobsAddFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
                 android:background="@drawable/spm_blue_40_all_round"
                 android:elevation="5sp"
                 android:padding="5sp"
-                android:src="@drawable/icon_add_white"
+                app:srcCompat="@drawable/icon_filter_white" />
+
+            <ImageButton
+                android:id="@+id/btnManageJobsAddJobs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:background="@drawable/spm_blue_40_all_round"
+                android:elevation="5sp"
                 android:onClick="goToAddJobs"
+                android:padding="5sp"
+                android:src="@drawable/icon_add_white"
                 app:cornerRadius="20sp" />
         </LinearLayout>
     </LinearLayout>

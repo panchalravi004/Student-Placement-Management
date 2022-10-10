@@ -79,7 +79,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         jsonJob = new JSONArray();
 
         //CALL METHOD
-        getJobList(userPref.getString("univ_id","univ_id"));
+//        getJobList(userPref.getString("univ_id","univ_id"));
 
         //When click on menu bar button open popupmenu
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +89,13 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                 openPopUpMenu();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //CALL METHOD
+        getJobList(userPref.getString("univ_id","univ_id"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -143,7 +150,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                             for(int i = 0; i < jsonJob.length(); i++) {
                                 list.add(jsonJob.getJSONObject(i));
                             }
-                            Log.i(TAG, "onResponse: unsorted "+jsonJob);
+//                            Log.i(TAG, "onResponse: unsorted "+jsonJob);
 
                             Collections.sort(list, new Comparator<JSONObject>() {
 
@@ -166,7 +173,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                             for(int i = 0; i < jsonJob.length(); i++) {
                                 sorted.put(list.get(i));
                             }
-                            Log.i(TAG, "onResponse: sorted "+sorted);
+//                            Log.i(TAG, "onResponse: sorted "+sorted);
 
 
                             uja = new UpcomingJobsAdapter(OfficerDashboardActivity.this,sorted);
