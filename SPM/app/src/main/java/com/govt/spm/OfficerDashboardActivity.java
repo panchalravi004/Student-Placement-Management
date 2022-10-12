@@ -143,9 +143,10 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                         Log.i(TAG, "onResponse: "+response);
                         try {
                             jsonJob = new JSONArray(response);
+                            //set total job count
+                            tvJobsCount.setText(String.valueOf(jsonJob.length()));
 
                             JSONArray sorted = new JSONArray();
-
                             List list = new ArrayList();
                             for(int i = 0; i < jsonJob.length(); i++) {
                                 list.add(jsonJob.getJSONObject(i));

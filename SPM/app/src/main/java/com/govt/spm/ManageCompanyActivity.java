@@ -218,8 +218,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                                         company_rv.setLayoutManager(manager);
                                         ca.notifyDataSetChanged();
                                         //Fetch City
-                                        JSONObject jo = new JSONObject(jsonState.getString(i - 1));
-                                        fetchCity(jo.getString("state_id"));
+                                        fetchCity(new JSONObject(jsonState.getString(i - 1)).getString("state_id"));
                                         spFilterCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                             @Override
                                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

@@ -110,4 +110,8 @@
         <item>No Data Found</item>
     </string-array>
 
+    <string name="file_provider_authority"
+        translatable="false">com.govt.spm.provider
+</string>
+
 </resources>

@@ -1,30 +1,30 @@
 package com.govt.spm;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.telephony.cdma.CdmaCellLocation;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +36,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,10 +44,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.OutputStreamWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 //import org.apache.commons.io.FileUtils;
 import org.json.*;
 
@@ -62,6 +63,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
 
     private static final String TAG = "SPM_ERROR";
     Button btnShare,btnApply,btnShowAplicant;
+    Uri URI = null;
+    private static final int PICK_FROM_GALLERY = 101;
     public JobsAdapter(Context context,JSONArray jobs){
         this.context = context;
         this.jobs = jobs;
@@ -353,7 +356,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             @Override
             public void onClick(View view) {
                 try {
-                    getExcelData(jo.getString("job_id"));
+                    getExcelData(jo.getString("job_id"),tvCompanyName.getText().toString(),jo);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -369,11 +372,12 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         dialog.show();
     }
 
-    private void getExcelData(String job_id) {
+    private void getExcelData(String job_id,String company_name,JSONObject jo) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.GET_JOB_APLICANT,
                 new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onResponse(String response) {
                         Log.i(TAG, "onResponse: "+response);
@@ -385,33 +389,31 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                                 ActivityCompat.requestPermissions((Activity) context,new String[]{
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
-                                String filename = "test.csv";
+                                String filename = company_name+"_"+""+new JSONObject(jsonArray.getString(0)).getString("job_id")+"_"+String.valueOf(java.time.LocalDate.now())+".csv";
                                 String csv = CDL.toString(jsonArray);
-                                Log.i(TAG, "Excel onResponse: "+csv);
-                                File dir = Environment.getExternalStoragePublicDirectory("MyNewDir");
-//                                FileOutputStream fos;
+                                FileOutputStream fos;
                                 try {
-                                    dir.mkdirs();
-                                } catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                                File contentFile = new File(dir,filename);
-                                try {
-                                    FileOutputStream fos = new FileOutputStream(contentFile);
-                                    fos.write(csv.getBytes());
-                                    Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
-
+                                    File myFile = new File("/sdcard/"+filename);
+                                    myFile.createNewFile();
+                                    fos = new FileOutputStream(myFile);
+                                    OutputStreamWriter osw = new OutputStreamWriter(fos);
+                                    osw.append(csv);
+                                    osw.close();
+                                    fos.close();
+//                                    fos.write(csv.getBytes());
+                                    Toast.makeText(context, "saved "+myFile.getPath(), Toast.LENGTH_SHORT).show();
+                                    //send email
+                                    Uri ur = Uri.parse(myFile.getPath());
+                                    if(!tvHR1Email.getText().toString().equals(null) || !tvHR1Email.getText().toString().equals("null")){
+                                        sendEmail(new String[]{tvHR1Email.getText().toString(),tvHR2Email.getText().toString()}, FileProvider.getUriForFile(context,context.getApplicationContext().getPackageName() + ".provider",myFile),jo);
+                                    }else{
+                                        sendEmail(new String[]{tvHR1Email.getText().toString()}, FileProvider.getUriForFile(context,context.getApplicationContext().getPackageName() + ".provider",myFile),jo);
+                                    }
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-
-//                                fos = context.openFileOutput(filename,Context.MODE_PRIVATE);
-//                                fos = new FileOutputStream(file);
-//                                fos.write(csv.getBytes());
-//                                fos.close();
-//                                Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
@@ -440,7 +442,33 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
 
+    }
 
+    private void sendEmail(String[] hrEmails, Uri uri,JSONObject jo) throws JSONException {
+        SharedPreferences userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
+        String message = "Greeting, We will send a list of applicant with the attachment for the requirement of "
+                +jo.getString("role")
+                +", Where minimum qualification is "
+                +jo.getString("min_qualification")
+                +" and Registration Ending on "
+                +jo.getString("reg_end_date")+"."
+                +"Thank You.";
+        try{
+            final Intent email = new Intent(Intent.ACTION_SEND);
+
+//            email.setType("plain/text");
+            email.setType("application/excel");
+            email.putExtra(Intent.EXTRA_EMAIL,hrEmails);
+            email.putExtra(Intent.EXTRA_SUBJECT,userPref.getString("univ","univ")+" | Job Applicant");
+            email.putExtra(Intent.EXTRA_TEXT,message);
+            if(uri != null){
+                email.putExtra(Intent.EXTRA_STREAM,uri);
+            }
+            context.startActivity(Intent.createChooser(email,"Sending Email..."));
+            Toast.makeText(context, "Sent", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void deleteJobPost(String job_id,String creator_id,String command){
@@ -484,4 +512,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
     }
+
+
 }

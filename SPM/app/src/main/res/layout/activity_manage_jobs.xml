@@ -61,7 +61,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_left_round"
                 android:ems="10"
-                android:hint="@string/type_here"
+                android:hint="search by skills - java, python ..."
                 android:inputType="textPersonName"
                 android:padding="6sp"
                 android:textAlignment="center"
@@ -100,6 +100,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Result : 700 Found" />
+            <ImageButton
+                android:id="@+id/btnManageJobsRefresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp"
+                android:background="@drawable/spm_blue_40_all_round"
+                android:elevation="5sp"
+                android:padding="5sp"
+                app:srcCompat="@drawable/icon_refresh_white" />
 
             <ImageButton
                 android:id="@+id/btnManageJobsAddFilter"
