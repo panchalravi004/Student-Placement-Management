@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewStudentActivity extends AppCompatActivity {
@@ -138,6 +139,19 @@ public class ViewStudentActivity extends AppCompatActivity {
                             student_rv.setAdapter(sa);
                             student_rv.setLayoutManager(manager);
 
+                            //search the data
+                            btnSearch.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(!etSearch.getText().equals("")){
+                                        JSONArray searchedStudent =  filterBySearch(jsonStudent,etSearch.getText().toString());
+                                        tvCount.setText("Result : "+ searchedStudent.length()+" Found");
+                                        sa = new StudentAdapter(ViewStudentActivity.this,searchedStudent);
+                                        student_rv.setAdapter(sa);
+                                        student_rv.setLayoutManager(manager);
+                                    }
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -166,6 +180,26 @@ public class ViewStudentActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ViewStudentActivity.this);
         requestQueue.add(request);
+    }
+
+    //search the data
+    private JSONArray filterBySearch(JSONArray allStudent,String searchText){
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < allStudent.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(allStudent.getString(i));
+                String searchTextLower = searchText.toLowerCase(Locale.ROOT);
+                String nameLower = jo.getString("stud_name").toLowerCase(Locale.ROOT);
+
+                if(nameLower.contains(searchTextLower)){
+                    result.put(jo);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     public void goToDashboard(View view) {

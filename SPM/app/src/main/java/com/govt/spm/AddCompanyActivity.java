@@ -591,4 +591,8 @@ public class AddCompanyActivity extends AppCompatActivity {
         etDomain.setText("");
         etAdd.setText("");
     }
+
+    public void goToDashboard(View view) {
+        finish();
+    }
 }

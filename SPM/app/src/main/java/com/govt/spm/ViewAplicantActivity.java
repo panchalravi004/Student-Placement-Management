@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewAplicantActivity extends AppCompatActivity {
@@ -168,6 +169,21 @@ public class ViewAplicantActivity extends AppCompatActivity {
                                 }
                             });
 
+                            //search the data
+                            btnSearch.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(!etSearch.getText().equals("")){
+                                        JSONArray searchedStudent =  filterBySearch(jsonJob,etSearch.getText().toString());
+                                        te.setText("Result : "+searchedStudent.length()+" Found");
+                                        vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,searchedStudent);
+                                        view_jobs_rv.setAdapter(vaa);
+                                        view_jobs_rv.setLayoutManager(manager);
+                                        vaa.notifyDataSetChanged();
+                                    }
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -193,6 +209,7 @@ public class ViewAplicantActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(ViewAplicantActivity.this);
         requestQueue.add(request);
     }
+    //filter selected student
     private JSONArray filterGetSelected(JSONArray jsonJob){
         JSONArray result = new JSONArray();
 
@@ -206,6 +223,27 @@ public class ViewAplicantActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+        }
+        return result;
+    }
+
+    //filter by search
+    private JSONArray filterBySearch(JSONArray allJobs,String searchText){
+        JSONArray result = new JSONArray();
+        Log.i(TAG, "filterByOwnJobs: "+allJobs);
+        for (int i = 0; i < allJobs.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(allJobs.getString(i));
+                String searchTextLower = searchText.toLowerCase(Locale.ROOT);
+                String nameLower = jo.getString("stud_name").toLowerCase(Locale.ROOT);
+
+                if(nameLower.contains(searchTextLower)){
+                    result.put(jo);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return result;
     }

@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,8 +42,7 @@ import java.util.Map;
 
 public class OfficerDashboardActivity extends AppCompatActivity {
 
-    private ImageButton btnMenuBar, btnSearch, btnSelectedStudent;
-    private EditText etSearch;
+    private ImageButton btnMenuBar;
     private TextView tvStudentCount,tvCompanyCount,tvJobsCount,tvComingSoonCount;
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
@@ -61,15 +60,12 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_officer_dashboard);
 
         btnMenuBar = (ImageButton) findViewById(R.id.btnODMenuBar);
-        btnSearch = (ImageButton) findViewById(R.id.btnODSearch);
-        btnSelectedStudent = (ImageButton) findViewById(R.id.btnODSelectedStudent);
 
         tvStudentCount = (TextView) findViewById(R.id.tvODStudentCount);
         tvCompanyCount = (TextView) findViewById(R.id.tvODCompanyCount);
         tvJobsCount = (TextView) findViewById(R.id.tvODJobsCount);
         tvComingSoonCount = (TextView) findViewById(R.id.tvODComingSoonCount);
 
-        etSearch = (EditText) findViewById(R.id.etODSearch);
         view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_company);
 //        view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_jobs);
         manager = new LinearLayoutManager(this);
@@ -96,6 +92,8 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         super.onResume();
         //CALL METHOD
         getJobList(userPref.getString("univ_id","univ_id"));
+        getStudentsCount();
+        getCompaniesCount();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -138,6 +136,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                 Request.Method.POST,
                 Constants.GET_JOB_LIST,
                 new Response.Listener<String>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onResponse(String response) {
                         Log.i(TAG, "onResponse: "+response);
@@ -145,7 +144,8 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                             jsonJob = new JSONArray(response);
                             //set total job count
                             tvJobsCount.setText(String.valueOf(jsonJob.length()));
-
+                            //get coming soon job list
+                            tvComingSoonCount.setText(String.valueOf(getComingSoonJobCount(jsonJob)));
                             JSONArray sorted = new JSONArray();
                             List list = new ArrayList();
                             for(int i = 0; i < jsonJob.length(); i++) {
@@ -206,9 +206,99 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private int getComingSoonJobCount(JSONArray ja){
+        int count = 0;
+        LocalDate date = LocalDate.now();
+        for (int i = 0; i < ja.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(ja.getString(i));
+                if(jo.getString("reg_end_date").compareTo(String.valueOf(date)) > 0){
+                    count++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return count;
+    }
+
+    private void getStudentsCount(){
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_STUDENT_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONArray js = new JSONArray(response);
+                            tvStudentCount.setText(String.valueOf(js.length()));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("univ_id",userPref.getString("univ_id","univ_id"));
+                param.put("college_id",userPref.getString("college_id","college_id"));
+                param.put("dept_id",userPref.getString("dept_id","dept_id"));
+
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(OfficerDashboardActivity.this);
+        requestQueue.add(request);
+    }
+
+    private void getCompaniesCount(){
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_COMPANIES,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jc = new JSONArray(response);
+                            tvCompanyCount.setText(String.valueOf(jc.length()));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }
+        );
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(OfficerDashboardActivity.this);
+        requestQueue.add(request);
+    }
+
     private void logout() {
         editor.clear();
         editor.apply();
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 

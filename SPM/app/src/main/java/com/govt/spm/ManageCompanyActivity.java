@@ -41,6 +41,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -156,6 +157,25 @@ public class ManageCompanyActivity extends AppCompatActivity {
                             ca = new CompanyAdapter(ManageCompanyActivity.this, new JSONArray(response));
                             company_rv.setAdapter(ca);
                             company_rv.setLayoutManager(manager);
+                            //search on click
+                            btnSearch.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(!etSearch.getText().equals(null)){
+                                        try {
+                                            JSONArray temp = filterBySearch(new JSONArray(response),etSearch.getText().toString());
+                                            tvCount.setText("Result : "+ temp.length()+" Found");
+                                            ca = new CompanyAdapter(ManageCompanyActivity.this, temp);
+                                            company_rv.setAdapter(ca);
+                                            company_rv.setLayoutManager(manager);
+                                            ca.notifyDataSetChanged();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            });
+                            //filter
                             setFilterSpinner(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -317,6 +337,25 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        return result;
+    }
+
+    private JSONArray filterBySearch(JSONArray allCompany,String searchText){
+        JSONArray result = new JSONArray();
+
+        for (int i = 0; i < allCompany.length() ;i++) {
+            try {
+                JSONObject jo = new JSONObject(allCompany.getString(i));
+                String searchTxt = searchText.toLowerCase(Locale.ROOT);
+                String dataText = jo.getString("company_name").toLowerCase(Locale.ROOT);
+                if(dataText.contains(searchTxt)){
+                    result.put(jo);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         return result;
     }
 

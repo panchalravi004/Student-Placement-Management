@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_left_round"
                 android:ems="10"
-                android:hint="@string/type_here"
+                android:hint="search by student name"
                 android:inputType="textPersonName"
                 android:padding="6sp"
                 android:textAlignment="center"
@@ -98,7 +98,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
-                android:entries="@array/filter"
+                android:entries="@array/cmp_filter"
                 android:padding="5sp"
                 android:textAlignment="center" />
 
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_all_round"
                 android:elevation="5sp"
-                android:entries="@array/filter"
+                android:entries="@array/cmp_filter"
                 android:padding="5sp"
                 android:textAlignment="center" />
         </LinearLayout>
