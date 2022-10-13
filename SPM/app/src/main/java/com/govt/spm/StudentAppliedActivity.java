@@ -43,7 +43,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
     private ImageButton btnSearch;
     private Spinner spFilterOne,spFilterTwo;
     private TextView tvResultCount;
-    private CheckBox cbApproved;
+    private CheckBox cbApproved,cbSelected;
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
@@ -71,6 +71,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         cbApproved = (CheckBox) findViewById(R.id.cbJobApproved);
+        cbSelected = (CheckBox) findViewById(R.id.cbJobSelectedIn);
 
         totalDBItem = 10;
         jsonJob = new JSONArray();
@@ -174,6 +175,31 @@ public class StudentAppliedActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                            //get selected in  jobs
+                            cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                    try {
+                                        if(b){
+                                            JSONArray temp = filterGetSelected(jsonJob);
+                                            count.setText("Result : "+temp.length()+" Found");
+                                            vja = new AppliedJobAdapter(StudentAppliedActivity.this,temp);
+                                            view_jobs_rv.setAdapter(vja);
+                                            view_jobs_rv.setLayoutManager(manager);
+                                            vja.notifyDataSetChanged();
+                                        }else{
+
+                                            count.setText("Result : "+jsonJob.length()+" Found");
+                                            vja = new AppliedJobAdapter(StudentAppliedActivity.this,new JSONArray(response));
+                                            view_jobs_rv.setAdapter(vja);
+                                            view_jobs_rv.setLayoutManager(manager);
+                                            vja.notifyDataSetChanged();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -221,13 +247,29 @@ public class StudentAppliedActivity extends AppCompatActivity {
         return result;
     }
 
-    //filter selected student
+    //filter by approve application
     private JSONArray filterGetApproved(JSONArray jsonJob){
         JSONArray result = new JSONArray();
         for (int i = 0; i < jsonJob.length(); i++) {
             try {
                 JSONObject jo = new JSONObject(jsonJob.getString(i));
                 if(jo.getString("AppStat").equals("APPROVED")){
+                    result.put(jo);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+    //filter selected student
+    private JSONArray filterGetSelected(JSONArray jsonJob){
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < jsonJob.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(jsonJob.getString(i));
+                if(jo.getString("HasGotJobOffer").equals("1")){
                     result.put(jo);
                 }
             } catch (JSONException e) {

@@ -1,15 +1,24 @@
 package com.govt.spm;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +33,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +48,17 @@ public class StudentProfileActivity extends AppCompatActivity {
     private EditText etCountry,etState,etCity,etUniv,etCollege,etDept;
     private SharedPreferences userPref;
     private Button btnUpdate;
+    private ImageButton btnSelectProfileImage,btnUploadProfileImage,btnStudentProfileUploadResume,btnStudentProfileSelectResume;
+    private ImageView ivProfileImage;
     private static final String TAG = "SPM_ERROR";
     private ProgressDialog dialog;
+
+    private final int PICK_IMAGE_REQUEST = 22;
+    private final int PICK_FILE_REQUEST = 23;
+    private Uri filePath;
+    private Bitmap bitmap;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +91,12 @@ public class StudentProfileActivity extends AppCompatActivity {
         etCollege = (EditText) findViewById(R.id.etStudentProfileCollege);
         etDept = (EditText) findViewById(R.id.etStudentProfileDept);
 
+        btnSelectProfileImage = (ImageButton) findViewById(R.id.btnStudentProfileSelect);
+        btnUploadProfileImage = (ImageButton) findViewById(R.id.btnStudentProfileUploadImage);
+        btnStudentProfileSelectResume = (ImageButton) findViewById(R.id.btnStudentProfileSelectResume);
+        btnStudentProfileUploadResume = (ImageButton) findViewById(R.id.btnStudentProfileUploadResume);
+        ivProfileImage = (ImageView) findViewById(R.id.ivStudentProfileImage);
+
         dialog = new ProgressDialog(StudentProfileActivity.this);
 
         userPref = getSharedPreferences("user",MODE_PRIVATE);
@@ -81,7 +111,137 @@ public class StudentProfileActivity extends AppCompatActivity {
                 updateProfile();
             }
         });
+        btnSelectProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+        btnStudentProfileSelectResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectResume();
+            }
+        });
+        btnUploadProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage("PROFILE_IMAGE");;
+            }
+        });
+        btnStudentProfileUploadResume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImage("RESUME");
+            }
+        });
     }
+
+    private void uploadImage(String command) {
+        if (filePath != null) {
+            ProgressDialog pd = new ProgressDialog(this);
+            pd.setMessage("Uploading...");
+            pd.show();
+            StringRequest request = new StringRequest(
+                    Request.Method.POST,
+                    Constants.UPLOAD_IMAGE,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            pd.dismiss();
+                            Log.i(TAG, "onResponse: " + response);
+                            Toast.makeText(StudentProfileActivity.this, "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i(TAG, "onErrorResponse: " + error.getMessage());
+                        }
+                    }) {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    if(command.equals("RESUME")){
+                        params.put("file_name", userPref.getString("stud_id","stud_id")+"_RESUME_"+etName.getText().toString().trim()+".pdf");
+                        params.put("upload_type", Constants.UPLOAD_TYPE_RESUME);
+                        try {
+                            params.put("uploaded_file", getPDFString(filePath));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }else if(command.equals("PROFILE_IMAGE")){
+                        params.put("file_name", userPref.getString("stud_id","stud_id")+"_PROFILE_"+etName.getText().toString().trim()+".jpeg");
+                        params.put("upload_type", Constants.UPLOAD_TYPE_PROFILE);
+                        params.put("uploaded_file", getBitmapString(bitmap));
+                    }
+
+                    return params;
+                }
+            };
+            DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            request.setRetryPolicy(retryPolicy);
+            request.setShouldCache(false);
+            RequestQueue requestQueue = Volley.newRequestQueue(StudentProfileActivity.this);
+            requestQueue.add(request);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getBitmapString(Bitmap bitmap) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        byte[] imageStyle = bos.toByteArray();
+        String encode = Base64.getEncoder().encodeToString(imageStyle);
+        return encode;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getPDFString(Uri path) throws IOException {
+        byte[] pdf = Base64.getEncoder().encode(Files.readAllBytes(Paths.get(String.valueOf(path))));
+        String encode = Base64.getEncoder().encodeToString(pdf);
+        return encode;
+    }
+
+    private void selectImage() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(i, "Select Image From Here..."),
+                PICK_IMAGE_REQUEST);
+    }
+    private void selectResume() {
+        Intent i = new Intent();
+        i.setType("*/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(i, "Select File From Here..."),
+                PICK_FILE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                ivProfileImage.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+        }
+
+    }
+
 
     private void updateProfile() {
         dialog.setMessage("Updating...");

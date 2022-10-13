@@ -147,7 +147,11 @@ public class AddJobsActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddJobsActivity.this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                        if(String.valueOf(String.valueOf(i2).length()).equals("1")){
+                            etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                        }else{
+                            etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                        }
                     }
                 }, 2022, 10, 2);
                 dpd.show();
@@ -159,7 +163,11 @@ public class AddJobsActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddJobsActivity.this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                        if(String.valueOf(String.valueOf(i2).length()).equals("1")){
+                            etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                        }else{
+                            etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                        }
                     }
                 }, 2022, 10, 2);
                 dpd.show();

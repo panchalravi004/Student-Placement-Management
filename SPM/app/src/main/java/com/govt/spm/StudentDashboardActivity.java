@@ -44,8 +44,8 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
-    ImageButton btnMenuBar;
-    TextView tvJobsCount,tvAppliedInCount,tvSelectedInCount;
+    private ImageButton btnMenuBar,btnGoTOAppliedJob;
+    private TextView tvJobsCount,tvAppliedInCount,tvSelectedInCount;
 
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
@@ -64,7 +64,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         tvJobsCount = (TextView) findViewById(R.id.tvSDJobsCount);
         tvAppliedInCount = (TextView) findViewById(R.id.tvSDAppliedInCount);
         tvSelectedInCount = (TextView) findViewById(R.id.tvSDSelectedInCount);
-
+        btnGoTOAppliedJob = (ImageButton) findViewById(R.id.btnSDSelectedIn);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
 
@@ -79,6 +79,12 @@ public class StudentDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openPopUpMenu();
+            }
+        });
+        btnGoTOAppliedJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(StudentDashboardActivity.this,StudentAppliedActivity.class));
             }
         });
     }
@@ -208,6 +214,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                         try {
                             JSONArray jsonAppliedJob = new JSONArray(response);
                             tvAppliedInCount.setText(String.valueOf(jsonAppliedJob.length()));
+                            tvSelectedInCount.setText(String.valueOf(filterGetSelected(jsonAppliedJob)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -234,9 +241,27 @@ public class StudentDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //filter selected student
+    private int filterGetSelected(JSONArray jsonJob){
+        int count = 0;
+        for (int i = 0; i < jsonJob.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(jsonJob.getString(i));
+                if(jo.getString("HasGotJobOffer").equals("1")){
+                    count++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return count;
+    }
+
     private void logout() {
         editor.clear();
         editor.apply();
+        startActivity(new Intent(this,LoginActivity.class));
         finish();
     }
 }

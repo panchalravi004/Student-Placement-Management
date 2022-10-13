@@ -213,7 +213,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         for (int i = 0; i < ja.length(); i++) {
             try {
                 JSONObject jo = new JSONObject(ja.getString(i));
-                if(jo.getString("reg_end_date").compareTo(String.valueOf(date)) > 0){
+                if(LocalDate.parse(jo.getString("reg_start_date")).compareTo(date) >= 0){
                     count++;
                 }
             } catch (JSONException e) {

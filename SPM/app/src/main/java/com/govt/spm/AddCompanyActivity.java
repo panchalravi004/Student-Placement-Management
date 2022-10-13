@@ -22,7 +22,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -54,6 +56,8 @@ public class AddCompanyActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     private ImageView img;
     private ImageButton btnSelect, btnUpload;
+    private LinearLayout companyBrowserUpload;
+    private TextView tvAddCompanyTitle;
 
     private JSONArray jsonCountry;
     private JSONArray jsonState;
@@ -63,6 +67,7 @@ public class AddCompanyActivity extends AppCompatActivity {
     private final int PICK_IMAGE_REQUEST = 22;
     private Uri filePath;
     private Bitmap bitmap;
+    private String cmp_id;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -83,7 +88,8 @@ public class AddCompanyActivity extends AppCompatActivity {
         spCity = (Spinner) findViewById(R.id.spAddCompanyCity);
         btnAdd = (Button) findViewById(R.id.btnAddCompanyAdd);
         btnUpdate = (Button) findViewById(R.id.btnAddCompanyUpdate);
-
+        companyBrowserUpload = (LinearLayout) findViewById(R.id.companyBrowserUpload);
+        tvAddCompanyTitle = (TextView) findViewById(R.id.tvAddCompanyTitle);
         img = (ImageView) findViewById(R.id.ivAddCompanyImage);
         btnSelect = (ImageButton) findViewById(R.id.btnAddCompanySelect);
         btnUpload = (ImageButton) findViewById(R.id.btnAddCompanyUploadImage);
@@ -94,10 +100,14 @@ public class AddCompanyActivity extends AppCompatActivity {
         if (myIntent.getStringExtra("ACTION").equals("ADD")) {
             btnAdd.setVisibility(View.VISIBLE);
             btnUpdate.setVisibility(View.GONE);
+            companyBrowserUpload.setVisibility(View.GONE);
+            tvAddCompanyTitle.setText("Add Company");
         } else if (myIntent.getStringExtra("ACTION").equals("UPDATE")) {
             setProfile(myIntent.getStringExtra("COMPANY_ID"));
             btnAdd.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.VISIBLE);
+            companyBrowserUpload.setVisibility(View.VISIBLE);
+            tvAddCompanyTitle.setText("Update Company");
         }
 
         jsonCountry = new JSONArray();
@@ -176,8 +186,6 @@ public class AddCompanyActivity extends AppCompatActivity {
             ProgressDialog pd = new ProgressDialog(this);
             pd.setMessage("Uploading...");
             pd.show();
-//            Toast.makeText(this, (CharSequence) filePath, Toast.LENGTH_SHORT).show();
-
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     Constants.UPLOAD_IMAGE,
@@ -186,6 +194,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                         public void onResponse(String response) {
                             pd.dismiss();
                             Log.i(TAG, "onResponse: " + response);
+                            Toast.makeText(AddCompanyActivity.this, "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
                         }
                     },
                     new Response.ErrorListener() {
@@ -199,7 +208,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("file_name", "ravi.jpeg");
+                    params.put("file_name", cmp_id+"_BROWSER_"+etName.getText().toString().trim()+".jpeg");
                     params.put("upload_type", Constants.UPLOAD_TYPE_BROWSER);
                     params.put("uploaded_file", getBitmapString(bitmap));
                     return params;
@@ -265,7 +274,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                             etHR2Name.setText(new JSONObject(jsonArray.getString(0)).getString("HR2_NAME"));
                             etHR2Email.setText(new JSONObject(jsonArray.getString(0)).getString("HR2_EMAIL"));
                             etAbout.setText(new JSONObject(jsonArray.getString(0)).getString("ABOUT"));
-
+                            cmp_id = new JSONObject(jsonArray.getString(0)).getString("COMPANY_ID");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
