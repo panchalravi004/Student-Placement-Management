@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -42,7 +43,7 @@ import java.util.Map;
 public class ViewStudentActivity extends AppCompatActivity {
     private ImageButton btnSearch;
     private EditText etSearch;
-    private Spinner spFilterOne,spFilterTwo;
+    private Spinner spFilterCollege,spFilterDept;
 
     private RecyclerView student_rv;
     private LinearLayoutManager manager;
@@ -62,8 +63,8 @@ public class ViewStudentActivity extends AppCompatActivity {
 
         btnSearch = (ImageButton) findViewById(R.id.btnViewStudentSearch);
         etSearch = (EditText) findViewById(R.id.etViewStudentSearch);
-        spFilterOne = (Spinner) findViewById(R.id.spViewStudentFilterOne);
-        spFilterTwo = (Spinner) findViewById(R.id.spViewStudentFilterTwo);
+//        spFilterCollege = (Spinner) findViewById(R.id.spViewStudentFilterOne);
+//        spFilterDept = (Spinner) findViewById(R.id.spViewStudentFilterTwo);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMore);
 
         student_rv = (RecyclerView) findViewById(R.id.recycleViewStudent);

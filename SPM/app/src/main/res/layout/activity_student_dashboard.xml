@@ -51,26 +51,15 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/etSDSearch"
-                android:layout_width="50dp"
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/white_left_round"
-                android:ems="10"
                 android:gravity="center"
-                android:hint="@string/type_here"
-                android:inputType="textPersonName"
-                android:padding="2sp"
-                android:text="" />
-
-            <ImageButton
-                android:id="@+id/btnSDSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/spm_green_right_round"
-                android:padding="2sp"
-                app:srcCompat="@drawable/icon_search" />
+                android:padding="5sp"
+                android:text="Student Placement System"
+                android:textColor="#B2FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 

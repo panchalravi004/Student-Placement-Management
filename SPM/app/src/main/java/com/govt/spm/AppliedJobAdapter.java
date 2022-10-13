@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VHolder> {
@@ -62,7 +63,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         try {
             JSONObject jo = new JSONObject(job.getString(position));
             holder.jobStatus.setText(jo.getString("AppStat"));
-            holder.clgName.setText(jo.getString("MIN_QUALIFICATION"));
+            holder.clgName.setText(jo.getString("MIN_QUALIFICATION").toUpperCase(Locale.ROOT));
             if(jo.getString("COMPANY_NAME").length()>20){
                 holder.cName.setText(jo.getString("COMPANY_NAME").substring(0,25)+"...");
             }else{

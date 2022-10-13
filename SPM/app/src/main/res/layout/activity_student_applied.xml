@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_left_round"
                 android:ems="10"
-                android:hint="@string/type_here"
+                android:hint="search by skills - java,python"
                 android:inputType="textPersonName"
                 android:padding="6sp"
                 android:textAlignment="center"
@@ -132,6 +132,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Result : 0 Found" />
+
+            <CheckBox
+                android:id="@+id/cbJobApproved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Approved" />
 
         </LinearLayout>
     </LinearLayout>

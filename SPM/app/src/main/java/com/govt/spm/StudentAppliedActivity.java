@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -29,8 +32,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class StudentAppliedActivity extends AppCompatActivity {
@@ -38,6 +43,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
     private ImageButton btnSearch;
     private Spinner spFilterOne,spFilterTwo;
     private TextView tvResultCount;
+    private CheckBox cbApproved;
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
@@ -50,6 +56,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonJob;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +70,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreStudentApplied);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
+        cbApproved = (CheckBox) findViewById(R.id.cbJobApproved);
 
         totalDBItem = 10;
         jsonJob = new JSONArray();
@@ -126,6 +134,47 @@ public class StudentAppliedActivity extends AppCompatActivity {
                             vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
                             view_jobs_rv.setAdapter(vja);
                             view_jobs_rv.setLayoutManager(manager);
+
+                            //search the data
+                            btnSearch.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(!etSearch.getText().equals("")){
+                                        JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
+                                        count.setText("Result : "+searchedJob.length()+" Found");
+                                        vja = new AppliedJobAdapter(StudentAppliedActivity.this,searchedJob);
+                                        view_jobs_rv.setAdapter(vja);
+                                        view_jobs_rv.setLayoutManager(manager);
+                                    }
+                                }
+                            });
+
+                            //get approved jobs
+                            cbApproved.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                    try {
+                                        if(b){
+                                            JSONArray temp = filterGetApproved(jsonJob);
+                                            count.setText("Result : "+temp.length()+" Found");
+                                            vja = new AppliedJobAdapter(StudentAppliedActivity.this,temp);
+                                            view_jobs_rv.setAdapter(vja);
+                                            view_jobs_rv.setLayoutManager(manager);
+                                            vja.notifyDataSetChanged();
+                                        }else{
+
+                                            count.setText("Result : "+jsonJob.length()+" Found");
+                                            vja = new AppliedJobAdapter(StudentAppliedActivity.this,new JSONArray(response));
+                                            view_jobs_rv.setAdapter(vja);
+                                            view_jobs_rv.setLayoutManager(manager);
+                                            vja.notifyDataSetChanged();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -150,6 +199,43 @@ public class StudentAppliedActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(StudentAppliedActivity.this);
         requestQueue.add(request);
+    }
+
+    //search the data
+    private JSONArray filterBySearch(JSONArray allJobs,String searchText){
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < allJobs.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(allJobs.getString(i));
+                String searchTextLower = searchText.toLowerCase(Locale.ROOT);
+                String skillsLower = jo.getString("SKILLS").toLowerCase(Locale.ROOT);
+
+                if(skillsLower.contains(searchTextLower)){
+                    result.put(jo);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    //filter selected student
+    private JSONArray filterGetApproved(JSONArray jsonJob){
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < jsonJob.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(jsonJob.getString(i));
+                if(jo.getString("AppStat").equals("APPROVED")){
+                    result.put(jo);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
     }
 
     public void goToDashboard(View view) {

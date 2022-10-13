@@ -44,7 +44,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
-    ImageButton btnMenuBar,btnSearch;
+    ImageButton btnMenuBar;
     TextView tvJobsCount,tvAppliedInCount,tvSelectedInCount;
 
     private SharedPreferences userPref;
@@ -60,7 +60,6 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
         view_jobs_rv = (RecyclerView) findViewById(R.id.list_SD_upcoming_jobs);
         btnMenuBar = (ImageButton) findViewById(R.id.btnSDMenuBar);
-        btnSearch = (ImageButton) findViewById(R.id.btnSDSearch);
         manager = new LinearLayoutManager(this);
         tvJobsCount = (TextView) findViewById(R.id.tvSDJobsCount);
         tvAppliedInCount = (TextView) findViewById(R.id.tvSDAppliedInCount);
@@ -89,6 +88,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         super.onResume();
         //CALL METHOD
         getJobList(userPref.getString("univ_id","univ_id"));
+        getAppliedJobList(userPref.getString("stud_id","stud_id"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -122,6 +122,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         pm.show();
     }
 
+    //get jobs list
     private void getJobList(String univ_id){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -195,6 +196,43 @@ public class StudentDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //get applied list count
+    private void getAppliedJobList(String stud_id){
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.GET_APPLIED_JOB_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "onResponse: "+response);
+                        try {
+                            JSONArray jsonAppliedJob = new JSONArray(response);
+                            tvAppliedInCount.setText(String.valueOf(jsonAppliedJob.length()));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("stud_id",stud_id);
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(StudentDashboardActivity.this);
+        requestQueue.add(request);
+    }
 
     private void logout() {
         editor.clear();

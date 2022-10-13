@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapter.VHolder> {
@@ -59,7 +60,7 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
         try {
             JSONObject jo = new JSONObject(job.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
-            holder.clgName.setText(jo.getString("min_qualification"));
+            holder.clgName.setText(jo.getString("min_qualification").toUpperCase(Locale.ROOT));
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     Constants.GET_COMPANY_PROFILE,

@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolder> {
@@ -40,8 +41,6 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
 
     private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
 
-
-    TextView cName,clgName,rEDate;
     ImageButton btnClose;
     Button btnShare,btnApply,btnShowAplicant;
     static final String TAG = "SPM_ERROR";
@@ -63,7 +62,7 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
         try {
             JSONObject jo = new JSONObject(job.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
-            holder.clgName.setText(jo.getString("min_qualification"));
+            holder.clgName.setText(jo.getString("min_qualification").toUpperCase(Locale.ROOT));
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     Constants.GET_COMPANY_PROFILE,

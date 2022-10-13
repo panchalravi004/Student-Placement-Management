@@ -30,9 +30,11 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ViewJobsActivity extends AppCompatActivity {
@@ -112,6 +114,7 @@ public class ViewJobsActivity extends AppCompatActivity {
         }, 5000);
     }
 
+
     private void getJobList(String univ_id){
         pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
@@ -129,6 +132,21 @@ public class ViewJobsActivity extends AppCompatActivity {
                             vja = new ViewJobsAdapter(ViewJobsActivity.this,jsonJob);
                             view_jobs_rv.setAdapter(vja);
                             view_jobs_rv.setLayoutManager(manager);
+
+                            //search the data
+                            btnSearch.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if(!etSearch.getText().equals("")){
+                                        JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
+                                        count.setText("Result : "+searchedJob.length()+" Found");
+                                        vja = new ViewJobsAdapter(ViewJobsActivity.this,searchedJob);
+                                        view_jobs_rv.setAdapter(vja);
+                                        view_jobs_rv.setLayoutManager(manager);
+                                    }
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -153,6 +171,26 @@ public class ViewJobsActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ViewJobsActivity.this);
         requestQueue.add(request);
+    }
+
+    //search the data
+    private JSONArray filterBySearch(JSONArray allJobs,String searchText){
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < allJobs.length(); i++) {
+            try {
+                JSONObject jo = new JSONObject(allJobs.getString(i));
+                String searchTextLower = searchText.toLowerCase(Locale.ROOT);
+                String skillsLower = jo.getString("skills").toLowerCase(Locale.ROOT);
+
+                if(skillsLower.contains(searchTextLower)){
+                    result.put(jo);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     public void goToDashboard(View view) {

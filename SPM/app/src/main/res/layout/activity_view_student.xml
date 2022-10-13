@@ -90,29 +90,27 @@
             android:gravity="clip_horizontal|center"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/spViewStudentFilterOne"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:layout_weight="1"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
-                android:entries="@array/cmp_filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
+<!--            <Spinner-->
+<!--                android:id="@+id/spViewStudentFilterOne"-->
+<!--                android:layout_width="150sp"-->
+<!--                android:layout_height="30sp"-->
+<!--                android:layout_margin="10sp"-->
+<!--                android:background="@drawable/white_all_round"-->
+<!--                android:elevation="5sp"-->
+<!--                android:entries="@array/cmp_filter"-->
+<!--                android:padding="5sp"-->
+<!--                android:textAlignment="center" />-->
 
-            <Spinner
-                android:id="@+id/spViewStudentFilterTwo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:layout_weight="1"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
-                android:entries="@array/cmp_filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
+<!--            <Spinner-->
+<!--                android:id="@+id/spViewStudentFilterTwo"-->
+<!--                android:layout_width="150sp"-->
+<!--                android:layout_height="30sp"-->
+<!--                android:layout_margin="10sp"-->
+<!--                android:background="@drawable/white_all_round"-->
+<!--                android:elevation="5sp"-->
+<!--                android:entries="@array/cmp_filter"-->
+<!--                android:padding="5sp"-->
+<!--                android:textAlignment="center" />-->
         </LinearLayout>
 
         <LinearLayout

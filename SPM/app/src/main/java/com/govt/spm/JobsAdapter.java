@@ -393,7 +393,9 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                                 String csv = CDL.toString(jsonArray);
                                 FileOutputStream fos;
                                 try {
-                                    File myFile = new File("/sdcard/"+filename);
+                                    File dir = new File("/sdcard/SPM/");
+                                    dir.mkdirs();
+                                    File myFile = new File(dir,filename);
                                     myFile.createNewFile();
                                     fos = new FileOutputStream(myFile);
                                     OutputStreamWriter osw = new OutputStreamWriter(fos);
