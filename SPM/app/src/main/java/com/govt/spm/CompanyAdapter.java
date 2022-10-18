@@ -36,12 +36,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder> {
-    Context context;
-//    ArrayList<HashMap<String,String>> company;
-    JSONArray company;
-    ImageButton btnClose,btnEdit,btnDelete;
-    TextView tvCpName,tvDomain,tvAdd,tvHr1name,tvHr1email,tvHr2name,tvHr2email,tvAbout;
 
+    private Context context;
+    private JSONArray company;
+    private ImageButton btnClose,btnEdit,btnDelete;
+    private TextView tvCpName,tvDomain,tvAdd,tvHr1name,tvHr1email,tvHr2name,tvHr2email,tvAbout;
     private static final String TAG = "SPM_ERROR";
 
     public CompanyAdapter(Context context,JSONArray company){
@@ -99,11 +98,10 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
             TextView cname,domain;
             ImageButton btnView;
         public VHolder(@NonNull View itemView) {
-                super(itemView);
-                cname = itemView.findViewById(R.id.tvCompanyAdapterCompanyName);
-                domain = itemView.findViewById(R.id.tvCompanyAdapterCompanyDomain);
-                btnView = itemView.findViewById(R.id.btnCompanyAdapterView);
-
+            super(itemView);
+            cname = itemView.findViewById(R.id.tvCompanyAdapterCompanyName);
+            domain = itemView.findViewById(R.id.tvCompanyAdapterCompanyDomain);
+            btnView = itemView.findViewById(R.id.btnCompanyAdapterView);
         }
     }
 
@@ -157,44 +155,6 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
                             tvHr2email.setText(new JSONObject(jsonArray.getString(0)).getString("HR2_EMAIL"));
                             tvAbout.setText(new JSONObject(jsonArray.getString(0)).getString("ABOUT"));
 
-                            btnClose.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            btnEdit.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent i = new Intent(context,AddCompanyActivity.class);
-                                    i.putExtra("ACTION","UPDATE");
-                                    try {
-                                        i.putExtra("COMPANY_ID",jo.getString("company_id"));
-                                        i.putExtra("COUNTRY_ID",jo.getString("country_id"));
-                                        i.putExtra("STATE_ID",jo.getString("state_id"));
-                                        i.putExtra("CITY_ID",jo.getString("city_id"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    dialog.dismiss();
-                                    context.startActivity(i);
-                                }
-                            });
-                            btnDelete.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.dismiss();
-                                    try {
-                                        deleteCompany(jo.getString("company_id"),jo.getString("creator_id"),"DELETE");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-
-                            dialog.show();
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -224,8 +184,46 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
 
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context,AddCompanyActivity.class);
+                i.putExtra("ACTION","UPDATE");
+                try {
+                    i.putExtra("COMPANY_ID",jo.getString("company_id"));
+                    i.putExtra("COUNTRY_ID",jo.getString("country_id"));
+                    i.putExtra("STATE_ID",jo.getString("state_id"));
+                    i.putExtra("CITY_ID",jo.getString("city_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                dialog.dismiss();
+                context.startActivity(i);
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                try {
+                    deleteCompany(jo.getString("company_id"),jo.getString("creator_id"),"DELETE");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        dialog.show();
     }
 
+    //delete the company
     private void deleteCompany(String company_id,String creator_id,String command){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -233,7 +231,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "deleteCompany: "+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             Toast.makeText(context, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
@@ -246,7 +244,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "deleteCompany: "+error.getMessage());
                     }
                 }){
             @Nullable

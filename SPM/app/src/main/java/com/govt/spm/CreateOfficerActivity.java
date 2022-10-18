@@ -45,6 +45,7 @@ public class CreateOfficerActivity extends AppCompatActivity {
         btnCreate = (Button) findViewById(R.id.btnCreateTPOCreate);
         dialog = new ProgressDialog(this);
 
+        //Listeners
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +56,7 @@ public class CreateOfficerActivity extends AppCompatActivity {
         });
     }
 
+    //create TPO account
     private void createAccount() {
         final String id = etTPOId.getText().toString();
         final String email = etTPOEmail.getText().toString();
@@ -68,22 +70,22 @@ public class CreateOfficerActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         dialog.dismiss();
                         clearField();
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "createAccount: "+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             Toast.makeText(CreateOfficerActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
 
-
                             if(jsonObject.getBoolean("error")){
-                                if(jsonObject.getString("error_flag").equals("EXISTING_USER")){
+                                //if user account is already created
+                                if(jsonObject.getString("error_flag").equals("EXISTING_DATA")){
                                     startActivity(new Intent(CreateOfficerActivity.this,CreateOfficerProfileActivity.class));
                                     finish();
                                 }
                             }else{
+                                //if account created successfully then create the profile
                                 startActivity(new Intent(CreateOfficerActivity.this,CreateOfficerProfileActivity.class));
                                 finish();
                             }
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -94,7 +96,7 @@ public class CreateOfficerActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "createAccount: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -114,6 +116,7 @@ public class CreateOfficerActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //validate a fields
     private boolean validate() {
         String id = etTPOId.getText().toString();
         String email = etTPOEmail.getText().toString();
@@ -134,6 +137,7 @@ public class CreateOfficerActivity extends AppCompatActivity {
         return true;
     }
 
+    //clear fields
     private void clearField(){
         etTPOId.setText("");
         etTPOEmail.setText("");

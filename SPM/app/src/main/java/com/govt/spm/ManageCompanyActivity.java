@@ -59,10 +59,10 @@ public class ManageCompanyActivity extends AppCompatActivity {
     private static final String TAG = "SPM_ERROR";
 
     private int currentItem,totalItem,scrollOutItem,totalDBItem;
-    private JSONArray jsonCompany;
-    private CompanyAdapter ca;
     private int fetchCount;
+    private CompanyAdapter ca;
 
+    private JSONArray jsonCompany;
     private JSONArray jsonCountry;
     private JSONArray jsonState;
     private JSONArray jsonCity;
@@ -121,6 +121,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //CAll METHOD
         getCompanies();
         fetchCountry();
     }
@@ -140,6 +141,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
         },3000);
     }
 
+    //get companies list
     private void getCompanies(){
         pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
@@ -149,7 +151,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         pbLoadMore.setVisibility(View.GONE);
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getCompanies: "+response);
                         try {
 
                             TextView tvCount = (TextView) findViewById(R.id.tvManageCompanyResultCount);
@@ -157,6 +159,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                             ca = new CompanyAdapter(ManageCompanyActivity.this, new JSONArray(response));
                             company_rv.setAdapter(ca);
                             company_rv.setLayoutManager(manager);
+
                             //search on click
                             btnSearch.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -175,7 +178,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                            //filter
+                            //set filter call
                             setFilterSpinner(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -185,7 +188,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getCompanies: "+error.getMessage());
                     }
                 }
         );
@@ -196,6 +199,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //set the spinner filters here
     private void setFilterSpinner(String response){
         TextView tvCount = (TextView) findViewById(R.id.tvManageCompanyResultCount);
         spFilterCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -366,7 +370,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCountry: "+response);
                         try {
                             ArrayList<String> country = new ArrayList<>();
                             country.add(0,"ALL");
@@ -388,7 +392,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchCountry: "+error.getMessage());
                     }
                 });
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -405,7 +409,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchState: "+response);
                         try {
                             ArrayList<String> state = new ArrayList<>();
                             state.add(0,"ALL");
@@ -427,7 +431,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchState: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -452,7 +456,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCity: "+response);
                         try {
                             ArrayList<String> city = new ArrayList<>();
                             city.add(0,"ALL");
@@ -474,7 +478,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchCity: "+error.getMessage());
                     }
                 }){
             @Nullable

@@ -183,7 +183,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "setJobPostDetails: "+response);
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             etDescription.setText(new JSONObject(jsonArray.getString(0)).getString("JOB_DESC"));
@@ -205,7 +205,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "setJobPostDetails: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -266,7 +266,7 @@ public class AddJobsActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         dialog.dismiss();
                         clearField();
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "AddUpdateJobPost: "+response);
                         try {
                             JSONObject jo = new JSONObject(response);
                             if(jo.getBoolean("error")){
@@ -283,7 +283,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "AddUpdateJobPost: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -322,15 +322,15 @@ public class AddJobsActivity extends AppCompatActivity {
 
     }
 
+    //get companies list
     private void getCompanies(){
-
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.GET_COMPANIES,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getCompanies: "+response);
                         try {
                             ArrayList<String> company = new ArrayList<>();
                             jsonCompany = new JSONArray(response);
@@ -350,7 +350,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getCompanies: "+error.getMessage());
                     }
                 }
         );
@@ -369,7 +369,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchUniv: "+response);
                         try {
                             ArrayList<String> univ = new ArrayList<>();
                             jsonUniversity = new JSONArray(response);
@@ -390,7 +390,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchUniv: "+error.getMessage());
                     }
                 });
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -408,7 +408,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchColleges: "+response);
                         try {
                             ArrayList<String> collegesList = new ArrayList<>();
                             ArrayAdapter<String> collegesAdapter = new ArrayAdapter<String>(AddJobsActivity.this, android.R.layout.simple_spinner_dropdown_item,collegesList);
@@ -437,7 +437,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchColleges: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -463,7 +463,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCollegeWiseDept: "+response);
                         try {
                             ArrayList<String> deptsList = new ArrayList<>();
                             ArrayAdapter<String> deptsAdapter = new ArrayAdapter<String>(AddJobsActivity.this, android.R.layout.simple_spinner_dropdown_item,deptsList);
@@ -492,7 +492,7 @@ public class AddJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchCollegeWiseDept: "+error.getMessage());
                     }
                 }){
             @Nullable

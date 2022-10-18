@@ -98,7 +98,6 @@ public class StudentProfileActivity extends AppCompatActivity {
         ivProfileImage = (ImageView) findViewById(R.id.ivStudentProfileImage);
 
         dialog = new ProgressDialog(StudentProfileActivity.this);
-
         userPref = getSharedPreferences("user",MODE_PRIVATE);
 
         //CALL METHOD
@@ -126,18 +125,20 @@ public class StudentProfileActivity extends AppCompatActivity {
         btnUploadProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage("PROFILE_IMAGE");;
+                uploadFile("PROFILE_IMAGE");;
             }
         });
         btnStudentProfileUploadResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadImage("RESUME");
+                uploadFile("RESUME");
             }
         });
     }
 
-    private void uploadImage(String command) {
+    //upload the profile image and resume file
+    //pass a command as per upload requirement
+    private void uploadFile(String command) {
         if (filePath != null) {
             ProgressDialog pd = new ProgressDialog(this);
             pd.setMessage("Uploading...");
@@ -149,14 +150,14 @@ public class StudentProfileActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             pd.dismiss();
-                            Log.i(TAG, "onResponse: " + response);
+                            Log.i(TAG, "uploadFile: " + response);
                             Toast.makeText(StudentProfileActivity.this, "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i(TAG, "onErrorResponse: " + error.getMessage());
+                            Log.i(TAG, "uploadFile: " + error.getMessage());
                         }
                     }) {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -187,9 +188,12 @@ public class StudentProfileActivity extends AppCompatActivity {
             request.setShouldCache(false);
             RequestQueue requestQueue = Volley.newRequestQueue(StudentProfileActivity.this);
             requestQueue.add(request);
+        }else{
+            Toast.makeText(this, "Please select image to upload", Toast.LENGTH_SHORT).show();
         }
     }
 
+    //convert bitmap into string
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String getBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -199,6 +203,7 @@ public class StudentProfileActivity extends AppCompatActivity {
         return encode;
     }
 
+    //convert the pdf into string
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String getPDFString(Uri path) throws IOException {
         byte[] pdf = Base64.getEncoder().encode(Files.readAllBytes(Paths.get(String.valueOf(path))));
@@ -206,6 +211,7 @@ public class StudentProfileActivity extends AppCompatActivity {
         return encode;
     }
 
+    //select the image for profile image
     private void selectImage() {
         Intent i = new Intent();
         i.setType("image/*");
@@ -214,6 +220,8 @@ public class StudentProfileActivity extends AppCompatActivity {
                 Intent.createChooser(i, "Select Image From Here..."),
                 PICK_IMAGE_REQUEST);
     }
+
+    //select the resume file - Type : PDF
     private void selectResume() {
         Intent i = new Intent();
         i.setType("*/*");
@@ -223,10 +231,13 @@ public class StudentProfileActivity extends AppCompatActivity {
                 PICK_FILE_REQUEST);
     }
 
+    //on any file select set its path
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //when image select then get and set a path of image
+        //And convert to bitmap and store into bitmap
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
@@ -236,13 +247,14 @@ public class StudentProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        //when pdf select then get and set file path
         if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
         }
 
     }
 
-
+    //update the student profile
     private void updateProfile() {
         dialog.setMessage("Updating...");
         dialog.show();
@@ -252,7 +264,7 @@ public class StudentProfileActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "updateProfile: "+response);
                         dialog.dismiss();
                         try {
                             JSONObject jo = new JSONObject(response);
@@ -260,13 +272,12 @@ public class StudentProfileActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "updateProfile: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -291,6 +302,7 @@ public class StudentProfileActivity extends AppCompatActivity {
         Log.i(TAG, "updateProfile: "+request);
     }
 
+    //set Student Profile Information
     private void setProfile(){
         etID.setText(userPref.getString("stud_id","stud_id"));
         etName.setText(userPref.getString("name","name"));
@@ -321,6 +333,7 @@ public class StudentProfileActivity extends AppCompatActivity {
 
     }
 
+    //go back to dashboard
     public void goToDashboard(View view) {
         finish();
     }

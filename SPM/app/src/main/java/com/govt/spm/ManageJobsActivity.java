@@ -91,7 +91,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         }
 
         //CALL METHOD
-//        getJobList(userPref.getString("univ_id","univ_id"));
+
         //LISTENER
         jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -137,6 +137,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         },5000);
     }
 
+    //get all jobs list
     private void getJobList(String univ_id){
         pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
@@ -145,7 +146,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getJobList: "+response);
                         try {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
@@ -190,7 +191,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getJobList: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -208,6 +209,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //Apply all filters here
     private void setFilter(JSONArray jbs){
         TextView count = (TextView) findViewById(R.id.tvManageJobsResultCount);
         btnFilter.setOnClickListener(new View.OnClickListener() {
@@ -336,7 +338,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         });
     }
 
-    //get Company
+    //get Company list
     private void getCompanies(){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -344,7 +346,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getCompanies: "+response);
                         try {
                             ArrayList<String> company = new ArrayList<>();
                             company.add(0,"ALL");
@@ -365,7 +367,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getCompanies: "+error.getMessage());
                     }
                 }
         );
@@ -384,7 +386,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchColleges: "+response);
                         try {
                             ArrayList<String> collegesList = new ArrayList<>();
                             ArrayAdapter<String> collegesAdapter = new ArrayAdapter<String>(ManageJobsActivity.this, android.R.layout.simple_spinner_dropdown_item,collegesList);
@@ -414,7 +416,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchColleges: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -440,7 +442,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCollegeWiseDept: "+response);
                         try {
                             ArrayList<String> deptsList = new ArrayList<>();
                             ArrayAdapter<String> deptsAdapter = new ArrayAdapter<String>(ManageJobsActivity.this, android.R.layout.simple_spinner_dropdown_item,deptsList);
@@ -470,7 +472,7 @@ public class ManageJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchCollegeWiseDept: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -508,7 +510,7 @@ public class ManageJobsActivity extends AppCompatActivity {
     //search the data
     private JSONArray filterBySearch(JSONArray allJobs,String searchText){
         JSONArray result = new JSONArray();
-        Log.i(TAG, "filterByOwnJobs: "+allJobs);
+//        Log.i(TAG, "filterByOwnJobs: "+allJobs);
         for (int i = 0; i < allJobs.length(); i++) {
             try {
                 JSONObject jo = new JSONObject(allJobs.getString(i));
@@ -567,7 +569,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         if(dept_name.equals("ALL")){
             return allJobs;
         }
-        Log.i(TAG, "filterByDept: "+dept_id);
+//        Log.i(TAG, "filterByDept: "+dept_id);
         JSONArray result = new JSONArray();
         for (int i = 0; i < allJobs.length(); i++) {
             try {

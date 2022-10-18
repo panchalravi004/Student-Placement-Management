@@ -39,7 +39,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
     private Spinner spGender,spUniversity,spCollege,spDept;
     private Button btnCreate;
     private ProgressDialog dialog;
-    static final String TAG = "SPM_ERROR";
+    private static final String TAG = "SPM_ERROR";
     private final String[] GENDER = {"M","F"};
 
     private JSONArray jsonUniversity;
@@ -65,40 +65,12 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
         jsonUniversity = new JSONArray();
         jsonCollege = new JSONArray();
         jsonDept = new JSONArray();
-        //fetch University Data
+
+        //Call Methods Here
         fetchUniv();
-        //fetch colleges on university selects
-        spUniversity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                JSONObject univJo = null;
-                try {
-                    univJo = new JSONObject(jsonUniversity.getString(spUniversity.getSelectedItemPosition()));
-                    fetchColleges(univJo.getString("univ_id"));
+        setSpinners();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-        //fetch dept on college select
-        spCollege.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                JSONObject collegeJo = null;
-                try {
-                    collegeJo = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition()));
-                    fetchCollegeWiseDept(collegeJo.getString("college_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
-
+        //Listener
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,7 +81,12 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
         });
     }
 
+    //create profile here
     private void createProfile() {
+        dialog.setMessage("Creating...");
+        dialog.show();
+
+        //get all values
         String id = etId.getText().toString();
         String username = etUsername.getText().toString();
         String number = etNumber.getText().toString();
@@ -118,12 +95,18 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
         String college = null;
         String dept = null;
         try {
-            JSONObject univJo = new JSONObject(jsonUniversity.getString(spUniversity.getSelectedItemPosition()));
-            university = univJo.getString("univ_id");
-            JSONObject collegeJo = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition()));
-            college = collegeJo.getString("college_id");
-            JSONObject deptJo = new JSONObject(jsonDept.getString(spDept.getSelectedItemPosition()));
-            dept = deptJo.getString("dept_id");
+            if(!String.valueOf(spUniversity.getSelectedItemPosition()).equals("0")){
+                JSONObject univJo = new JSONObject(jsonUniversity.getString(spUniversity.getSelectedItemPosition()-1));
+                university = univJo.getString("univ_id");
+            }
+            if(!String.valueOf(spCollege.getSelectedItemPosition()).equals("0")) {
+                JSONObject collegeJo = new JSONObject(jsonCollege.getString(spCollege.getSelectedItemPosition() - 1));
+                college = collegeJo.getString("college_id");
+            }
+            if (!String.valueOf(spDept.getSelectedItemPosition()).equals("0")) {
+                JSONObject deptJo = new JSONObject(jsonDept.getString(spDept.getSelectedItemPosition() - 1));
+                dept = deptJo.getString("dept_id");
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,9 +114,8 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
         String finalUniversity = university;
         String finalCollege = college;
         String finalDept = dept;
-        dialog.setMessage("Creating...");
-        dialog.show();
 
+        //send request to create profile
         StringRequest request = new StringRequest(
             Request.Method.POST,
             Constants.CREATE_USER_PROFILE,
@@ -141,7 +123,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
                     dialog.dismiss();
-                    Log.i(TAG, "onResponse: "+response);
+                    Log.i(TAG, "createProfile: "+response);
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         Toast.makeText(CreateOfficerProfileActivity.this, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
@@ -156,7 +138,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                    Log.i(TAG, "createProfile: "+error.getMessage());
                 }
             }){
             @Nullable
@@ -182,6 +164,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
 
     }
 
+    //validate the fields
     private boolean validate() {
         if(etId.getText().equals("")){
             Toast.makeText(this, "Enter TPO ID", Toast.LENGTH_SHORT).show();
@@ -192,6 +175,10 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
             return false;
         }if(etNumber.getText().equals("")){
             Toast.makeText(this, "Enter TPO Number", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(!String.valueOf(etNumber.getText().length()).equals("10")){
+            Toast.makeText(this, "Please enter correct number", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -205,19 +192,19 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchUniversity: "+response);
                         try {
                             ArrayList<String> univ = new ArrayList<>();
                             jsonUniversity = new JSONArray(response);
-
+                            univ.add("select");
                             for(int i=0;i<jsonUniversity.length();i++){
                                 JSONObject jo = new JSONObject(jsonUniversity.getString(i));
                                 univ.add(jo.getString("univ_name"));
-                                Log.i(TAG, "onResponse: "+jo.getString("univ_name"));
                             }
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreateOfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,univ);
                             spUniversity.setAdapter(adapter);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -227,7 +214,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchUniversity: "+error.getMessage());
                     }
                 });
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -245,7 +232,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchColleges: "+response);
                         try {
                             ArrayList<String> collegesList = new ArrayList<>();
                             ArrayAdapter<String> collegesAdapter = new ArrayAdapter<String>(CreateOfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,collegesList);
@@ -259,10 +246,10 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                                 }
                             }else{
                                 collegesList.clear();
+                                collegesList.add("select");
                                 for(int i=0;i<jsonCollege.length();i++){
                                     JSONObject jo = new JSONObject(jsonCollege.getString(i));
                                     collegesList.add(jo.getString("college_name"));
-//                                    Log.i(TAG, "onResponse: "+jo.getString("college_name"));
                                 }
                             }
                             collegesAdapter.notifyDataSetChanged();
@@ -275,7 +262,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchColleges: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -301,7 +288,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCollegeWiseDept: "+response);
                         try {
                             ArrayList<String> deptsList = new ArrayList<>();
                             ArrayAdapter<String> deptsAdapter = new ArrayAdapter<String>(CreateOfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,deptsList);
@@ -315,10 +302,10 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                                 }
                             }else{
                                 deptsList.clear();
+                                deptsList.add("select");
                                 for(int i=0;i<jsonDept.length();i++){
                                     JSONObject jo = new JSONObject(jsonDept.getString(i));
                                     deptsList.add(jo.getString("dept_name"));
-//                                    Log.i(TAG, "onResponse: "+jo.getString("dept_name"));
                                 }
                             }
                             deptsAdapter.notifyDataSetChanged();
@@ -331,7 +318,7 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchCollegeWiseDept: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -347,6 +334,42 @@ public class CreateOfficerProfileActivity extends AppCompatActivity {
         request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(CreateOfficerProfileActivity.this);
         requestQueue.add(request);
+    }
+
+    //get college and departments when university select and college select
+    private void setSpinners(){
+        //fetch colleges on university selects
+        spUniversity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    if(!String.valueOf(i).equals("0")){
+                        JSONObject jo = new JSONObject(jsonUniversity.getString(i-1));
+                        fetchColleges(jo.getString("univ_id"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+        //fetch dept on college select
+        spCollege.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    if(!String.valueOf(i).equals("0")){
+                        JSONObject collegeJo = new JSONObject(jsonCollege.getString(i-1));
+                        fetchCollegeWiseDept(collegeJo.getString("college_id"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
     }
 
     public void goToBack(View view) {

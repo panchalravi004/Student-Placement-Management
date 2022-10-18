@@ -114,7 +114,7 @@ public class ViewJobsActivity extends AppCompatActivity {
         }, 5000);
     }
 
-
+    //get jobs list by university
     private void getJobList(String univ_id){
         pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
@@ -123,12 +123,11 @@ public class ViewJobsActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getJobList: "+response);
                         try {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
-                            TextView count = (TextView) findViewById(R.id.tvViewJobsResultCount);
-                            count.setText("Result : "+jsonJob.length()+" Found");
+                            tvResultCount.setText("Result : "+jsonJob.length()+" Found");
                             vja = new ViewJobsAdapter(ViewJobsActivity.this,jsonJob);
                             view_jobs_rv.setAdapter(vja);
                             view_jobs_rv.setLayoutManager(manager);
@@ -139,7 +138,7 @@ public class ViewJobsActivity extends AppCompatActivity {
                                 public void onClick(View view) {
                                     if(!etSearch.getText().equals("")){
                                         JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
-                                        count.setText("Result : "+searchedJob.length()+" Found");
+                                        tvResultCount.setText("Result : "+searchedJob.length()+" Found");
                                         vja = new ViewJobsAdapter(ViewJobsActivity.this,searchedJob);
                                         view_jobs_rv.setAdapter(vja);
                                         view_jobs_rv.setLayoutManager(manager);
@@ -155,7 +154,7 @@ public class ViewJobsActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getJobList: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -173,7 +172,7 @@ public class ViewJobsActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    //search the data
+    //search the data by required skills of jobs post
     private JSONArray filterBySearch(JSONArray allJobs,String searchText){
         JSONArray result = new JSONArray();
         for (int i = 0; i < allJobs.length(); i++) {

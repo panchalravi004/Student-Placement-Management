@@ -46,7 +46,6 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     private TextView tvStudentCount,tvCompanyCount,tvJobsCount,tvComingSoonCount;
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
-    private UpcomingJobsAdapter uca;
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
     private static final String TAG = "SPM_ERROR";
@@ -67,17 +66,12 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         tvComingSoonCount = (TextView) findViewById(R.id.tvODComingSoonCount);
 
         view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_company);
-//        view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_jobs);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
-
         jsonJob = new JSONArray();
 
-        //CALL METHOD
-//        getJobList(userPref.getString("univ_id","univ_id"));
-
-        //When click on menu bar button open popupmenu
+        //Listener
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
@@ -96,6 +90,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         getCompaniesCount();
     }
 
+    //open pop up menu
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void openPopUpMenu(){
         PopupMenu pm = new PopupMenu(getBaseContext(),btnMenuBar);
@@ -131,6 +126,9 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         pm.show();
     }
 
+    //get job list and set
+    //this will set a list on sorted order
+    //by registration end date
     private void getJobList(String univ_id){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -139,7 +137,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getJobList: "+response);
                         try {
                             jsonJob = new JSONArray(response);
                             //set total job count
@@ -154,17 +152,14 @@ public class OfficerDashboardActivity extends AppCompatActivity {
 //                            Log.i(TAG, "onResponse: unsorted "+jsonJob);
 
                             Collections.sort(list, new Comparator<JSONObject>() {
-
                                 private static final String KEY_NAME = "reg_end_date";
                                 @Override
                                 public int compare(JSONObject a, JSONObject b) {
-
                                     String str1 = new String();
                                     String str2 = new String();
                                     try {
                                         str1 = (String)a.get(KEY_NAME);
                                         str2 = (String)b.get(KEY_NAME);
-
                                     } catch(JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -175,7 +170,6 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                                 sorted.put(list.get(i));
                             }
 //                            Log.i(TAG, "onResponse: sorted "+sorted);
-
 
                             uja = new UpcomingJobsAdapter(OfficerDashboardActivity.this,sorted);
                             view_jobs_rv.setAdapter(uja);
@@ -188,7 +182,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getJobList: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -206,6 +200,8 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //get coming soon list
+    //in this list, we got list of jobs which haven't start registration yet.
     @RequiresApi(api = Build.VERSION_CODES.O)
     private int getComingSoonJobCount(JSONArray ja){
         int count = 0;
@@ -224,6 +220,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         return count;
     }
 
+    //get student count
     private void getStudentsCount(){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -231,11 +228,9 @@ public class OfficerDashboardActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         try {
                             JSONArray js = new JSONArray(response);
                             tvStudentCount.setText(String.valueOf(js.length()));
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -265,6 +260,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //get company count
     private void getCompaniesCount(){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -295,6 +291,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //logout the current user
     private void logout() {
         editor.clear();
         editor.apply();

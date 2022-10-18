@@ -36,15 +36,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VHolder> {
-    Context context;
-    JSONArray job;
-
+    
+    private Context context;
+    private JSONArray job;
     private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
-
-
-    ImageButton btnClose;
-    Button btnShare,btnApply,btnShowAplicant;
-    static final String TAG = "SPM_ERROR";
+    private ImageButton btnClose;
+    private Button btnShare,btnApply,btnShowApplicant;
+    private static final String TAG = "SPM_ERROR";
+    
     public AppliedJobAdapter(Context context,JSONArray job){
         this.context = context;
         this.job = job;
@@ -98,6 +97,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         }
     }
 
+    //open dialog for company and job post details
     private void openDialog(JSONObject jo) {
 
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
@@ -107,10 +107,10 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         btnClose = dialog.findViewById(R.id.btnClose);
         btnShare = dialog.findViewById(R.id.btnJobPostShare);
         btnApply = dialog.findViewById(R.id.btnJobPostApply);
-        btnShowAplicant = dialog.findViewById(R.id.btnJobPostViewAplicant);
+        btnShowApplicant = dialog.findViewById(R.id.btnJobPostViewAplicant);
         btnShare.setVisibility(View.GONE);
         btnApply.setVisibility(View.GONE);
-        btnShowAplicant.setVisibility(View.GONE);
+        btnShowApplicant.setVisibility(View.GONE);
         tvCompanyName = (TextView) dialog.findViewById(R.id.tvJobPostCompanyName);
         tvCompanyDomain = (TextView) dialog.findViewById(R.id.tvJobPostCompanyDomain);
         tvCompanyAddress = (TextView) dialog.findViewById(R.id.tvJobPostCompanyAddress);
@@ -145,16 +145,15 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        //show fetch data here
-        StringRequest crequest = new StringRequest(
+        
+        //fetch the company profile data and set it
+        StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.GET_COMPANY_PROFILE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "Fetch Company Profile: "+response);
                         try {
                             JSONArray jsonArray = new JSONArray(response);
 
@@ -174,7 +173,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "Fetch Company Profile: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -189,12 +188,13 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
                 return param;
             }
         };
-        DefaultRetryPolicy cretryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        crequest.setRetryPolicy(cretryPolicy);
-        crequest.setShouldCache(false);
-        RequestQueue crequestQueue = Volley.newRequestQueue(context);
-        crequestQueue.add(crequest);
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
 
+        //close the dialog
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

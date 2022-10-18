@@ -73,8 +73,10 @@ public class ViewStudentActivity extends AppCompatActivity {
 
         totaldbitem = 10;
 
+        //Call Method
         getStudents();
 
+        //Listener
         student_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -117,6 +119,7 @@ public class ViewStudentActivity extends AppCompatActivity {
         }, 5000);
     }
 
+    //get student list
     private void getStudents(){
         pbLoadMore.setVisibility(View.VISIBLE);
 
@@ -127,10 +130,8 @@ public class ViewStudentActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         pbLoadMore.setVisibility(View.GONE);
-                        Log.i(TAG, "onResponse: student list"+response);
+                        Log.i(TAG, "getStudents"+response);
                         try {
-
-//                            JSONObject jsonObject = new JSONObject(response);
                             jsonStudent = new JSONArray(response);
 
                             TextView tvCount = (TextView) findViewById(R.id.tvViewStudentResultCount);
@@ -162,7 +163,7 @@ public class ViewStudentActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getStudents: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -183,7 +184,7 @@ public class ViewStudentActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    //search the data
+    //search the data by student name
     private JSONArray filterBySearch(JSONArray allStudent,String searchText){
         JSONArray result = new JSONArray();
         for (int i = 0; i < allStudent.length(); i++) {
@@ -203,6 +204,7 @@ public class ViewStudentActivity extends AppCompatActivity {
         return result;
     }
 
+    //go back
     public void goToDashboard(View view) {
         finish();
     }

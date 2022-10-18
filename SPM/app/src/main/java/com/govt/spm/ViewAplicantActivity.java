@@ -60,8 +60,6 @@ public class ViewAplicantActivity extends AppCompatActivity {
     private JSONArray jsonJob;
     private Intent myInt;
 
-    FileOutputStream fos;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +79,7 @@ public class ViewAplicantActivity extends AppCompatActivity {
 
 
         //CALL METHOD
-        getJobAplicant(myInt.getStringExtra("JOB_ID"));
+        getJobApplicant(myInt.getStringExtra("JOB_ID"));
 
         //LISTENER
         view_jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -122,7 +120,8 @@ public class ViewAplicantActivity extends AppCompatActivity {
         }, 5000);
     }
 
-    private void getJobAplicant(String job_id){
+    //get job applicant list
+    private void getJobApplicant(String job_id){
         pbLoadMore.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -130,7 +129,7 @@ public class ViewAplicantActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getJobApplicant: "+response);
                         try {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);
@@ -141,48 +140,8 @@ public class ViewAplicantActivity extends AppCompatActivity {
                             view_jobs_rv.setAdapter(vaa);
                             view_jobs_rv.setLayoutManager(manager);
 
-                            isSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                    try {
-                                        if(b){
-                                            JSONArray temp = filterGetSelected(jsonJob);
-                                            te.setText("Result : "+temp.length()+" Found");
-                                            vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,temp);
-                                            view_jobs_rv.setAdapter(vaa);
-                                            view_jobs_rv.setLayoutManager(manager);
-                                            vaa.notifyDataSetChanged();
-                                        }else{
-
-                                            te.setText("Result : "+jsonJob.length()+" Found");
-                                            vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,new JSONArray(response));
-                                            view_jobs_rv.setAdapter(vaa);
-                                            view_jobs_rv.setLayoutManager(manager);
-                                            vaa.notifyDataSetChanged();
-
-
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            });
-
-                            //search the data
-                            btnSearch.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if(!etSearch.getText().equals("")){
-                                        JSONArray searchedStudent =  filterBySearch(jsonJob,etSearch.getText().toString());
-                                        te.setText("Result : "+searchedStudent.length()+" Found");
-                                        vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,searchedStudent);
-                                        view_jobs_rv.setAdapter(vaa);
-                                        view_jobs_rv.setLayoutManager(manager);
-                                        vaa.notifyDataSetChanged();
-                                    }
-                                }
-                            });
+                            //set filter
+                            setFilter();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -192,7 +151,7 @@ public class ViewAplicantActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getJobApplicant: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -209,6 +168,52 @@ public class ViewAplicantActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(ViewAplicantActivity.this);
         requestQueue.add(request);
     }
+
+    //set filter
+    private void setFilter(){
+        TextView te = (TextView) findViewById(R.id.tvViewAplicantResultCount);
+        isSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if(b){
+                    JSONArray temp = filterGetSelected(jsonJob);
+                    te.setText("Result : "+temp.length()+" Found");
+                    vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,temp);
+                    view_jobs_rv.setAdapter(vaa);
+                    view_jobs_rv.setLayoutManager(manager);
+                    vaa.notifyDataSetChanged();
+                }else{
+
+                    te.setText("Result : "+jsonJob.length()+" Found");
+                    vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,jsonJob);
+                    view_jobs_rv.setAdapter(vaa);
+                    view_jobs_rv.setLayoutManager(manager);
+                    vaa.notifyDataSetChanged();
+
+
+                }
+
+            }
+        });
+
+        //search the data
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!etSearch.getText().equals("")){
+                    JSONArray searchedStudent =  filterBySearch(jsonJob,etSearch.getText().toString());
+                    te.setText("Result : "+searchedStudent.length()+" Found");
+                    vaa = new ViewAplicantAdapter(ViewAplicantActivity.this,searchedStudent);
+                    view_jobs_rv.setAdapter(vaa);
+                    view_jobs_rv.setLayoutManager(manager);
+                    vaa.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
     //filter selected student
     private JSONArray filterGetSelected(JSONArray jsonJob){
         JSONArray result = new JSONArray();

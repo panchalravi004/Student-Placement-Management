@@ -1,7 +1,5 @@
 package com.govt.spm;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -49,22 +47,20 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
-//import org.apache.commons.io.FileUtils;
 import org.json.*;
 
 public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
-    Context context;
 
-    JSONArray jobs;
-    SharedPreferences userPref;
-    ImageButton btnClose;
+    private Context context;
+    private JSONArray jobs;
+
+    private ImageButton btnClose;
+    private Button btnShare,btnApply,btnShowApplicant;
     private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
-
     private static final String TAG = "SPM_ERROR";
-    Button btnShare,btnApply,btnShowAplicant;
-    Uri URI = null;
-    private static final int PICK_FROM_GALLERY = 101;
+
     public JobsAdapter(Context context,JSONArray jobs){
         this.context = context;
         this.jobs = jobs;
@@ -83,7 +79,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         try {
             JSONObject jo = new JSONObject(jobs.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
-            holder.clgName.setText(jo.getString("min_qualification"));
+            holder.clgName.setText(jo.getString("min_qualification").toUpperCase(Locale.ROOT));
 
             if(holder.userPref.getString("user_id","user_id").equals(jo.getString("creator_id"))){
                 if(holder.userPref.getString("CAN_UPDATE_COMPANY","CAN_UPDATE_COMPANY").equals("0")){
@@ -109,11 +105,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                         public void onResponse(String response) {
                             Log.i(TAG, "onResponse: "+response);
                             try {
-                                JSONArray jsonArray = new JSONArray(response);
-                                if(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME").length()>20){
-                                    holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME").substring(0,25)+"...");
+                                holder.jsonArrayCompanyProfile = new JSONArray(response);
+                                if(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").length()>20){
+                                    holder.cName.setText(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").substring(0,25)+"...");
                                 }else{
-                                    holder.cName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME"));
+                                    holder.cName.setText(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME"));
                                 }
 
                             } catch (JSONException e) {
@@ -148,7 +144,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDialog(jo);
+                    openDialog(jo,holder.jsonArrayCompanyProfile);
                 }
             });
             holder.btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -190,6 +186,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         TextView cName,clgName,rEDate;
         ImageButton btnView,btnEdit,btnDelete;
         SharedPreferences userPref;
+        JSONArray jsonArrayCompanyProfile;
         public VHolder(@NonNull View itemView) {
             super(itemView);
             cName = itemView.findViewById(R.id.tvJobsAdapterCompanyName);
@@ -199,7 +196,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             btnEdit = itemView.findViewById(R.id.btnJobsAdapterEdit);
             btnDelete = itemView.findViewById(R.id.btnJobsAdapterDelete);
             userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-
+            jsonArrayCompanyProfile = new JSONArray();
         }
     }
 
@@ -213,7 +210,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         return super.getItemViewType(position);
     }
 
-    private void openDialog(JSONObject jo) {
+    private void openDialog(JSONObject jo,JSONArray jsonArrayCompanyProfile) {
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_jobs_post);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
@@ -221,7 +218,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         btnClose = dialog.findViewById(R.id.btnClose);
         btnShare = dialog.findViewById(R.id.btnJobPostShare);
         btnApply = dialog.findViewById(R.id.btnJobPostApply);
-        btnShowAplicant = dialog.findViewById(R.id.btnJobPostViewAplicant);
+        btnShowApplicant = dialog.findViewById(R.id.btnJobPostViewAplicant);
         btnApply.setVisibility(View.GONE);
         tvCompanyName = (TextView) dialog.findViewById(R.id.tvJobPostCompanyName);
         tvCompanyDomain = (TextView) dialog.findViewById(R.id.tvJobPostCompanyDomain);
@@ -242,52 +239,18 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         tvEDate = (TextView) dialog.findViewById(R.id.tvJobPostEDate);
 
         //show fetch data here
-        StringRequest crequest = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_COMPANY_PROFILE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-
-                            tvCompanyName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME"));
-                            tvCompanyDomain.setText(new JSONObject(jsonArray.getString(0)).getString("WEB_DOMAIN"));
-                            tvCompanyAddress.setText(new JSONObject(jsonArray.getString(0)).getString("ADDRESS"));
-                            tvHR1Name.setText(new JSONObject(jsonArray.getString(0)).getString("HR1_NAME"));
-                            tvHR1Email.setText(new JSONObject(jsonArray.getString(0)).getString("HR1_EMAIL"));
-                            tvHR2Name.setText(new JSONObject(jsonArray.getString(0)).getString("HR2_NAME"));
-                            tvHR2Email.setText(new JSONObject(jsonArray.getString(0)).getString("HR2_EMAIL"));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                try {
-                    param.put("company_id",jo.getString("company_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return param;
-            }
-        };
-        DefaultRetryPolicy cretryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        crequest.setRetryPolicy(cretryPolicy);
-        crequest.setShouldCache(false);
-        RequestQueue crequestQueue = Volley.newRequestQueue(context);
-        crequestQueue.add(crequest);
+        try {
+            tvCompanyName.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME"));
+            tvCompanyDomain.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("WEB_DOMAIN"));
+            tvCompanyAddress.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("ADDRESS"));
+            tvHR1Name.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR1_NAME"));
+            tvHR1Email.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR1_EMAIL"));
+            tvHR2Name.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR2_NAME"));
+            tvHR2Email.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR2_EMAIL"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+     
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -339,7 +302,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
 
-        btnShowAplicant.setOnClickListener(new View.OnClickListener() {
+        btnShowApplicant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();

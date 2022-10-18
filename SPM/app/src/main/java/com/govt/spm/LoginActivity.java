@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             clearField();
 
         }else{
+            //stop loading
             dialog.dismiss();
         }
     }
@@ -72,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     //For Authentication and fetch user role : ex : student , TPO
     private void authentication(String id,String pass){
 
-        Log.i(TAG, "authentication: Request Sending...");
+        Log.i(TAG, "Authentication: Request Sending...");
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.LOGIN,
@@ -80,19 +81,26 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         dialog.dismiss();
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "Authentication: "+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+
                             if(jsonObject.getBoolean("error")){
+                                //if user profile is not create
                                 if(jsonObject.getString("error_flag").equals("CREATE_PROFILE_FIRST")){
+                                    Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(LoginActivity.this,CreateOfficerProfileActivity.class));
                                     finish();
                                 }
+                                //when user login credential is wrong
+                                if(jsonObject.getString("error_flag").equals("INVALID_CRED")){
+                                    Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                }
                             }
-
-                            if(!jsonObject.getBoolean("error")){
-
+                            else{
+                                Toast.makeText(LoginActivity.this, jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                //check the role of user
+                                //Store the faculty information into our local storage : Shred Preference
                                 if(jsonObject.getString("user_role").equals("FACULTY")){
                                     editor.putString("user_id",jsonObject.getString("id"));
                                     editor.putString("role",jsonObject.getString("user_role"));
@@ -112,7 +120,9 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.apply();
                                     startActivity(new Intent(LoginActivity.this,OfficerDashboardActivity.class));
                                     finish();
-                                }if(jsonObject.getString("user_role").equals("STUDENT")){
+                                }
+                                //Store the student information into our local storage : Shared Preference
+                                if(jsonObject.getString("user_role").equals("STUDENT")){
                                     editor.putString("stud_id",jsonObject.getString("stud_id"));
                                     editor.putString("role",jsonObject.getString("user_role"));
                                     editor.putString("name",jsonObject.getString("stud_name"));
@@ -164,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG,error.getMessage());
+                        Log.i(TAG,"Authentication: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -183,6 +193,7 @@ public class LoginActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //clear the all fields
     private void clearField(){
         etUserId.setText("");
         etPassword.setText("");
@@ -205,6 +216,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    //if account is not created the create the account for faculty only
     public void goToCreateAccount(View view) {
         startActivity(new Intent(LoginActivity.this,CreateOfficerActivity.class));
     }

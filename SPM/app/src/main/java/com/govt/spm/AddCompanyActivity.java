@@ -122,7 +122,6 @@ public class AddCompanyActivity extends AppCompatActivity {
                 try {
                     JSONObject jo = new JSONObject(jsonCountry.getString(spCountry.getSelectedItemPosition()));
                     fetchState(jo.getString("country_id"));
-                    Log.i(TAG, "onItemSelected: " + jo.getString("country_name"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -181,6 +180,7 @@ public class AddCompanyActivity extends AppCompatActivity {
 
     }
 
+    //upload company browser when ACTION = UPDATE
     private void uploadImage() {
         if (filePath != null) {
             ProgressDialog pd = new ProgressDialog(this);
@@ -222,6 +222,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         }
     }
 
+    //get bitmap to string
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String getBitmapString(Bitmap bitmap) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -232,6 +233,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         return encode;
     }
 
+    //select image from phone
     private void selectImage() {
         Intent i = new Intent();
         i.setType("image/*");
@@ -256,6 +258,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         }
     }
 
+    //set company profile when ACTION = UPDATE
     private void setProfile(String company_id) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -263,7 +266,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("SPM_ERROR", "onResponse: " + response);
+                        Log.i(TAG, "setProfile: " + response);
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             etName.setText(new JSONObject(jsonArray.getString(0)).getString("COMPANY_NAME"));
@@ -283,7 +286,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i("SPM_ERROR", "onErrorResponse: " + error.getMessage());
+                        Log.i(TAG, "setProfile: " + error.getMessage());
                     }
                 }) {
             @Nullable
@@ -301,6 +304,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //add or update company as per command
     private void addUpdateCompany(String COMMAND, String company_id) {
         dialog.setMessage("Adding...");
         dialog.show();
@@ -323,7 +327,7 @@ public class AddCompanyActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         String finalCity = city;
-        Log.i(TAG, "addCompany: Request Sending..");
+
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.MANAGE_COMPANY_PROFILE,
@@ -332,7 +336,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         dialog.dismiss();
                         clearField();
-                        Log.i(TAG, "onResponse: " + response);
+                        Log.i(TAG, "addUpdateCompany: " + response);
                         try {
                             JSONObject jo = new JSONObject(response);
                             if (jo.getBoolean("error")) {
@@ -349,7 +353,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: " + error.getMessage());
+                        Log.i(TAG, "addUpdateCompany: " + error.getMessage());
                     }
                 }) {
             @Nullable
@@ -381,6 +385,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //fetch all country list and set on spinner
     private void fetchCountry() {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -388,7 +393,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCountry: "+response);
                         try {
                             ArrayList<String> country = new ArrayList<>();
                             jsonCountry = new JSONArray(response);
@@ -396,21 +401,20 @@ public class AddCompanyActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonCountry.length(); i++) {
                                 JSONObject jo = new JSONObject(jsonCountry.getString(i));
                                 if (myIntent.getStringExtra("ACTION").equals("UPDATE")) {
-                                    if (myIntent.getStringExtra("COUNTRY_ID").equals(jo.getString("country_id"))) {
-                                        country.add(0, jo.getString("country_name"));
-                                        JSONObject temp = new JSONObject(jsonCountry.getString(i));
-                                        jsonCountry.remove(i);
-                                        jsonCountry.put(0, temp);
-
-                                    } else {
+//                                    if (myIntent.getStringExtra("COUNTRY_ID").equals(jo.getString("country_id"))) {
+//                                        country.add(0, jo.getString("country_name"));
+//                                        JSONObject temp = new JSONObject(jsonCountry.getString(i));
+//                                        jsonCountry.remove(i);
+//                                        jsonCountry.put(0, temp);
+//
+//                                    } else {
                                         country.add(jo.getString("country_name"));
-                                    }
+//                                    }
                                 } else {
                                     country.add(jo.getString("country_name"));
                                 }
 //                                Log.i(TAG, "onResponse: "+jo.getString("univ_name"));
                             }
-                            Log.i(TAG, "onResponse: " + jsonCountry);
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddCompanyActivity.this, android.R.layout.simple_spinner_dropdown_item, country);
                             spCountry.setAdapter(adapter);
@@ -423,7 +427,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: " + error.getMessage());
+                        Log.i(TAG, "fetchCountry: " + error.getMessage());
                     }
                 });
         DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -433,6 +437,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //fetch state list as per country
     private void fetchState(String country_id) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -440,7 +445,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchState: "+response);
                         try {
                             ArrayList<String> state = new ArrayList<>();
                             jsonState = new JSONArray(response);
@@ -448,23 +453,19 @@ public class AddCompanyActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonState.length(); i++) {
                                 JSONObject jo = new JSONObject(jsonState.getString(i));
                                 if (myIntent.getStringExtra("ACTION").equals("UPDATE")) {
-                                    if (myIntent.getStringExtra("STATE_ID").equals(jo.getString("state_id"))) {
-                                        state.add(0, jo.getString("state_name"));
-                                        JSONObject temp = new JSONObject(jsonState.getString(i));
-                                        jsonState.remove(i);
-                                        jsonState.put(0, temp);
-                                    } else {
+//                                    if (myIntent.getStringExtra("STATE_ID").equals(jo.getString("state_id"))) {
+//                                        state.add(0, jo.getString("state_name"));
+//                                        JSONObject temp = new JSONObject(jsonState.getString(i));
+//                                        jsonState.remove(i);
+//                                        jsonState.put(0, temp);
+//                                    } else {
                                         state.add(jo.getString("state_name"));
-                                    }
+//                                    }
                                 } else {
                                     state.add(jo.getString("state_name"));
                                 }
-//                                Log.i(TAG, "onResponse: "+jo.getString("univ_name"));
+
                             }
-                            Log.i(TAG, "onResponse: " + jsonState.length());
-
-                            Log.i(TAG, "onResponse: " + state.size());
-
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddCompanyActivity.this, android.R.layout.simple_spinner_dropdown_item, state);
                             spState.setAdapter(adapter);
                         } catch (JSONException e) {
@@ -476,7 +477,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: " + error.getMessage());
+                        Log.i(TAG, "fetchState: " + error.getMessage());
                     }
                 }) {
             @Nullable
@@ -494,6 +495,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //fetch city as per state
     private void fetchCity(String state_id) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -501,7 +503,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCity: "+response);
                         try {
                             ArrayList<String> city = new ArrayList<>();
                             jsonCity = new JSONArray(response);
@@ -509,22 +511,19 @@ public class AddCompanyActivity extends AppCompatActivity {
                             for (int i = 0; i < jsonCity.length(); i++) {
                                 JSONObject jo = new JSONObject(jsonCity.getString(i));
                                 if (myIntent.getStringExtra("ACTION").equals("UPDATE")) {
-                                    if (myIntent.getStringExtra("CITY_ID").equals(jo.getString("city_id"))) {
-                                        city.add(0, jo.getString("city_name"));
-                                        JSONObject temp = new JSONObject(jsonCity.getString(i));
-                                        jsonCity.remove(i);
-                                        jsonCity.put(0, temp);
-
-                                    } else {
+//                                    if (myIntent.getStringExtra("CITY_ID").equals(jo.getString("city_id"))) {
+//                                        city.add(0, jo.getString("city_name"));
+//                                        JSONObject temp = new JSONObject(jsonCity.getString(i));
+//                                        jsonCity.remove(i);
+//                                        jsonCity.put(0, temp);
+//
+//                                    } else {
                                         city.add(jo.getString("city_name"));
-                                    }
+//                                    }
                                 } else {
                                     city.add(jo.getString("city_name"));
                                 }
-//                                Log.i(TAG, "onResponse: "+jo.getString("city_name"));
                             }
-                            Log.i(TAG, "onResponse: " + jsonCity);
-
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddCompanyActivity.this, android.R.layout.simple_spinner_dropdown_item, city);
                             spCity.setAdapter(adapter);
                         } catch (JSONException e) {
@@ -536,7 +535,7 @@ public class AddCompanyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: " + error.getMessage());
+                        Log.i(TAG, "fetchCity: " + error.getMessage());
                     }
                 }) {
             @Nullable

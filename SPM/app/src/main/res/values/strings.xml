@@ -78,8 +78,7 @@
 
     <!--  String array for Dept.   -->
     <string-array name="dept">
-        <item>IT</item>
-        <item>Science</item>
+        <item>Select College First</item>
     </string-array>
 
     <!--  String array for filter.   -->

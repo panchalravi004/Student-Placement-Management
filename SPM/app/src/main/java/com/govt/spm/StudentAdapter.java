@@ -30,10 +30,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder> {
-    Context context;
-    JSONArray student;
-    TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
+
+    private Context context;
+    private JSONArray student;
+    private TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
     private static final String TAG = "SPM_ERROR";
+
     public StudentAdapter(Context context,JSONArray student){
         this.context = context;
         this.student = student;
@@ -72,6 +74,16 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
         return student.length();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     public class VHolder extends RecyclerView.ViewHolder {
         TextView tvName,tvId,tvSem;
         View card;
@@ -83,16 +95,6 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
             card = itemView;
 
         }
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
     }
 
     private void openDialog(JSONObject info) {
@@ -127,7 +129,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "Fetch Student Profile: "+response);
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             tvName.setText(new JSONObject(jsonArray.getString(0)).getString("stud_name"));
@@ -159,7 +161,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "Fetch Student Profile: "+error.getMessage());
                     }
                 }){
             @Nullable

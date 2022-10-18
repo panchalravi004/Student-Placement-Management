@@ -33,11 +33,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapter.VHolder> {
-    Context context;
-    JSONArray application;
 
-    TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
-    static final String TAG = "SPM_ERROR";
+    private Context context;
+    private JSONArray application;
+    private TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
+    private static final String TAG = "SPM_ERROR";
+
     public ViewAplicantAdapter(Context context,JSONArray application){
         this.context = context;
         this.application = application;
@@ -89,45 +90,6 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
         }
     }
 
-    private void updateStatus(String id,String status) {
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.UPDATE_JOB_APLICANT_STATUS,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
-                        try {
-                            JSONObject jsonArray = new JSONObject(response);
-                            Toast.makeText(context, jsonArray.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("app_id",id);
-                param.put("app_stat",status);
-                return param;
-            }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(request);
-    }
-
     @Override
     public int getItemCount() {
         return application.length();
@@ -155,6 +117,47 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
         }
     }
 
+    //update job application status
+    private void updateStatus(String id,String status) {
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                Constants.UPDATE_JOB_APLICANT_STATUS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG, "updateStatus: "+response);
+                        try {
+                            JSONObject jsonArray = new JSONObject(response);
+                            Toast.makeText(context, jsonArray.getString("message"), Toast.LENGTH_SHORT).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i(TAG, "updateStatus: "+error.getMessage());
+                    }
+                }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put("app_id",id);
+                param.put("app_stat",status);
+                return param;
+            }
+        };
+        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(retryPolicy);
+        request.setShouldCache(false);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
+    }
+
+    //student detail dialog
     private void openDialog(JSONObject info) {
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_student);

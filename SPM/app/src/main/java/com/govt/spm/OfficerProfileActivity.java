@@ -106,6 +106,8 @@ public class OfficerProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    //set profile of TPO
     private void setProfile(){
         etId.setText(userPref.getString("user_id","user_id"));
         etEmail.setText(userPref.getString("email","email"));
@@ -139,6 +141,8 @@ public class OfficerProfileActivity extends AppCompatActivity {
         }
 
     }
+
+    //update the TPO Profile
     private void updateTPOProfile(){
         dialog.setMessage("Updating...");
         dialog.show();
@@ -163,7 +167,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         dialog.dismiss();
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "updateTPOProfile: "+response);
                         try {
                             JSONObject jo = new JSONObject(response);
                             Toast.makeText(OfficerProfileActivity.this, jo.getString("message"), Toast.LENGTH_SHORT).show();
@@ -176,7 +180,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "updateTPOProfile: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -200,6 +204,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //validate the fields
     private boolean validate(){
 
         String tpoID = etId.getText().toString();
@@ -234,7 +239,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchColleges: "+response);
                         try {
                             ArrayList<String> collegesList = new ArrayList<>();
                             adapterCollege = new ArrayAdapter<String>(OfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,collegesList);
@@ -269,7 +274,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchColleges: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -295,7 +300,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "fetchCollegeWiseDept: "+response);
                         try {
                             ArrayList<String> deptsList = new ArrayList<>();
                             adapterDept = new ArrayAdapter<String>(OfficerProfileActivity.this, android.R.layout.simple_spinner_dropdown_item,deptsList);
@@ -308,6 +313,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                                     deptsList.add(new String("There is no Data"));
                                 }
                             }else{
+                                deptsList.clear();
                                 for(int i=0;i<jsonDept.length();i++){
                                     JSONObject jo = new JSONObject(jsonDept.getString(i));
                                     deptsList.add(jo.getString("dept_name"));
@@ -322,7 +328,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "fetchCollegeWiseDept: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -340,6 +346,7 @@ public class OfficerProfileActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    //go back
     public void goToDashboard(View view) {
         finish();
     }

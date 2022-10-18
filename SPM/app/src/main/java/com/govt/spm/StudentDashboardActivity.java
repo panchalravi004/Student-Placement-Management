@@ -60,20 +60,17 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
         view_jobs_rv = (RecyclerView) findViewById(R.id.list_SD_upcoming_jobs);
         btnMenuBar = (ImageButton) findViewById(R.id.btnSDMenuBar);
-        manager = new LinearLayoutManager(this);
         tvJobsCount = (TextView) findViewById(R.id.tvSDJobsCount);
         tvAppliedInCount = (TextView) findViewById(R.id.tvSDAppliedInCount);
         tvSelectedInCount = (TextView) findViewById(R.id.tvSDSelectedInCount);
         btnGoTOAppliedJob = (ImageButton) findViewById(R.id.btnSDSelectedIn);
+
+        jsonJob = new JSONArray();
+        manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
 
-        jsonJob = new JSONArray();
-
-        //CALL METHOD
-//        getJobList(userPref.getString("univ_id","univ_id"));
-
-        //When click on menu bar button open popupmenu
+        //Listeners
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
@@ -97,6 +94,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         getAppliedJobList(userPref.getString("stud_id","stud_id"));
     }
 
+    //open Pop Up Menu Bar
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void openPopUpMenu(){
         PopupMenu pm = new PopupMenu(getBaseContext(),btnMenuBar);
@@ -128,7 +126,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         pm.show();
     }
 
-    //get jobs list
+    //get jobs list and set counts of jobs
     private void getJobList(String univ_id){
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -136,21 +134,21 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getJobList: "+response);
                         try {
                             jsonJob = new JSONArray(response);
-                            //set total job count
+                            //Set Counts of Jobs
                             tvJobsCount.setText(String.valueOf(jsonJob.length()));
-                            JSONArray sorted = new JSONArray();
 
+                            //Add JSONObject in list
+                            JSONArray sorted = new JSONArray();
                             List list = new ArrayList();
                             for(int i = 0; i < jsonJob.length(); i++) {
                                 list.add(jsonJob.getJSONObject(i));
                             }
-                            Log.i(TAG, "onResponse: unsorted "+jsonJob);
-
+                            //Log.i(TAG, "getJobList: unsorted "+jsonJob);
+                            //Sort the list by the registration end date
                             Collections.sort(list, new Comparator<JSONObject>() {
-
                                 private static final String KEY_NAME = "reg_end_date";
                                 @Override
                                 public int compare(JSONObject a, JSONObject b) {
@@ -167,11 +165,11 @@ public class StudentDashboardActivity extends AppCompatActivity {
                                     return str1.compareTo(str2);
                                 }
                             });
+                            //Now add all values(JSONObject) in sorted JSONArray
                             for(int i = 0; i < jsonJob.length(); i++) {
                                 sorted.put(list.get(i));
                             }
-                            Log.i(TAG, "onResponse: sorted "+sorted);
-
+                            //Log.i(TAG, "getJobList: sorted "+sorted);
 
                             uja = new UpcomingJobsAdapter(StudentDashboardActivity.this,sorted);
                             view_jobs_rv.setAdapter(uja);
@@ -184,7 +182,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getJobList: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -210,10 +208,12 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "getAppliedJobList: "+response);
                         try {
                             JSONArray jsonAppliedJob = new JSONArray(response);
+                            //set applied job list count
                             tvAppliedInCount.setText(String.valueOf(jsonAppliedJob.length()));
+                            //get applied job list count and set
                             tvSelectedInCount.setText(String.valueOf(filterGetSelected(jsonAppliedJob)));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -223,7 +223,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "getAppliedJobList: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -241,7 +241,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    //filter selected student
+    //get selected job list counts
     private int filterGetSelected(JSONArray jsonJob){
         int count = 0;
         for (int i = 0; i < jsonJob.length(); i++) {
@@ -258,6 +258,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
         return count;
     }
 
+    //logout the current user
     private void logout() {
         editor.clear();
         editor.apply();
