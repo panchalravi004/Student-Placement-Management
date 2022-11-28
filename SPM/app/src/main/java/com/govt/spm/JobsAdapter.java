@@ -103,7 +103,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.i(TAG, "onResponse: "+response);
+                            Log.i(TAG, "Fetch Company Profile: "+response);
                             try {
                                 holder.jsonArrayCompanyProfile = new JSONArray(response);
                                 if(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").length()>20){
@@ -120,7 +120,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                            Log.i(TAG, "Fetch Company Profile: "+error.getMessage());
                         }
                     }){
                 @Nullable
