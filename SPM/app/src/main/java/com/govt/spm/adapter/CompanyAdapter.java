@@ -1,15 +1,13 @@
-package com.govt.spm;
+package com.govt.spm.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.ContentInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,12 +24,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.AddCompanyActivity;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -193,7 +193,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context,AddCompanyActivity.class);
+                Intent i = new Intent(context, AddCompanyActivity.class);
                 i.putExtra("ACTION","UPDATE");
                 try {
                     i.putExtra("COMPANY_ID",jo.getString("company_id"));

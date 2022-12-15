@@ -1,16 +1,12 @@
-package com.govt.spm;
+package com.govt.spm.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
+import com.govt.spm.request.CacheRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,72 +31,58 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapter.VHolder> {
+public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder> {
 
     private Context context;
-    private JSONArray application;
+    private JSONArray student;
     private TextView tvName,tvEnrollNo,tvEmail,tvMobile,tvAdd,tvPrimarySkill,tvSecondarySkill,tvTertiarySkill,tvAcadamicYear,tvSSCPer,tvSSCYear,tvHSCPer,tvHSCYear,tvUGPer,tvUGYear,tvPGPer,tvPGYear,tvHSCStream,tvUGStream,tvPGStream,tvCurrentSem;
     private static final String TAG = "SPM_ERROR";
 
-    public ViewAplicantAdapter(Context context,JSONArray application){
+    public void updateStudent(JSONArray student){
+        this.student = student;
+        this.notifyDataSetChanged();
+    }
+
+    public StudentAdapter(Context context,JSONArray student){
         this.context = context;
-        this.application = application;
+        this.student = student;
     }
 
     @NonNull
     @Override
-    public ViewAplicantAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StudentAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_aplicant_view,parent,false);
+        View view = inflater.inflate(R.layout.row_student,parent,false);
         return new VHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StudentAdapter.VHolder holder, int position) {
         try {
-            JSONObject jo = new JSONObject(application.getString(position));
-            holder.sname.setText(jo.getString("stud_name"));
-            holder.status.setText(jo.getString("application_stat"));
-            holder.btnApprove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        updateStatus(jo.getString("id"),"APPROVED");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            holder.btnReject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        updateStatus(jo.getString("id"),"REJECTED");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            JSONObject jo = new JSONObject(student.getString(position));
+            holder.tvId.setText(jo.getString("stud_id"));
+            holder.tvName.setText(jo.getString("stud_name"));
+            holder.tvSem.setText(jo.getString("academic_session")+" SEM "+jo.getString("sem"));
+            holder.card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     openDialog(jo);
                 }
             });
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Override
     public int getItemCount() {
-        return application.length();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        if(student != null){
+            return student.length();
+        }else{
+            return 0;
+        }
     }
 
     @Override
@@ -105,59 +90,24 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
         return super.getItemId(position);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
     public class VHolder extends RecyclerView.ViewHolder {
-        TextView sname,status;
-        ImageButton btnApprove,btnReject;
+        TextView tvName,tvId,tvSem;
+        View card;
         public VHolder(@NonNull View itemView) {
             super(itemView);
-            sname = itemView.findViewById(R.id.tvAplicantStudentName);
-            status = itemView.findViewById(R.id.tvAplicantStudentStatus);
-            btnApprove = itemView.findViewById(R.id.btnAplicantStudentApprove);
-            btnReject = itemView.findViewById(R.id.btnAplicantStudentReject);
+            tvName=(TextView) itemView.findViewById(R.id.tvStudentAdapterName);
+            tvId=(TextView) itemView.findViewById(R.id.tvStudentAdapterRollNo);
+            tvSem=(TextView) itemView.findViewById(R.id.tvStudentAdapterCourseSemYear);
+            card = itemView;
+
         }
     }
 
-    //update job application status
-    private void updateStatus(String id,String status) {
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.UPDATE_JOB_APLICANT_STATUS,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "updateStatus: "+response);
-                        try {
-                            JSONObject jsonArray = new JSONObject(response);
-                            Toast.makeText(context, jsonArray.getString("message"), Toast.LENGTH_SHORT).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "updateStatus: "+error.getMessage());
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("app_id",id);
-                param.put("app_stat",status);
-                return param;
-            }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(request);
-    }
-
-    //student detail dialog
     private void openDialog(JSONObject info) {
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_student);
@@ -184,13 +134,13 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
         tvPGStream = dialog.findViewById(R.id.tvStudentInfoPGStream);
         tvCurrentSem = dialog.findViewById(R.id.tvStudentInfoCurrentSem);
 
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
                 Constants.GET_STUDENT_PROFILE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i(TAG, "onResponse: "+response);
+                        Log.i(TAG, "Fetch Student Profile: "+response);
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             tvName.setText(new JSONObject(jsonArray.getString(0)).getString("stud_name"));
@@ -222,7 +172,7 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
+                        Log.i(TAG, "Fetch Student Profile: "+error.getMessage());
                     }
                 }){
             @Nullable
@@ -237,14 +187,9 @@ public class ViewAplicantAdapter extends RecyclerView.Adapter<ViewAplicantAdapte
                 return param;
             }
         };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
 
-
         dialog.show();
     }
-
 }

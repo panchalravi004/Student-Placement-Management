@@ -1,4 +1,4 @@
-package com.govt.spm;
+package com.govt.spm.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -24,6 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,34 +35,37 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapter.VHolder> {
-    
+public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolder> {
+
     private Context context;
     private JSONArray job;
     private TextView tvCompanyName,tvCompanyDomain,tvCompanyAddress,tvHR1Name,tvHR1Email,tvHR2Name,tvHR2Email,tvDescription,tvRole,tvSkill,tvSSC,tvHSC,tvUG,tvPG,tvMinQuali,tvSDate,tvEDate;
     private ImageButton btnClose;
     private Button btnShare,btnApply,btnShowApplicant;
-    static final String TAG = "SPM_ERROR";
-    
-    public UpcomingJobsAdapter(Context context,JSONArray job){
+    private static final String TAG = "SPM_ERROR";
+
+    public ViewJobsAdapter(Context context,JSONArray job){
         this.context = context;
         this.job = job;
     }
 
     @NonNull
     @Override
-    public UpcomingJobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewJobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.row_upcoming_jobs,parent,false);
+        View view = inflater.inflate(R.layout.row_view_jobs,parent,false);
         return new VHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UpcomingJobsAdapter.VHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewJobsAdapter.VHolder holder, int position) {
         try {
-            JSONObject jo = new JSONObject(job.getString(position));
-            holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
-            holder.clgName.setText(jo.getString("min_qualification").toUpperCase(Locale.ROOT));
+            JSONObject joJob = new JSONObject(job.getString(position));
+
+            holder.rEDate.setText("Ends on : "+joJob.getString("reg_end_date"));
+            holder.clgName.setText(joJob.getString("min_qualification").toUpperCase(Locale.ROOT));
+
+            //fetch company profile
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     Constants.GET_COMPANY_PROFILE,
@@ -92,7 +97,7 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> param = new HashMap<>();
                     try {
-                        param.put("company_id",jo.getString("company_id"));
+                        param.put("company_id",joJob.getString("company_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -104,10 +109,12 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
             request.setShouldCache(false);
             RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(request);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            //open dialog to show the details of job post and details about company
+            holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDialog(jo,holder.jsonArrayCompanyProfile);
+                    openDialog(joJob,holder.jsonArrayCompanyProfile);
                 }
             });
         } catch (JSONException e) {
@@ -119,30 +126,27 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
     public int getItemCount() {
         return job.length();
     }
-
     @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
-
+    public long getItemId(int position) {return super.getItemId(position);}
     @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
+    public int getItemViewType(int position) {return super.getItemViewType(position);}
 
     public class VHolder extends RecyclerView.ViewHolder {
         TextView cName,clgName,rEDate;
+        ImageButton btnView;
         JSONArray jsonArrayCompanyProfile;
         public VHolder(@NonNull View itemView) {
             super(itemView);
-            cName = itemView.findViewById(R.id.tvUJACompanyName);
-            clgName = itemView.findViewById(R.id.tvUJACollegeName);
-            rEDate = itemView.findViewById(R.id.tvUJARegisterEndDate);
+            cName = itemView.findViewById(R.id.tvVJACompanyName);
+            clgName = itemView.findViewById(R.id.tvVJACollegeName);
+            rEDate = itemView.findViewById(R.id.tvVJARegisterEndDate);
+            btnView = itemView.findViewById(R.id.btnVJAView);
             jsonArrayCompanyProfile = new JSONArray();
         }
     }
 
-    //open dialog to show details of job post and company
+    //create dialog and set layout
+    //set details on dialog box
     private void openDialog(JSONObject jo,JSONArray jsonArrayCompanyProfile) {
 
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
@@ -172,11 +176,8 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
         tvMinQuali = (TextView) dialog.findViewById(R.id.tvJobPostMINQuali);
         tvSDate = (TextView) dialog.findViewById(R.id.tvJobPostSDate);
         tvEDate = (TextView) dialog.findViewById(R.id.tvJobPostEDate);
-        SharedPreferences userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
 
-        if(userPref.getString("role","role").equals("FACULTY")){
-            btnApply.setVisibility(View.GONE);
-        }
+        SharedPreferences userPref = context.getSharedPreferences("user",Context.MODE_PRIVATE);
 
         //apply on job post
         btnApply.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +190,7 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
                 }
             }
         });
+
         //set company details
         try {
             tvCompanyName.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME"));
@@ -197,11 +199,11 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
             tvHR1Name.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR1_NAME"));
             tvHR1Email.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR1_EMAIL"));
             tvHR2Name.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR2_NAME"));
-            tvHR2Email.setText(new JSONObject(jsonArrayCompanyProfile.getString(0)).getString("HR2_EMAIL"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //fetch job details
+
+        //fetch the job details
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.GET_JOB_DETAIL,
@@ -252,17 +254,16 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
 
-        //close dialog box
+        //close the dialog box
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
-
     }
+
     //apply in job post
     private void applyInJob(String job_id, String stud_id) {
         StringRequest request = new StringRequest(

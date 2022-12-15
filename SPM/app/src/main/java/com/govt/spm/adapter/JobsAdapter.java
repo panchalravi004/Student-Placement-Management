@@ -1,4 +1,4 @@
-package com.govt.spm;
+package com.govt.spm.adapter;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,6 +33,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.AddJobsActivity;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
+import com.govt.spm.ViewAplicantActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,9 +47,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -150,7 +151,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             holder.btnEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(context,AddJobsActivity.class);
+                    Intent i = new Intent(context, AddJobsActivity.class);
                     i.putExtra("ACTION","UPDATE");
                     try {
                         i.putExtra("job_id",jo.getString("job_id"));
@@ -306,7 +307,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent i = new Intent(context,ViewAplicantActivity.class);
+                Intent i = new Intent(context, ViewAplicantActivity.class);
                 try {
                     i.putExtra("JOB_ID",jo.getString("job_id"));
                 } catch (JSONException e) {

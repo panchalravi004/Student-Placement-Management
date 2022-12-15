@@ -3,24 +3,23 @@ package com.govt.spm;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -30,12 +29,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.adapter.StudentAdapter;
+import com.govt.spm.viewmodel.StudentLiveViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +49,7 @@ public class ViewStudentActivity extends AppCompatActivity {
     private LinearLayoutManager manager;
     private StudentAdapter sa;
     private ProgressBar pbLoadMore;
+    private TextView tvCount;
 
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonStudent;
@@ -56,6 +57,11 @@ public class ViewStudentActivity extends AppCompatActivity {
     private Boolean isScrolling = false;
     private int currentItem,totalItem,scrolledOutItems,totaldbitem;
     private SharedPreferences userPref;
+
+    private StudentLiveViewModel studentLiveViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +72,11 @@ public class ViewStudentActivity extends AppCompatActivity {
 //        spFilterCollege = (Spinner) findViewById(R.id.spViewStudentFilterOne);
 //        spFilterDept = (Spinner) findViewById(R.id.spViewStudentFilterTwo);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMore);
-
+        tvCount = (TextView) findViewById(R.id.tvViewStudentResultCount);
         student_rv = (RecyclerView) findViewById(R.id.recycleViewStudent);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         totaldbitem = 10;
 
@@ -77,6 +84,27 @@ public class ViewStudentActivity extends AppCompatActivity {
         getStudents();
 
         //Listener
+        //search the data
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!etSearch.getText().equals("")){
+                    JSONArray searchedStudent =  filterBySearch(jsonStudent,etSearch.getText().toString());
+                    tvCount.setText("Result : "+ searchedStudent.length()+" Found");
+                    sa = new StudentAdapter(ViewStudentActivity.this,searchedStudent);
+                    student_rv.setAdapter(sa);
+                    student_rv.setLayoutManager(manager);
+                }
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                studentLiveViewModel.makeApiCall(ViewStudentActivity.this,userPref);
+            }
+        });
+
         student_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -123,65 +151,25 @@ public class ViewStudentActivity extends AppCompatActivity {
     private void getStudents(){
         pbLoadMore.setVisibility(View.VISIBLE);
 
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_STUDENT_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        pbLoadMore.setVisibility(View.GONE);
-                        Log.i(TAG, "getStudents"+response);
-                        try {
-                            jsonStudent = new JSONArray(response);
+        studentLiveViewModel = new StudentLiveViewModel();
 
-                            TextView tvCount = (TextView) findViewById(R.id.tvViewStudentResultCount);
-                            tvCount.setText("Result : "+ jsonStudent.length()+" Found");
+        sa = new StudentAdapter(ViewStudentActivity.this,jsonStudent);
+        student_rv.setAdapter(sa);
+        student_rv.setLayoutManager(manager);
 
-                            sa = new StudentAdapter(ViewStudentActivity.this,jsonStudent);
-                            student_rv.setAdapter(sa);
-                            student_rv.setLayoutManager(manager);
-
-                            //search the data
-                            btnSearch.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if(!etSearch.getText().equals("")){
-                                        JSONArray searchedStudent =  filterBySearch(jsonStudent,etSearch.getText().toString());
-                                        tvCount.setText("Result : "+ searchedStudent.length()+" Found");
-                                        sa = new StudentAdapter(ViewStudentActivity.this,searchedStudent);
-                                        student_rv.setAdapter(sa);
-                                        student_rv.setLayoutManager(manager);
-                                    }
-                                }
-                            });
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getStudents: "+error.getMessage());
-                    }
-                }){
-            @Nullable
+        studentLiveViewModel.getStudent().observe(this, new Observer<JSONArray>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("univ_id",userPref.getString("univ_id","univ_id"));
-                param.put("college_id",userPref.getString("college_id","college_id"));
-                param.put("dept_id",userPref.getString("dept_id","dept_id"));
-
-                return param;
+            public void onChanged(JSONArray jsonArray) {
+                pbLoadMore.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
+                if(jsonArray != null){
+                    jsonStudent = jsonArray;
+                    tvCount.setText("Result : "+ jsonStudent.length()+" Found");
+                    sa.updateStudent(jsonArray);
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(ViewStudentActivity.this);
-        requestQueue.add(request);
+        });
+        studentLiveViewModel.makeApiCall(this,userPref);
     }
 
     //search the data by student name
