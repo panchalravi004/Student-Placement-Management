@@ -49,6 +49,11 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
         this.job = job;
     }
 
+    public void updateJob(JSONArray job){
+        this.job = job;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewJobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
