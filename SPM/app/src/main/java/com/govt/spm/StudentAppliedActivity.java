@@ -3,8 +3,10 @@ package com.govt.spm;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -30,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.adapter.AppliedJobAdapter;
+import com.govt.spm.viewmodel.AppliedJobLiveViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,12 +48,14 @@ public class StudentAppliedActivity extends AppCompatActivity {
     private Spinner spFilterOne,spFilterTwo;
     private TextView tvResultCount;
     private CheckBox cbApproved,cbSelected;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
     private ProgressBar pbLoadMore;
     private Boolean isScrolling = false;
     private AppliedJobAdapter vja;
+    private AppliedJobLiveViewModel appliedJobLiveViewModel;
 
     private int currentItem,totalItem,scrollOutItem,totalDBItem;
     private SharedPreferences userPref;
@@ -73,6 +78,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         cbApproved = (CheckBox) findViewById(R.id.cbJobApproved);
         cbSelected = (CheckBox) findViewById(R.id.cbJobSelectedIn);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         totalDBItem = 10;
         jsonJob = new JSONArray();
@@ -82,6 +88,15 @@ public class StudentAppliedActivity extends AppCompatActivity {
         setFilters();
 
         //LISTENER
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                etSearch.setText("");
+                cbApproved.setChecked(false);
+                cbSelected.setChecked(false);
+                appliedJobLiveViewModel.makeApiCall(StudentAppliedActivity.this,userPref);
+            }
+        });
         view_jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -123,46 +138,25 @@ public class StudentAppliedActivity extends AppCompatActivity {
     //fetch the applied job list of current student
     private void getAppliedJobList(String stud_id){
         pbLoadMore.setVisibility(View.VISIBLE);
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_APPLIED_JOB_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "getAppliedJobList: "+response);
-                        try {
-                            pbLoadMore.setVisibility(View.GONE);
-                            jsonJob = new JSONArray(response);
 
-                            tvResultCount.setText("Result : "+jsonJob.length()+" Found");
-                            vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
-                            view_jobs_rv.setAdapter(vja);
-                            view_jobs_rv.setLayoutManager(manager);
+        appliedJobLiveViewModel = new AppliedJobLiveViewModel();
+        vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
+        view_jobs_rv.setAdapter(vja);
+        view_jobs_rv.setLayoutManager(manager);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getAppliedJobList: "+error.getMessage());
-                    }
-                }){
-            @Nullable
+        appliedJobLiveViewModel.getAppliedJob().observe(this, new Observer<JSONArray>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("stud_id",stud_id);
-                return param;
+            public void onChanged(JSONArray jsonArray) {
+                pbLoadMore.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
+                if(jsonArray != null){
+                    jsonJob = jsonArray;
+                    tvResultCount.setText("Result : "+jsonJob.length()+" Found");
+                    vja.updateJob(jsonArray);
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(StudentAppliedActivity.this);
-        requestQueue.add(request);
+        });
+        appliedJobLiveViewModel.makeApiCall(this,userPref);
     }
 
     //set the filters like search , approved , selected
@@ -175,9 +169,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
                 if(!etSearch.getText().equals("")){
                     JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
                     tvResultCount.setText("Result : "+searchedJob.length()+" Found");
-                    vja = new AppliedJobAdapter(StudentAppliedActivity.this,searchedJob);
-                    view_jobs_rv.setAdapter(vja);
-                    view_jobs_rv.setLayoutManager(manager);
+                    vja.updateJob(searchedJob);
                 }
             }
         });
@@ -189,17 +181,11 @@ public class StudentAppliedActivity extends AppCompatActivity {
                 if(b){
                     JSONArray temp = filterGetApproved(jsonJob);
                     tvResultCount.setText("Result : "+temp.length()+" Found");
-                    vja = new AppliedJobAdapter(StudentAppliedActivity.this,temp);
-                    view_jobs_rv.setAdapter(vja);
-                    view_jobs_rv.setLayoutManager(manager);
-                    vja.notifyDataSetChanged();
+                    vja.updateJob(temp);
                 }else{
 
                     tvResultCount.setText("Result : "+jsonJob.length()+" Found");
-                    vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
-                    view_jobs_rv.setAdapter(vja);
-                    view_jobs_rv.setLayoutManager(manager);
-                    vja.notifyDataSetChanged();
+                    vja.updateJob(jsonJob);
                 }
             }
         });
@@ -210,17 +196,11 @@ public class StudentAppliedActivity extends AppCompatActivity {
                 if(b){
                     JSONArray temp = filterGetSelected(jsonJob);
                     tvResultCount.setText("Result : "+temp.length()+" Found");
-                    vja = new AppliedJobAdapter(StudentAppliedActivity.this,temp);
-                    view_jobs_rv.setAdapter(vja);
-                    view_jobs_rv.setLayoutManager(manager);
-                    vja.notifyDataSetChanged();
+                    vja.updateJob(temp);
                 }else{
 
                     tvResultCount.setText("Result : "+jsonJob.length()+" Found");
-                    vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
-                    view_jobs_rv.setAdapter(vja);
-                    view_jobs_rv.setLayoutManager(manager);
-                    vja.notifyDataSetChanged();
+                    vja.updateJob(jsonJob);
                 }
             }
         });

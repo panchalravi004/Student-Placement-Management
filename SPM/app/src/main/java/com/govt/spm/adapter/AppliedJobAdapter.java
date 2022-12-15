@@ -48,6 +48,11 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         this.job = job;
     }
 
+    public void updateJob(JSONArray job){
+        this.job = job;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public AppliedJobAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -80,7 +85,11 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
 
     @Override
     public int getItemCount() {
-        return job.length();
+        if (job != null){
+            return job.length();
+        }else{
+            return 0;
+        }
     }
 
     public class VHolder extends RecyclerView.ViewHolder {
