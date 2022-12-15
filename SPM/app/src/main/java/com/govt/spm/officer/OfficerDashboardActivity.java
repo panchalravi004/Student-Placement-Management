@@ -1,6 +1,5 @@
-package com.govt.spm;
+package com.govt.spm.officer;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,17 +17,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.govt.spm.adapter.CompanyAdapter;
-import com.govt.spm.adapter.JobsAdapter;
-import com.govt.spm.adapter.StudentAdapter;
+import com.govt.spm.LoginActivity;
+import com.govt.spm.R;
 import com.govt.spm.adapter.UpcomingJobsAdapter;
 import com.govt.spm.viewmodel.CompanyLiveViewModel;
 import com.govt.spm.viewmodel.JobLiveViewModel;
@@ -43,9 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OfficerDashboardActivity extends AppCompatActivity {
 

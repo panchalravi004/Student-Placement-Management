@@ -1,4 +1,4 @@
-package com.govt.spm;
+package com.govt.spm.officer;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -8,7 +8,6 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -35,6 +34,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

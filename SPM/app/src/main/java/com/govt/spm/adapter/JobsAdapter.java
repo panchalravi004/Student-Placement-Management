@@ -33,10 +33,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.govt.spm.AddJobsActivity;
+import com.govt.spm.officer.AddJobsActivity;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
-import com.govt.spm.ViewAplicantActivity;
+import com.govt.spm.officer.ViewAplicantActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

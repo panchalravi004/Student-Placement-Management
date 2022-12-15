@@ -1,4 +1,4 @@
-package com.govt.spm;
+package com.govt.spm.officer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,7 +10,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pConfig;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,13 +24,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
 import com.govt.spm.adapter.CompanyAdapter;
 import com.govt.spm.request.CacheRequest;
 import com.govt.spm.viewmodel.CompanyLiveViewModel;

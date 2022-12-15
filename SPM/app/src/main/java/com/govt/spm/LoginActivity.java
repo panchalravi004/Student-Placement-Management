@@ -21,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.officer.OfficerDashboardActivity;
+import com.govt.spm.student.StudentDashboardActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.putString("can_update_profile",jsonObject.getString("can_update_profile"));
                                     editor.putString("stud_dob",jsonObject.getString("stud_dob"));
                                     editor.apply();
-                                    startActivity(new Intent(LoginActivity.this,StudentDashboardActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, StudentDashboardActivity.class));
                                     finish();
                                 }
                             }

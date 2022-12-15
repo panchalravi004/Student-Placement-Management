@@ -1,4 +1,4 @@
-package com.govt.spm;
+package com.govt.spm.officer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +30,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.Constants;
+import com.govt.spm.R;
 import com.govt.spm.adapter.ViewAplicantAdapter;
 
 import org.json.JSONArray;

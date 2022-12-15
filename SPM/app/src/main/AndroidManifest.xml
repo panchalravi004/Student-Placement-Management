@@ -22,21 +22,21 @@
         tools:targetApi="31"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".StudentProfileActivity"
+            android:name=".student.StudentProfileActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ViewAplicantActivity"
+            android:name=".officer.ViewAplicantActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".StudentAppliedActivity"
+            android:name=".student.StudentAppliedActivity"
             android:exported="false" />
         <activity
             android:name=".CreateOfficerProfileActivity"
@@ -45,31 +45,31 @@
             android:name=".CreateOfficerActivity"
             android:exported="false" />
         <activity
-            android:name=".AddCompanyActivity"
+            android:name=".officer.AddCompanyActivity"
             android:exported="false" />
         <activity
-            android:name=".ManageCompanyActivity"
+            android:name=".officer.ManageCompanyActivity"
             android:exported="false" />
         <activity
-            android:name=".AddJobsActivity"
+            android:name=".officer.AddJobsActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewJobsActivity"
+            android:name=".student.ViewJobsActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewStudentActivity"
+            android:name=".officer.ViewStudentActivity"
             android:exported="false" />
         <activity
-            android:name=".StudentDashboardActivity"
+            android:name=".student.StudentDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".ManageJobsActivity"
+            android:name=".officer.ManageJobsActivity"
             android:exported="false" />
         <activity
-            android:name=".OfficerProfileActivity"
+            android:name=".officer.OfficerProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".OfficerDashboardActivity"
+            android:name=".officer.OfficerDashboardActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

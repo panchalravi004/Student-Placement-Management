@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbarSize="0dp"
-    tools:context=".ManageJobsActivity">
+    tools:context=".officer.ManageJobsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.govt.spm.officer.OfficerDashboardActivity;
+import com.govt.spm.student.StudentDashboardActivity;
+
 public class SplashScreen extends AppCompatActivity {
 
     SharedPreferences userPref;
@@ -21,10 +24,10 @@ public class SplashScreen extends AppCompatActivity {
         super.onResume();
         if(userPref.contains("user_id") || userPref.contains("stud_id")){
             if(userPref.getString("role","role").equals("FACULTY")){
-                startActivity(new Intent(this,OfficerDashboardActivity.class));
+                startActivity(new Intent(this, OfficerDashboardActivity.class));
             }
             else if(userPref.getString("role","role").equals("STUDENT")){
-                startActivity(new Intent(this,StudentDashboardActivity.class));
+                startActivity(new Intent(this, StudentDashboardActivity.class));
             }
 
         }else{

@@ -24,10 +24,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.govt.spm.AddCompanyActivity;
+import com.govt.spm.officer.AddCompanyActivity;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
-import com.govt.spm.request.CacheRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
