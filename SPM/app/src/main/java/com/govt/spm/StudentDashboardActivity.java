@@ -3,6 +3,7 @@ package com.govt.spm;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.adapter.AppliedJobAdapter;
 import com.govt.spm.adapter.UpcomingJobsAdapter;
+import com.govt.spm.viewmodel.AppliedJobLiveViewModel;
+import com.govt.spm.viewmodel.JobLiveViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +56,8 @@ public class StudentDashboardActivity extends AppCompatActivity {
 
     private JSONArray jsonJob;
     private UpcomingJobsAdapter uja;
+    private JobLiveViewModel jobLiveViewModel;
+    private AppliedJobLiveViewModel appliedJobLiveViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +95,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //CALL METHOD
-        getJobList(userPref.getString("univ_id","univ_id"));
+        getJobList();
         getAppliedJobList(userPref.getString("stud_id","stud_id"));
     }
 
@@ -126,118 +132,73 @@ public class StudentDashboardActivity extends AppCompatActivity {
     }
 
     //get jobs list and set counts of jobs
-    private void getJobList(String univ_id){
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_JOB_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "getJobList: "+response);
+    private void getJobList(){
+        jobLiveViewModel = new JobLiveViewModel();
+        uja = new UpcomingJobsAdapter(StudentDashboardActivity.this,jsonJob);
+        view_jobs_rv.setAdapter(uja);
+        view_jobs_rv.setLayoutManager(manager);
+
+        jobLiveViewModel.getJob().observe(this, new Observer<JSONArray>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onChanged(JSONArray jsonArray) {
+                if(jsonArray != null){
+                    jsonJob = jsonArray;
+                    //set total job count
+                    tvJobsCount.setText(String.valueOf(jsonJob.length()));
+
+                    JSONArray sorted = new JSONArray();
+                    List list = new ArrayList();
+                    for(int i = 0; i < jsonJob.length(); i++) {
                         try {
-                            jsonJob = new JSONArray(response);
-                            //Set Counts of Jobs
-                            tvJobsCount.setText(String.valueOf(jsonJob.length()));
-
-                            //Add JSONObject in list
-                            JSONArray sorted = new JSONArray();
-                            List list = new ArrayList();
-                            for(int i = 0; i < jsonJob.length(); i++) {
-                                list.add(jsonJob.getJSONObject(i));
-                            }
-                            //Log.i(TAG, "getJobList: unsorted "+jsonJob);
-                            //Sort the list by the registration end date
-                            Collections.sort(list, new Comparator<JSONObject>() {
-                                private static final String KEY_NAME = "reg_end_date";
-                                @Override
-                                public int compare(JSONObject a, JSONObject b) {
-
-                                    String str1 = new String();
-                                    String str2 = new String();
-                                    try {
-                                        str1 = (String)a.get(KEY_NAME);
-                                        str2 = (String)b.get(KEY_NAME);
-
-                                    } catch(JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return str1.compareTo(str2);
-                                }
-                            });
-                            //Now add all values(JSONObject) in sorted JSONArray
-                            for(int i = 0; i < jsonJob.length(); i++) {
-                                sorted.put(list.get(i));
-                            }
-                            //Log.i(TAG, "getJobList: sorted "+sorted);
-
-                            uja = new UpcomingJobsAdapter(StudentDashboardActivity.this,sorted);
-                            view_jobs_rv.setAdapter(uja);
-                            view_jobs_rv.setLayoutManager(manager);
+                            list.add(jsonJob.getJSONObject(i));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getJobList: "+error.getMessage());
+                    Collections.sort(list, new Comparator<JSONObject>() {
+                        private static final String KEY_NAME = "reg_end_date";
+                        @Override
+                        public int compare(JSONObject a, JSONObject b) {
+                            String str1 = new String();
+                            String str2 = new String();
+                            try {
+                                str1 = (String)a.get(KEY_NAME);
+                                str2 = (String)b.get(KEY_NAME);
+                            } catch(JSONException e) {
+                                e.printStackTrace();
+                            }
+                            return str1.compareTo(str2);
+                        }
+                    });
+
+                    for(int i = 0; i < jsonJob.length(); i++) {
+                        sorted.put(list.get(i));
                     }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("univ_id",univ_id);
-                return param;
+                    jsonJob = sorted;
+                    uja.updateJob(sorted);
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(StudentDashboardActivity.this);
-        requestQueue.add(request);
+        });
+        jobLiveViewModel.makeApiCall(this,userPref);
     }
 
     //get applied list count
     private void getAppliedJobList(String stud_id){
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_APPLIED_JOB_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "getAppliedJobList: "+response);
-                        try {
-                            JSONArray jsonAppliedJob = new JSONArray(response);
-                            //set applied job list count
-                            tvAppliedInCount.setText(String.valueOf(jsonAppliedJob.length()));
-                            //get applied job list count and set
-                            tvSelectedInCount.setText(String.valueOf(filterGetSelected(jsonAppliedJob)));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getAppliedJobList: "+error.getMessage());
-                    }
-                }){
-            @Nullable
+        appliedJobLiveViewModel = new AppliedJobLiveViewModel();
+
+        appliedJobLiveViewModel.getAppliedJob().observe(this, new Observer<JSONArray>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("stud_id",stud_id);
-                return param;
+            public void onChanged(JSONArray jsonArray) {
+                if(jsonArray != null){
+                    //set applied job list count
+                    tvAppliedInCount.setText(String.valueOf(jsonArray.length()));
+                    //get applied job list count and set
+                    tvSelectedInCount.setText(String.valueOf(filterGetSelected(jsonArray)));
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(StudentDashboardActivity.this);
-        requestQueue.add(request);
+        });
+        appliedJobLiveViewModel.makeApiCall(this,userPref);
     }
 
     //get selected job list counts
