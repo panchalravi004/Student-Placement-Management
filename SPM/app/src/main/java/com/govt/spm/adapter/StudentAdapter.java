@@ -134,7 +134,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
         tvPGStream = dialog.findViewById(R.id.tvStudentInfoPGStream);
         tvCurrentSem = dialog.findViewById(R.id.tvStudentInfoCurrentSem);
 
-        CacheRequest request = new CacheRequest(
+        StringRequest request = new StringRequest(
                 Request.Method.POST,
                 Constants.GET_STUDENT_PROFILE,
                 new Response.Listener<String>() {

@@ -3,11 +3,14 @@ package com.govt.spm;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,6 +33,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.adapter.CompanyAdapter;
+import com.govt.spm.request.CacheRequest;
+import com.govt.spm.viewmodel.CompanyLiveViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +49,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
     private EditText etSearch;
     private ImageButton btnSearch;
     private Spinner spFilterCountry,spFilterState,spFilterCity;
+    private TextView tvCount;
 
     private RecyclerView company_rv;
     private LinearLayoutManager manager;
@@ -55,6 +61,8 @@ public class ManageCompanyActivity extends AppCompatActivity {
     private int currentItem,totalItem,scrollOutItem,totalDBItem;
     private int fetchCount;
     private CompanyAdapter ca;
+    private CompanyLiveViewModel companyLiveViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private JSONArray jsonCompany;
     private JSONArray jsonCountry;
@@ -64,7 +72,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_company);
-
+        tvCount = (TextView) findViewById(R.id.tvManageCompanyResultCount);
         btnSearch = (ImageButton) findViewById(R.id.btnManageCompanySearch);
         etSearch = (EditText) findViewById(R.id.etManageCompanySearch);
         spFilterCountry = (Spinner) findViewById(R.id.spManageCompanyFilterCountry);
@@ -72,6 +80,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
         spFilterCity = (Spinner) findViewById(R.id.spManageCompanyFilterCity);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreManageCompany);
         dialog = new ProgressDialog(ManageCompanyActivity.this);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         company_rv = (RecyclerView) findViewById(R.id.recycleViewManageCompany);
         manager = new LinearLayoutManager(this);
@@ -88,6 +97,24 @@ public class ManageCompanyActivity extends AppCompatActivity {
 //        fetchCountry();
 
         //listener
+        //search on click
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!etSearch.getText().equals(null)){
+                        jsonCompany = filterBySearch(jsonCompany,etSearch.getText().toString());
+                        tvCount.setText("Result : "+ jsonCompany.length()+" Found");
+                        ca.updateCompany(jsonCompany);
+                }
+            }
+        });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                etSearch.setText("");
+                companyLiveViewModel.makeApiCall(ManageCompanyActivity.this,null);
+            }
+        });
         company_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -118,6 +145,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
         //CAll METHOD
         getCompanies();
         fetchCountry();
+
     }
 
     private void fetchData() {
@@ -138,82 +166,41 @@ public class ManageCompanyActivity extends AppCompatActivity {
     //get companies list
     private void getCompanies(){
         pbLoadMore.setVisibility(View.VISIBLE);
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_COMPANIES,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        pbLoadMore.setVisibility(View.GONE);
-                        Log.i(TAG, "getCompanies: "+response);
-                        try {
+        companyLiveViewModel = new CompanyLiveViewModel();
+        ca = new CompanyAdapter(ManageCompanyActivity.this,jsonCompany);
+        company_rv.setAdapter(ca);
+        company_rv.setLayoutManager(manager);
 
-                            TextView tvCount = (TextView) findViewById(R.id.tvManageCompanyResultCount);
-                            tvCount.setText("Result : "+ new JSONArray(response).length()+" Found");
-                            ca = new CompanyAdapter(ManageCompanyActivity.this, new JSONArray(response));
-                            company_rv.setAdapter(ca);
-                            company_rv.setLayoutManager(manager);
-
-                            //search on click
-                            btnSearch.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if(!etSearch.getText().equals(null)){
-                                        try {
-                                            JSONArray temp = filterBySearch(new JSONArray(response),etSearch.getText().toString());
-                                            tvCount.setText("Result : "+ temp.length()+" Found");
-                                            ca = new CompanyAdapter(ManageCompanyActivity.this, temp);
-                                            company_rv.setAdapter(ca);
-                                            company_rv.setLayoutManager(manager);
-                                            ca.notifyDataSetChanged();
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-                            });
-                            //set filter call
-                            setFilterSpinner(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getCompanies: "+error.getMessage());
-                    }
+        companyLiveViewModel.getCompany().observe(this, new Observer<JSONArray>() {
+            @Override
+            public void onChanged(JSONArray jsonArray) {
+                pbLoadMore.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
+                if(jsonArray != null){
+                    jsonCompany = jsonArray;
+                    tvCount.setText("Result : "+ jsonCompany.length()+" Found");
+                    ca.updateCompany(jsonArray);
+                    setFilterSpinner(jsonCompany);
                 }
-        );
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(ManageCompanyActivity.this);
-        requestQueue.add(request);
+            }
+        });
+        companyLiveViewModel.makeApiCall(this,null);
     }
 
     //set the spinner filters here
-    private void setFilterSpinner(String response){
-        TextView tvCount = (TextView) findViewById(R.id.tvManageCompanyResultCount);
+    private void setFilterSpinner(JSONArray response){
         spFilterCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 try {
                     if(String.valueOf(i).equals("0")){
-                        jsonCompany = new JSONArray(response);
+                        jsonCompany = response;
                         tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
-                        company_rv.setAdapter(ca);
-                        company_rv.setLayoutManager(manager);
-                        ca.notifyDataSetChanged();
+                        ca.updateCompany(jsonCompany);
                     }else{
-                        jsonCompany = filterByCountry(new JSONArray(response),new JSONObject(jsonCountry.getString(i-1)).getString("country_name"),new JSONObject(jsonCountry.getString(i-1)).getString("country_id"));
+                        jsonCompany = filterByCountry(response,new JSONObject(jsonCountry.getString(i-1)).getString("country_name"),new JSONObject(jsonCountry.getString(i-1)).getString("country_id"));
                         tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
-                        company_rv.setAdapter(ca);
-                        company_rv.setLayoutManager(manager);
-                        ca.notifyDataSetChanged();
+                        ca.updateCompany(jsonCompany);
                         //Fetch State
                         JSONObject jo = new JSONObject(jsonCountry.getString(i-1));
                         fetchState(jo.getString("country_id"));
@@ -224,17 +211,11 @@ public class ManageCompanyActivity extends AppCompatActivity {
                                 try{
                                     if(String.valueOf(i).equals("0")){
                                         tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCompany);
-                                        company_rv.setAdapter(ca);
-                                        company_rv.setLayoutManager(manager);
-                                        ca.notifyDataSetChanged();
+                                        ca.updateCompany(jsonCompany);
                                     }else {
                                         JSONArray jsonStateCompany = filterByState(jsonCompany, new JSONObject(jsonState.getString(i - 1)).getString("state_name"), new JSONObject(jsonState.getString(i - 1)).getString("state_id"));
                                         tvCount.setText("Result : " + jsonStateCompany.length() + " Found");
-                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonStateCompany);
-                                        company_rv.setAdapter(ca);
-                                        company_rv.setLayoutManager(manager);
-                                        ca.notifyDataSetChanged();
+                                        ca.updateCompany(jsonStateCompany);
                                         //Fetch City
                                         fetchCity(new JSONObject(jsonState.getString(i - 1)).getString("state_id"));
                                         spFilterCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -243,17 +224,11 @@ public class ManageCompanyActivity extends AppCompatActivity {
                                                 try{
                                                     if(String.valueOf(i).equals("0")){
                                                         tvCount.setText("Result : "+ jsonStateCompany.length()+" Found");
-                                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonStateCompany);
-                                                        company_rv.setAdapter(ca);
-                                                        company_rv.setLayoutManager(manager);
-                                                        ca.notifyDataSetChanged();
+                                                        ca.updateCompany(jsonStateCompany);
                                                     }else {
                                                         JSONArray jsonCityCompany = filterByCity(jsonStateCompany, new JSONObject(jsonCity.getString(i - 1)).getString("city_name"), new JSONObject(jsonCity.getString(i - 1)).getString("city_id"));
                                                         tvCount.setText("Result : " + jsonCityCompany.length() + " Found");
-                                                        ca = new CompanyAdapter(ManageCompanyActivity.this, jsonCityCompany);
-                                                        company_rv.setAdapter(ca);
-                                                        company_rv.setLayoutManager(manager);
-                                                        ca.notifyDataSetChanged();
+                                                        ca.updateCompany(jsonCityCompany);
                                                     }
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
@@ -358,7 +333,7 @@ public class ManageCompanyActivity extends AppCompatActivity {
     }
 
     private void fetchCountry(){
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
                 Constants.GET_COUNTRY,
                 new Response.Listener<String>() {
@@ -389,9 +364,6 @@ public class ManageCompanyActivity extends AppCompatActivity {
                         Log.i(TAG, "fetchCountry: "+error.getMessage());
                     }
                 });
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageCompanyActivity.this);
         requestQueue.add(request);
     }
@@ -436,9 +408,6 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 return params;
             }
         };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageCompanyActivity.this);
         requestQueue.add(request);
     }
@@ -483,9 +452,6 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 return params;
             }
         };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageCompanyActivity.this);
         requestQueue.add(request);
     }

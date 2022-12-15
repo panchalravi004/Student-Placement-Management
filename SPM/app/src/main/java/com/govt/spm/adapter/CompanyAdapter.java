@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.govt.spm.AddCompanyActivity;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
+import com.govt.spm.request.CacheRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,11 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
     public CompanyAdapter(Context context,JSONArray company){
         this.context = context;
         this.company = company;
+    }
+
+    public void updateCompany(JSONArray company){
+        this.company = company;
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -81,7 +87,11 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
 
     @Override
     public int getItemCount() {
-        return company.length();
+        if (company != null) {
+            return company.length();
+        }else{
+            return 0;
+        }
     }
 
     @Override
@@ -178,9 +188,6 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
                 return param;
             }
         };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(request);
 
