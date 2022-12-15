@@ -100,16 +100,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Result : 700 Found" />
-            <ImageButton
-                android:id="@+id/btnManageJobsRefresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5sp"
-                android:layout_marginRight="5sp"
-                android:background="@drawable/spm_blue_40_all_round"
-                android:elevation="5sp"
-                android:padding="5sp"
-                app:srcCompat="@drawable/icon_refresh_white" />
 
             <ImageButton
                 android:id="@+id/btnManageJobsAddFilter"
@@ -143,12 +133,19 @@
         android:orientation="vertical"
         android:padding="10sp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleViewManageJobs"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="5sp" />
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewManageJobs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="5sp" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         <ProgressBar
             android:id="@+id/pbLoadMoreManageJobs"

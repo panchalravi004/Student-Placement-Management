@@ -3,8 +3,10 @@ package com.govt.spm;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -34,6 +36,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.adapter.JobsAdapter;
+import com.govt.spm.request.CacheRequest;
+import com.govt.spm.viewmodel.JobLiveViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,16 +49,18 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ManageJobsActivity extends AppCompatActivity {
-    private ImageButton btnSearch,btnAdd,btnFilter,btnRefresh,btnCloseFilter;
+    private ImageButton btnSearch,btnAdd,btnFilter,btnCloseFilter;
     private EditText etSearch;
     private TextView tvResultCount;
     private Spinner spCompany,spUniv,spCollege,spDept;
     private CheckBox cbOwnCompany;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView jobs_rv;
     private LinearLayoutManager manager;
     private ProgressBar pbLoadMore;
     private JobsAdapter ja;
+    private JobLiveViewModel jobLiveViewModel;
 
     private Boolean isScrolling = false;
     private int currentItem;
@@ -73,12 +79,12 @@ public class ManageJobsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_jobs);
         btnSearch = (ImageButton) findViewById(R.id.btnManageJobsSearch);
         btnFilter = (ImageButton) findViewById(R.id.btnManageJobsAddFilter);
-        btnRefresh = (ImageButton) findViewById(R.id.btnManageJobsRefresh);
         btnAdd = (ImageButton) findViewById(R.id.btnManageJobsAddJobs);
         etSearch = (EditText) findViewById(R.id.etManageJobsSearch);
         tvResultCount = (TextView) findViewById(R.id.tvManageJobsResultCount);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreManageJobs);
-
+        tvResultCount = (TextView) findViewById(R.id.tvManageJobsResultCount);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         jobs_rv = (RecyclerView) findViewById(R.id.recycleViewManageJobs);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
@@ -93,6 +99,26 @@ public class ManageJobsActivity extends AppCompatActivity {
         //CALL METHOD
 
         //LISTENER
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                etSearch.setText("");
+                jobLiveViewModel.makeApiCall(ManageJobsActivity.this,userPref);
+            }
+        });
+
+        //search the data
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!etSearch.getText().equals("")){
+                    JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
+                    tvResultCount.setText("Result : "+searchedJob.length()+" Found");
+                    jsonJob = searchedJob;
+                    ja.updateJob(searchedJob);
+                }
+            }
+        });
         jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -123,7 +149,8 @@ public class ManageJobsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getJobList(userPref.getString("univ_id","univ_id"));
+        getJobList();
+
     }
 
     private void fetchData(){
@@ -138,80 +165,32 @@ public class ManageJobsActivity extends AppCompatActivity {
     }
 
     //get all jobs list
-    private void getJobList(String univ_id){
+    private void getJobList(){
+
         pbLoadMore.setVisibility(View.VISIBLE);
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_JOB_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "getJobList: "+response);
-                        try {
-                            pbLoadMore.setVisibility(View.GONE);
-                            jsonJob = new JSONArray(response);
-                            TextView count = (TextView) findViewById(R.id.tvManageJobsResultCount);
-                            count.setText("Result : "+jsonJob.length()+" Found");
-                            ja = new JobsAdapter(ManageJobsActivity.this,jsonJob);
-                            jobs_rv.setAdapter(ja);
-                            jobs_rv.setLayoutManager(manager);
+        jobLiveViewModel = new JobLiveViewModel();
+        ja = new JobsAdapter(ManageJobsActivity.this,jsonJob);
+        jobs_rv.setAdapter(ja);
+        jobs_rv.setLayoutManager(manager);
 
-                            //refresh the data
-                            btnRefresh.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    etSearch.setText("");
-                                    count.setText("Result : "+jsonJob.length()+" Found");
-                                    ja = new JobsAdapter(ManageJobsActivity.this,jsonJob);
-                                    jobs_rv.setAdapter(ja);
-                                    jobs_rv.setLayoutManager(manager);
-                                }
-                            });
-
-                            //search the data
-                            btnSearch.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if(!etSearch.getText().equals("")){
-                                        JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
-                                        count.setText("Result : "+searchedJob.length()+" Found");
-                                        ja = new JobsAdapter(ManageJobsActivity.this,searchedJob);
-                                        jobs_rv.setAdapter(ja);
-                                        jobs_rv.setLayoutManager(manager);
-                                    }
-                                }
-                            });
-
-                            setFilter(jsonJob);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getJobList: "+error.getMessage());
-                    }
-                }){
-            @Nullable
+        jobLiveViewModel.getJob().observe(this, new Observer<JSONArray>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("univ_id",univ_id);
-                return param;
+            public void onChanged(JSONArray jsonArray) {
+                pbLoadMore.setVisibility(View.GONE);
+                swipeRefreshLayout.setRefreshing(false);
+                if(jsonArray != null){
+                    jsonJob = jsonArray;
+                    ja.updateJob(jsonArray);
+                    tvResultCount.setText("Result : "+jsonJob.length()+" Found");
+                    setFilter(jsonJob);
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(ManageJobsActivity.this);
-        requestQueue.add(request);
+        });
+        jobLiveViewModel.makeApiCall(this,userPref);
     }
 
     //Apply all filters here
     private void setFilter(JSONArray jbs){
-        TextView count = (TextView) findViewById(R.id.tvManageJobsResultCount);
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -243,17 +222,11 @@ public class ManageJobsActivity extends AppCompatActivity {
                         try {
                             if(String.valueOf(i).equals("0")){
                                 //fetch all jobs from this university
-                                count.setText("Result : "+jbs.length()+" Found");
-                                ja = new JobsAdapter(ManageJobsActivity.this,jbs);
-                                jobs_rv.setAdapter(ja);
-                                jobs_rv.setLayoutManager(manager);
-                                ja.notifyDataSetChanged();
+                                tvResultCount.setText("Result : "+jbs.length()+" Found");
+                                ja.updateJob(jbs);
                             }else{
                                 JSONArray jsonCollegeJob = filterByCollege(jbs, new JSONObject(jsonCollege.getString(i - 1)).getString("college_id"), new JSONObject(jsonCollege.getString(i - 1)).getString("college_name"));
-                                ja = new JobsAdapter(ManageJobsActivity.this, jsonCollegeJob);
-                                jobs_rv.setAdapter(ja);
-                                jobs_rv.setLayoutManager(manager);
-                                ja.notifyDataSetChanged();
+                                ja.updateJob(jsonCollegeJob);
                                 //fetch college
                                 fetchCollegeWiseDept(new JSONObject(jsonCollege.getString(i - 1)).getString("college_id"));
                                 spDept.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -261,18 +234,12 @@ public class ManageJobsActivity extends AppCompatActivity {
                                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                         try {
                                             if (String.valueOf(i).equals("0")) {
-                                                count.setText("Result : " + jsonCollegeJob.length() + " Found");
-                                                ja = new JobsAdapter(ManageJobsActivity.this, jsonCollegeJob);
-                                                jobs_rv.setAdapter(ja);
-                                                jobs_rv.setLayoutManager(manager);
-                                                ja.notifyDataSetChanged();
+                                                tvResultCount.setText("Result : " + jsonCollegeJob.length() + " Found");
+                                                ja.updateJob(jsonCollegeJob);
                                             } else {
                                                 JSONArray jsonDeptJob = filterByDept(jsonCollegeJob, new JSONObject(jsonDept.getString(i - 1)).getString("dept_id"), new JSONObject(jsonDept.getString(i - 1)).getString("dept_name"));
-                                                count.setText("Result : " + jsonDeptJob.length() + " Found");
-                                                ja = new JobsAdapter(ManageJobsActivity.this, jsonDeptJob);
-                                                jobs_rv.setAdapter(ja);
-                                                jobs_rv.setLayoutManager(manager);
-                                                ja.notifyDataSetChanged();
+                                                tvResultCount.setText("Result : " + jsonDeptJob.length() + " Found");
+                                                ja.updateJob(jsonDeptJob);
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -295,20 +262,17 @@ public class ManageJobsActivity extends AppCompatActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         if (String.valueOf(i).equals("0")) {
-                            count.setText("Result : "+jbs.length()+" Found");
-                            ja = new JobsAdapter(ManageJobsActivity.this,jbs);
+                            tvResultCount.setText("Result : "+jbs.length()+" Found");
+                            ja.updateJob(jbs);
                         }else{
                             try {
                                 JSONArray temp = filterByCompany(jbs,new JSONObject(jsonCompany.getString(i-1)).getString("company_id"));
-                                count.setText("Result : "+temp.length()+" Found");
-                                ja = new JobsAdapter(ManageJobsActivity.this,temp);
+                                tvResultCount.setText("Result : "+temp.length()+" Found");
+                                ja.updateJob(temp);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        jobs_rv.setAdapter(ja);
-                        jobs_rv.setLayoutManager(manager);
-                        ja.notifyDataSetChanged();
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {}
@@ -320,16 +284,12 @@ public class ManageJobsActivity extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         if(b){
                             JSONArray ownJob =  filterByOwnJobs(jbs);
-                            count.setText("Result : "+ownJob.length()+" Found");
-                            Log.i(TAG, "onClick: "+ownJob.length());
-                            ja = new JobsAdapter(ManageJobsActivity.this,ownJob);
+                            tvResultCount.setText("Result : "+ownJob.length()+" Found");
+                            ja.updateJob(ownJob);
                         }else{
-                            count.setText("Result : "+jbs.length()+" Found");
-                            ja = new JobsAdapter(ManageJobsActivity.this,jbs);
+                            tvResultCount.setText("Result : "+jbs.length()+" Found");
+                            ja.updateJob(jbs);
                         }
-                        jobs_rv.setAdapter(ja);
-                        jobs_rv.setLayoutManager(manager);
-                        ja.notifyDataSetChanged();
                     }
                 });
 
@@ -340,7 +300,7 @@ public class ManageJobsActivity extends AppCompatActivity {
 
     //get Company list
     private void getCompanies(){
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
                 Constants.GET_COMPANIES,
                 new Response.Listener<String>() {
@@ -371,16 +331,13 @@ public class ManageJobsActivity extends AppCompatActivity {
                     }
                 }
         );
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageJobsActivity.this);
         requestQueue.add(request);
     }
 
     //Fetch colleges as per university
     private void fetchColleges(String univ_id){
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
                 Constants.GET_COLLEGES,
                 new Response.Listener<String>() {
@@ -427,9 +384,6 @@ public class ManageJobsActivity extends AppCompatActivity {
                 return params;
             }
         };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(ManageJobsActivity.this);
         requestQueue.add(request);
     }

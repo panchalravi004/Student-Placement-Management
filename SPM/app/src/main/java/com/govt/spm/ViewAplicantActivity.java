@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -43,8 +44,9 @@ public class ViewAplicantActivity extends AppCompatActivity {
 
     private EditText etSearch;
     private ImageButton btnSearch;
-    private TextView tvTtitle;
+    private TextView tvTitle;
     private CheckBox isSelected;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
@@ -67,10 +69,11 @@ public class ViewAplicantActivity extends AppCompatActivity {
         etSearch = (EditText) findViewById(R.id.etAplicantSearch);
         btnSearch = (ImageButton) findViewById(R.id.btnAplicantSearch);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreAplicant);
-        tvTtitle = (TextView) findViewById(R.id.tvViewAplicantTitle);
+        tvTitle = (TextView) findViewById(R.id.tvViewAplicantTitle);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         isSelected = (CheckBox) findViewById(R.id.cbViewAplicantSelected);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         myInt = getIntent();
         totalDBItem = 10;
         jsonJob = new JSONArray();
@@ -80,6 +83,12 @@ public class ViewAplicantActivity extends AppCompatActivity {
         getJobApplicant(myInt.getStringExtra("JOB_ID"));
 
         //LISTENER
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getJobApplicant(myInt.getStringExtra("JOB_ID"));
+            }
+        });
         view_jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -128,6 +137,7 @@ public class ViewAplicantActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.i(TAG, "getJobApplicant: "+response);
+                        swipeRefreshLayout.setRefreshing(false);
                         try {
                             pbLoadMore.setVisibility(View.GONE);
                             jsonJob = new JSONArray(response);

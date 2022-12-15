@@ -67,6 +67,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         this.jobs = jobs;
     }
 
+    public void updateJob(JSONArray job){
+        this.jobs = job;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public JobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -136,9 +141,6 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
                     return param;
                 }
             };
-            DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            request.setRetryPolicy(retryPolicy);
-            request.setShouldCache(false);
             RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(request);
 
@@ -180,7 +182,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
 
     @Override
     public int getItemCount() {
-        return jobs.length();
+        if(jobs != null){
+            return jobs.length();
+        }else{
+            return 0;
+        }
     }
 
     public class VHolder extends RecyclerView.ViewHolder{
