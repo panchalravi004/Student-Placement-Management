@@ -49,6 +49,11 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
         this.job = job;
     }
 
+    public void updateJob(JSONArray job){
+        this.job = job;
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public UpcomingJobsAdapter.VHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -119,7 +124,11 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
 
     @Override
     public int getItemCount() {
-        return job.length();
+        if(job != null){
+            return job.length();
+        }else{
+            return 0;
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.govt.spm;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.govt.spm.adapter.CompanyAdapter;
+import com.govt.spm.adapter.JobsAdapter;
+import com.govt.spm.adapter.StudentAdapter;
 import com.govt.spm.adapter.UpcomingJobsAdapter;
+import com.govt.spm.viewmodel.CompanyLiveViewModel;
+import com.govt.spm.viewmodel.JobLiveViewModel;
+import com.govt.spm.viewmodel.StudentLiveViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +56,9 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
     private static final String TAG = "SPM_ERROR";
+    private JobLiveViewModel jobLiveViewModel;
+    private StudentLiveViewModel studentLiveViewModel;
+    private CompanyLiveViewModel companyLiveViewModel;
 
     private JSONArray jsonJob;
     private UpcomingJobsAdapter uja;
@@ -85,7 +95,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //CALL METHOD
-        getJobList(userPref.getString("univ_id","univ_id"));
+        getJobList();
         getStudentsCount();
         getCompaniesCount();
     }
@@ -129,75 +139,58 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     //get job list and set
     //this will set a list on sorted order
     //by registration end date
-    private void getJobList(String univ_id){
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_JOB_LIST,
-                new Response.Listener<String>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "getJobList: "+response);
+    private void getJobList(){
+
+        jobLiveViewModel = new JobLiveViewModel();
+        uja = new UpcomingJobsAdapter(OfficerDashboardActivity.this,jsonJob);
+        view_jobs_rv.setAdapter(uja);
+        view_jobs_rv.setLayoutManager(manager);
+
+        jobLiveViewModel.getJob().observe(this, new Observer<JSONArray>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onChanged(JSONArray jsonArray) {
+                if(jsonArray != null){
+                    jsonJob = jsonArray;
+                    //set total job count
+                    tvJobsCount.setText(String.valueOf(jsonJob.length()));
+                    //get coming soon job list
+                    tvComingSoonCount.setText(String.valueOf(getComingSoonJobCount(jsonJob)));
+
+                    JSONArray sorted = new JSONArray();
+                    List list = new ArrayList();
+                    for(int i = 0; i < jsonJob.length(); i++) {
                         try {
-                            jsonJob = new JSONArray(response);
-                            //set total job count
-                            tvJobsCount.setText(String.valueOf(jsonJob.length()));
-                            //get coming soon job list
-                            tvComingSoonCount.setText(String.valueOf(getComingSoonJobCount(jsonJob)));
-                            JSONArray sorted = new JSONArray();
-                            List list = new ArrayList();
-                            for(int i = 0; i < jsonJob.length(); i++) {
-                                list.add(jsonJob.getJSONObject(i));
-                            }
-//                            Log.i(TAG, "onResponse: unsorted "+jsonJob);
-
-                            Collections.sort(list, new Comparator<JSONObject>() {
-                                private static final String KEY_NAME = "reg_end_date";
-                                @Override
-                                public int compare(JSONObject a, JSONObject b) {
-                                    String str1 = new String();
-                                    String str2 = new String();
-                                    try {
-                                        str1 = (String)a.get(KEY_NAME);
-                                        str2 = (String)b.get(KEY_NAME);
-                                    } catch(JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return str1.compareTo(str2);
-                                }
-                            });
-                            for(int i = 0; i < jsonJob.length(); i++) {
-                                sorted.put(list.get(i));
-                            }
-//                            Log.i(TAG, "onResponse: sorted "+sorted);
-
-                            uja = new UpcomingJobsAdapter(OfficerDashboardActivity.this,sorted);
-                            view_jobs_rv.setAdapter(uja);
-                            view_jobs_rv.setLayoutManager(manager);
+                            list.add(jsonJob.getJSONObject(i));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "getJobList: "+error.getMessage());
+                    Collections.sort(list, new Comparator<JSONObject>() {
+                        private static final String KEY_NAME = "reg_end_date";
+                        @Override
+                        public int compare(JSONObject a, JSONObject b) {
+                            String str1 = new String();
+                            String str2 = new String();
+                            try {
+                                str1 = (String)a.get(KEY_NAME);
+                                str2 = (String)b.get(KEY_NAME);
+                            } catch(JSONException e) {
+                                e.printStackTrace();
+                            }
+                            return str1.compareTo(str2);
+                        }
+                    });
+
+                    for(int i = 0; i < jsonJob.length(); i++) {
+                        sorted.put(list.get(i));
                     }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("univ_id",univ_id);
-                return param;
+                    jsonJob = sorted;
+                    uja.updateJob(sorted);
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(OfficerDashboardActivity.this);
-        requestQueue.add(request);
+        });
+        jobLiveViewModel.makeApiCall(this,userPref);
     }
 
     //get coming soon list
@@ -222,73 +215,35 @@ public class OfficerDashboardActivity extends AppCompatActivity {
 
     //get student count
     private void getStudentsCount(){
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_STUDENT_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray js = new JSONArray(response);
-                            tvStudentCount.setText(String.valueOf(js.length()));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                    }
-                }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> param = new HashMap<>();
-                param.put("univ_id",userPref.getString("univ_id","univ_id"));
-                param.put("college_id",userPref.getString("college_id","college_id"));
-                param.put("dept_id",userPref.getString("dept_id","dept_id"));
+        studentLiveViewModel = new StudentLiveViewModel();
 
-                return param;
+        studentLiveViewModel.getStudent().observe(this, new Observer<JSONArray>() {
+            @Override
+            public void onChanged(JSONArray jsonArray) {
+                if(jsonArray != null){
+                    tvStudentCount.setText(String.valueOf(jsonArray.length()));
+                }else{
+                    tvStudentCount.setText("0");
+                }
             }
-        };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(OfficerDashboardActivity.this);
-        requestQueue.add(request);
+        });
+        studentLiveViewModel.makeApiCall(this,userPref);
     }
 
     //get company count
     private void getCompaniesCount(){
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Constants.GET_COMPANIES,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jc = new JSONArray(response);
-                            tvCompanyCount.setText(String.valueOf(jc.length()));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i(TAG, "onErrorResponse: "+error.getMessage());
-                    }
+        companyLiveViewModel = new CompanyLiveViewModel();
+        companyLiveViewModel.getCompany().observe(this, new Observer<JSONArray>() {
+            @Override
+            public void onChanged(JSONArray jsonArray) {
+                if(jsonArray != null){
+                    tvCompanyCount.setText(String.valueOf(jsonArray.length()));
+                }else{
+                    tvCompanyCount.setText("0");
                 }
-        );
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
-        RequestQueue requestQueue = Volley.newRequestQueue(OfficerDashboardActivity.this);
-        requestQueue.add(request);
+            }
+        });
+        companyLiveViewModel.makeApiCall(this,null);
     }
 
     //logout the current user
