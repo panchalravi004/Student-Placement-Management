@@ -117,12 +117,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter ID"
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -143,12 +143,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter Name"
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -169,12 +169,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter Mobile"
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -195,12 +195,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter Gender"
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -221,12 +221,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter Address"
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -247,12 +247,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -273,12 +273,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -299,12 +299,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -325,12 +325,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -351,12 +351,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -377,12 +377,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -403,12 +403,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -429,12 +429,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -455,12 +455,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -481,12 +481,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -507,12 +507,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
+                        android:ems="11"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -525,7 +525,7 @@
                         android:id="@+id/textViewssc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="SSC" />
 
                     <EditText
@@ -534,12 +534,11 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
 
                     <EditText
@@ -548,12 +547,11 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
-                        android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -566,7 +564,7 @@
                         android:id="@+id/textViewhsc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="HSC" />
 
                     <EditText
@@ -575,12 +573,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
 
                     <EditText
@@ -589,12 +587,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -607,7 +605,7 @@
                         android:id="@+id/textViewUG"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="UG" />
 
                     <EditText
@@ -616,12 +614,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
 
                     <EditText
@@ -630,12 +628,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -648,7 +646,7 @@
                         android:id="@+id/textViewPG"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.5"
                         android:text="PG" />
 
                     <EditText
@@ -657,12 +655,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
 
                     <EditText
@@ -671,12 +669,12 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
                         android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
 
@@ -697,18 +695,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:background="@drawable/white_all_round"
+                        android:background="@drawable/white_all_round_blue_border"
                         android:elevation="2sp"
                         android:ems="10"
                         android:hint="Enter "
                         android:inputType="textPersonName"
-                        android:padding="4sp"
+                        android:padding="6sp"
                         android:textAlignment="center" />
                 </TableRow>
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10sp">
+                    android:layout_margin="10sp"
+                    android:gravity="center_vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -720,23 +720,26 @@
                         <TextView
                             android:id="@+id/textViewresume"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:gravity="center_vertical"
                             android:text="Upload Resume" />
 
                         <ImageButton
                             android:id="@+id/btnStudentProfileSelectResume"
                             android:layout_width="100sp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_margin="3sp"
+                            android:layout_weight="1"
                             android:background="@drawable/spm_green_all_round"
                             app:srcCompat="@drawable/icon_camera_white" />
 
                         <ImageButton
                             android:id="@+id/btnStudentProfileUploadResume"
                             android:layout_width="100sp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_margin="3sp"
+                            android:layout_weight="1"
                             android:background="@drawable/spm_blue_40_all_round"
                             app:srcCompat="@drawable/icon_upload_white" />
                     </LinearLayout>

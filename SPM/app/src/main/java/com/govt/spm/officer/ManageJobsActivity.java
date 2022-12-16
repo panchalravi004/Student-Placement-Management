@@ -116,7 +116,6 @@ public class ManageJobsActivity extends AppCompatActivity {
                 if(!etSearch.getText().equals("")){
                     JSONArray searchedJob =  filterBySearch(jsonJob,etSearch.getText().toString());
                     tvResultCount.setText("Result : "+searchedJob.length()+" Found");
-                    jsonJob = searchedJob;
                     ja.updateJob(searchedJob);
                 }
             }

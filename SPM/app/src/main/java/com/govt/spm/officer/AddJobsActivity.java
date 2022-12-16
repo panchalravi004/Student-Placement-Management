@@ -3,6 +3,7 @@ package com.govt.spm.officer;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -43,7 +44,7 @@ public class AddJobsActivity extends AppCompatActivity {
     private EditText etDescription,etRole,etSkill,etSSC,etHSC,etUG,etPG,etMinQualification;
     private Spinner spCompany,spUniversity,spCollege,spDept,spStatus;
     private Button btnAddNew,btnUpdate;
-    private TextView etStartDate,etEndDate;
+    private TextView etStartDate,etEndDate,tvActivityTitle;
 
     private static final String TAG = "SPM_ERROR";
     private ProgressDialog dialog;
@@ -55,6 +56,7 @@ public class AddJobsActivity extends AppCompatActivity {
 
     private SharedPreferences userPref;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +72,7 @@ public class AddJobsActivity extends AppCompatActivity {
         etMinQualification = (EditText) findViewById(R.id.etAddJobMinQualification);
         etStartDate = (TextView) findViewById(R.id.etAddJobStartDate);
         etEndDate = (TextView) findViewById(R.id.etAddJobEndDate);
-
+        tvActivityTitle = (TextView) findViewById(R.id.tvActivityTitle);
         spCompany = (Spinner) findViewById(R.id.spAddJobCompany);
         spUniversity = (Spinner) findViewById(R.id.spAddJobUniversity);
         spCollege = (Spinner) findViewById(R.id.spAddJobCollege);
@@ -91,10 +93,12 @@ public class AddJobsActivity extends AppCompatActivity {
         if(i.getStringExtra("ACTION").equals("ADD")){
             btnAddNew.setVisibility(View.VISIBLE);
             btnUpdate.setVisibility(View.GONE);
+            tvActivityTitle.setText("Add Job");
         }else if(i.getStringExtra("ACTION").equals("UPDATE")){
             setJobPostDetails(i.getStringExtra("job_id"));
             btnAddNew.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.VISIBLE);
+            tvActivityTitle.setText("Update Job");
         }
 
         //CALL METHOD

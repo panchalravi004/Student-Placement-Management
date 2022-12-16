@@ -102,9 +102,9 @@ public class ManageCompanyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!etSearch.getText().equals(null)){
-                        jsonCompany = filterBySearch(jsonCompany,etSearch.getText().toString());
-                        tvCount.setText("Result : "+ jsonCompany.length()+" Found");
-                        ca.updateCompany(jsonCompany);
+                        JSONArray temp = filterBySearch(jsonCompany,etSearch.getText().toString());
+                        tvCount.setText("Result : "+ temp.length()+" Found");
+                        ca.updateCompany(temp);
                 }
             }
         });

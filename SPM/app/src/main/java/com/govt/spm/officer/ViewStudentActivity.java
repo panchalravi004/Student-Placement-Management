@@ -80,9 +80,7 @@ public class ViewStudentActivity extends AppCompatActivity {
                 if(!etSearch.getText().equals("")){
                     JSONArray searchedStudent =  filterBySearch(jsonStudent,etSearch.getText().toString());
                     tvCount.setText("Result : "+ searchedStudent.length()+" Found");
-                    sa = new StudentAdapter(ViewStudentActivity.this,searchedStudent);
-                    student_rv.setAdapter(sa);
-                    student_rv.setLayoutManager(manager);
+                    sa.updateStudent(searchedStudent);
                 }
             }
         });

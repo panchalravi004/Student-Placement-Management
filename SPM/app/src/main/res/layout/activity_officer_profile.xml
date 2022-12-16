@@ -144,14 +144,22 @@
                     android:layout_marginTop="15sp"
                     android:layout_marginBottom="15sp">
 
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TPO ID"
+                        android:textSize="@dimen/title" />
+
                     <EditText
                         android:id="@+id/etTPOId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
                         android:enabled="false"
                         android:hint="Enter ID"
                         android:inputType="textPersonName"
@@ -168,14 +176,22 @@
                     android:layout_marginBottom="15sp"
                     android:gravity="center">
 
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Name"
+                        android:textSize="@dimen/title" />
+
                     <EditText
                         android:id="@+id/etTPOName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
                         android:hint="Enter Name"
                         android:inputType="textPersonName"
                         android:paddingTop="10sp"
@@ -188,16 +204,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Gender"
+                        android:textSize="@dimen/title" />
+
                     <EditText
                         android:id="@+id/etTPOGender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
-                        android:hint="Gender"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
                         android:enabled="false"
+                        android:hint="Gender"
                         android:inputType="textPersonName"
                         android:paddingTop="10sp"
                         android:paddingBottom="10sp"
@@ -211,14 +235,22 @@
                     android:layout_marginBottom="15sp"
                     android:gravity="center">
 
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mobile"
+                        android:textSize="@dimen/title" />
+
                     <EditText
                         android:id="@+id/etTPOMobile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
                         android:hint="@string/enter_number"
                         android:inputType="textPersonName"
                         android:paddingTop="10sp"
@@ -234,15 +266,22 @@
                     android:layout_marginBottom="15sp"
                     android:gravity="center">
 
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Email"
+                        android:textSize="@dimen/title" />
+
                     <EditText
                         android:id="@+id/etTPOEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="3"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
-                        android:ems="10"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
                         android:hint="@string/enter_email"
                         android:inputType="textEmailAddress"
                         android:paddingTop="10sp"
@@ -254,19 +293,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
+                    <TextView
+                        android:id="@+id/textView27"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="University"
+                        android:textSize="@dimen/title" />
+
                     <EditText
                         android:id="@+id/etTPOUniversity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5sp"
-                        android:layout_weight="3"
-                        android:background="@drawable/white_all_round"
-                        android:elevation="5sp"
-                        android:ems="10"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:enabled="false"
                         android:hint="University"
                         android:inputType="textPersonName"
                         android:paddingTop="10sp"
-                        android:enabled="false"
                         android:paddingBottom="10sp"
                         android:textAlignment="center" />
                 </TableRow>
@@ -287,28 +333,30 @@
 
                         <Spinner
                             android:id="@+id/spTPOCollege"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
                             android:layout_margin="5sp"
                             android:layout_weight="1"
-                            android:background="@drawable/white_all_round"
-                            android:elevation="5sp"
+                            android:background="@drawable/white_all_round_blue_border"
+                            android:elevation="2sp"
                             android:entries="@array/college"
                             android:paddingTop="10sp"
                             android:paddingBottom="10sp"
+                            android:spinnerMode="dialog"
                             android:textAlignment="center" />
 
                         <Spinner
                             android:id="@+id/spTPODept"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
                             android:layout_margin="5sp"
                             android:layout_weight="1"
-                            android:background="@drawable/white_all_round"
-                            android:elevation="5sp"
+                            android:background="@drawable/white_all_round_blue_border"
+                            android:elevation="2sp"
                             android:entries="@array/dept"
                             android:paddingTop="10sp"
                             android:paddingBottom="10sp"
+                            android:spinnerMode="dialog"
                             android:textAlignment="center" />
                     </LinearLayout>
 

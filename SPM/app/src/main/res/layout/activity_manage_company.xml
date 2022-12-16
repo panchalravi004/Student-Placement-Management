@@ -83,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15sp">
+        android:padding="10sp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,36 +93,42 @@
 
             <Spinner
                 android:id="@+id/spManageCompanyFilterCountry"
-                android:layout_width="100sp"
+                android:layout_width="match_parent"
                 android:layout_height="30sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
+                android:layout_weight="1"
+                android:background="@drawable/white_all_round_blue_border"
+                android:elevation="2sp"
                 android:entries="@array/cmp_filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
+                android:padding="6sp"
+                android:spinnerMode="dialog"
+                android:textAlignment="viewStart" />
 
             <Spinner
                 android:id="@+id/spManageCompanyFilterState"
-                android:layout_width="100sp"
+                android:layout_width="match_parent"
                 android:layout_height="30sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
+                android:layout_weight="1"
+                android:background="@drawable/white_all_round_blue_border"
+                android:elevation="2sp"
                 android:entries="@array/cmp_filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
+                android:padding="6sp"
+                android:spinnerMode="dialog"
+                android:textAlignment="viewStart" />
 
             <Spinner
                 android:id="@+id/spManageCompanyFilterCity"
-                android:layout_width="100sp"
+                android:layout_width="match_parent"
                 android:layout_height="30sp"
                 android:layout_margin="5sp"
-                android:background="@drawable/white_all_round"
-                android:elevation="5sp"
+                android:layout_weight="1"
+                android:background="@drawable/white_all_round_blue_border"
+                android:elevation="2sp"
                 android:entries="@array/cmp_filter"
-                android:padding="5sp"
-                android:textAlignment="center" />
+                android:padding="6sp"
+                android:spinnerMode="dialog"
+                android:textAlignment="viewStart" />
         </LinearLayout>
 
         <LinearLayout
@@ -130,8 +136,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="10sp"
-            android:paddingRight="10sp">
+            android:padding="10sp">
 
             <TextView
                 android:id="@+id/tvManageCompanyResultCount"
