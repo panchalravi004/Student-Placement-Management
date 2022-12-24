@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.govt.spm.DialogLoading;
 import com.govt.spm.R;
 import com.govt.spm.adapter.AppliedJobAdapter;
 import com.govt.spm.viewmodel.AppliedJobLiveViewModel;
@@ -42,11 +43,9 @@ public class StudentAppliedActivity extends AppCompatActivity {
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
     private ProgressBar pbLoadMore;
-    private Boolean isScrolling = false;
     private AppliedJobAdapter vja;
     private AppliedJobLiveViewModel appliedJobLiveViewModel;
-
-    private int currentItem,totalItem,scrollOutItem,totalDBItem;
+    private DialogLoading dialogLoading;
     private SharedPreferences userPref;
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonJob;
@@ -68,8 +67,7 @@ public class StudentAppliedActivity extends AppCompatActivity {
         cbApproved = (CheckBox) findViewById(R.id.cbJobApproved);
         cbSelected = (CheckBox) findViewById(R.id.cbJobSelectedIn);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-
-        totalDBItem = 10;
+        dialogLoading = new DialogLoading(this);
         jsonJob = new JSONArray();
 
         //CALL METHOD
@@ -86,48 +84,13 @@ public class StudentAppliedActivity extends AppCompatActivity {
                 appliedJobLiveViewModel.makeApiCall(StudentAppliedActivity.this,userPref);
             }
         });
-        view_jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                    isScrolling = true;
-                }
-            }
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItem = manager.getChildCount();
-                totalItem = manager.getItemCount();
-                scrollOutItem = manager.findFirstVisibleItemPosition();
-                if(isScrolling && (currentItem + scrollOutItem == totalItem)){
-                    isScrolling = false;
-                    if(totalItem<=totalDBItem){
-                        fetchData();
-                    }
-                }
-            }
-        });
     }
 
-    private void fetchData() {
-        pbLoadMore.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //company_name.add("ABCD Four Technology");
-                //register_end_date.add("28-09-2022");
-                //college_name.add("AMPICS");
-                pbLoadMore.setVisibility(View.GONE);
-            }
-        }, 5000);
-    }
 
     //fetch the applied job list of current student
     private void getAppliedJobList(String stud_id){
-        pbLoadMore.setVisibility(View.VISIBLE);
-
+        dialogLoading.show();
         appliedJobLiveViewModel = new AppliedJobLiveViewModel();
         vja = new AppliedJobAdapter(StudentAppliedActivity.this,jsonJob);
         view_jobs_rv.setAdapter(vja);
@@ -136,8 +99,8 @@ public class StudentAppliedActivity extends AppCompatActivity {
         appliedJobLiveViewModel.getAppliedJob().observe(this, new Observer<JSONArray>() {
             @Override
             public void onChanged(JSONArray jsonArray) {
-                pbLoadMore.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
+                dialogLoading.dismiss();
                 if(jsonArray != null){
                     jsonJob = jsonArray;
                     tvResultCount.setText("Result : "+jsonJob.length()+" Found");

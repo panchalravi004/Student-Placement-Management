@@ -91,6 +91,7 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:padding="10sp">
 
                 <TableRow
@@ -103,7 +104,6 @@
                         android:id="@+id/textView29"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="Primary Skill"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -128,7 +128,6 @@
                         android:id="@+id/textView33"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="Secondary Skills"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -153,7 +152,6 @@
                         android:id="@+id/textView68"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="Tertiary Skills"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -178,7 +176,6 @@
                         android:id="@+id/textView50"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="Acadamic Year"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />
@@ -343,6 +340,7 @@
                         android:id="@+id/tvStudentInfoHSCStream"
                         android:layout_width="120sp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:ellipsize="marquee"
                         android:maxWidth="200sp"
                         android:singleLine="true"
@@ -369,6 +367,7 @@
                         android:id="@+id/tvStudentInfoUGStream"
                         android:layout_width="120sp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:ellipsize="marquee"
                         android:maxWidth="200sp"
                         android:singleLine="true"
@@ -395,6 +394,7 @@
                         android:id="@+id/tvStudentInfoPGStream"
                         android:layout_width="120sp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:ellipsize="marquee"
                         android:maxWidth="200sp"
                         android:singleLine="true"
@@ -413,7 +413,6 @@
                         android:id="@+id/textView48"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="sem"
                         android:textColor="@color/black"
                         android:textSize="@dimen/title" />

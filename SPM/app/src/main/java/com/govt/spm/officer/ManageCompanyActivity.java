@@ -1,20 +1,9 @@
 package com.govt.spm.officer;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -22,6 +11,13 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -31,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.Constants;
+import com.govt.spm.DialogLoading;
 import com.govt.spm.R;
 import com.govt.spm.adapter.CompanyAdapter;
 import com.govt.spm.request.CacheRequest;
@@ -54,15 +51,12 @@ public class ManageCompanyActivity extends AppCompatActivity {
     private RecyclerView company_rv;
     private LinearLayoutManager manager;
     private ProgressBar pbLoadMore;
-    private ProgressDialog dialog;
-    private Boolean isScrolling = false;
     private static final String TAG = "SPM_ERROR";
 
-    private int currentItem,totalItem,scrollOutItem,totalDBItem;
-    private int fetchCount;
     private CompanyAdapter ca;
     private CompanyLiveViewModel companyLiveViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private DialogLoading dialogLoading;
 
     private JSONArray jsonCompany;
     private JSONArray jsonCountry;
@@ -79,22 +73,18 @@ public class ManageCompanyActivity extends AppCompatActivity {
         spFilterState = (Spinner) findViewById(R.id.spManageCompanyFilterState);
         spFilterCity = (Spinner) findViewById(R.id.spManageCompanyFilterCity);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMoreManageCompany);
-        dialog = new ProgressDialog(ManageCompanyActivity.this);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-
+        dialogLoading = new DialogLoading(this);
         company_rv = (RecyclerView) findViewById(R.id.recycleViewManageCompany);
         manager = new LinearLayoutManager(this);
-        totalDBItem = 12;
-
-        fetchCount = 1;
 
         jsonCountry = new JSONArray();
         jsonState = new JSONArray();
         jsonCity = new JSONArray();
 
-        //call methods
-//        getCompanies();
-//        fetchCountry();
+        //CAll METHOD
+        getCompanies();
+        fetchCountry();
 
         //listener
         //search on click
@@ -115,57 +105,11 @@ public class ManageCompanyActivity extends AppCompatActivity {
                 companyLiveViewModel.makeApiCall(ManageCompanyActivity.this,null);
             }
         });
-        company_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                    isScrolling = true;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItem = manager.getChildCount();
-                totalItem = manager.getItemCount();
-                scrollOutItem = manager.findFirstVisibleItemPosition();
-                if(isScrolling && (currentItem + scrollOutItem == totalItem)){
-                    isScrolling = false;
-                    fetchData();
-                }
-            }
-        });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //CAll METHOD
-        getCompanies();
-        fetchCountry();
-
-    }
-
-    private void fetchData() {
-        pbLoadMore.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                if(fetchCount < allCompanyList.size()){
-//                    cList.addAll(allCompanyList.get(fetchCount));
-//                    fetchCount++;
-//                    ca.notifyDataSetChanged();
-//                }
-                pbLoadMore.setVisibility(View.GONE);
-            }
-        },3000);
     }
 
     //get companies list
     private void getCompanies(){
-        pbLoadMore.setVisibility(View.VISIBLE);
+        dialogLoading.show();
         companyLiveViewModel = new CompanyLiveViewModel();
         ca = new CompanyAdapter(ManageCompanyActivity.this,jsonCompany);
         company_rv.setAdapter(ca);
@@ -174,8 +118,8 @@ public class ManageCompanyActivity extends AppCompatActivity {
         companyLiveViewModel.getCompany().observe(this, new Observer<JSONArray>() {
             @Override
             public void onChanged(JSONArray jsonArray) {
-                pbLoadMore.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
+                dialogLoading.dismiss();
                 if(jsonArray != null){
                     jsonCompany = jsonArray;
                     tvCount.setText("Result : "+ jsonCompany.length()+" Found");

@@ -315,13 +315,13 @@ public class StudentProfileActivity extends AppCompatActivity {
         etSecondarySkill.setText(userPref.getString("secondary_skill","secondary_skill"));
         etTertiarySkill.setText(userPref.getString("tertiary_skill","tertiary_skill"));
         etSession.setText(userPref.getString("academic_session","academic_session"));
-        etSSCSCore.setText(userPref.getString("ssc_score","ssc_score"));
+        etSSCSCore.setText(userPref.getString("ssc_score","ssc_score").split("_",2)[0]);
         etSSCYear.setText(userPref.getString("ssc_pass_yr","ssc_pass_yr"));
-        etHSCScore.setText(userPref.getString("hsc_score","hsc_score"));
+        etHSCScore.setText(userPref.getString("hsc_score","hsc_score").split("_",2)[0]);
         etHSCYear.setText(userPref.getString("hsc_pass_yr","hsc_pass_yr"));
-        etUGScore.setText(userPref.getString("ug_score","ug_score"));
+        etUGScore.setText(userPref.getString("ug_score","ug_score").split("_",2)[0]);
         etUGYear.setText(userPref.getString("ug_pass_yr","ug_pass_yr"));
-        etPGScore.setText(userPref.getString("pg_score","pg_score"));
+        etPGScore.setText(userPref.getString("pg_score","pg_score").split("_",2)[0]);
         etPGYear.setText(userPref.getString("pg_pass_yr","pg_pass_yr"));
         etDob.setText(userPref.getString("stud_dob","stud_dob"));
 

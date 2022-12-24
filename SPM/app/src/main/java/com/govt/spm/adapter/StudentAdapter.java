@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.Constants;
+import com.govt.spm.DialogLoading;
 import com.govt.spm.R;
 import com.govt.spm.request.CacheRequest;
 
@@ -66,7 +67,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
             holder.card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDialog(jo);
+                    try {
+                        openDialog(jo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } catch (JSONException e) {
@@ -108,7 +113,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
         }
     }
 
-    private void openDialog(JSONObject info) {
+    private void openDialog(JSONObject info) throws JSONException {
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_student);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
@@ -134,9 +139,10 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
         tvPGStream = dialog.findViewById(R.id.tvStudentInfoPGStream);
         tvCurrentSem = dialog.findViewById(R.id.tvStudentInfoCurrentSem);
 
-        StringRequest request = new StringRequest(
+
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
-                Constants.GET_STUDENT_PROFILE,
+                Constants.GET_STUDENT_PROFILE+"/"+info.getString("stud_id"),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -145,19 +151,20 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.VHolder>
                             JSONArray jsonArray = new JSONArray(response);
                             tvName.setText(new JSONObject(jsonArray.getString(0)).getString("stud_name"));
                             tvEnrollNo.setText(new JSONObject(jsonArray.getString(0)).getString("stud_id"));
+                            tvEmail.setText(new JSONObject(jsonArray.getString(0)).getString("email"));
                             tvMobile.setText(new JSONObject(jsonArray.getString(0)).getString("stud_mob"));
                             tvAdd.setText(new JSONObject(jsonArray.getString(0)).getString("stud_address"));
                             tvPrimarySkill.setText(new JSONObject(jsonArray.getString(0)).getString("primary_skill"));
                             tvSecondarySkill.setText(new JSONObject(jsonArray.getString(0)).getString("secondary_skill"));
                             tvTertiarySkill.setText(new JSONObject(jsonArray.getString(0)).getString("tertiary_skill"));
                             tvAcadamicYear.setText(new JSONObject(jsonArray.getString(0)).getString("academic_session"));
-                            tvSSCPer.setText(new JSONObject(jsonArray.getString(0)).getString("ssc_score"));
+                            tvSSCPer.setText(new JSONObject(jsonArray.getString(0)).getString("ssc_score").split("_",2)[0]);
                             tvSSCYear.setText(new JSONObject(jsonArray.getString(0)).getString("ssc_pass_yr"));
-                            tvHSCPer.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_score"));
+                            tvHSCPer.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_score").split("_",2)[0]);
                             tvHSCYear.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_pass_yr"));
-                            tvUGPer.setText(new JSONObject(jsonArray.getString(0)).getString("ug_score"));
+                            tvUGPer.setText(new JSONObject(jsonArray.getString(0)).getString("ug_score").split("_",2)[0]);
                             tvUGYear.setText(new JSONObject(jsonArray.getString(0)).getString("ug_pass_yr"));
-                            tvPGPer.setText(new JSONObject(jsonArray.getString(0)).getString("pg_score"));
+                            tvPGPer.setText(new JSONObject(jsonArray.getString(0)).getString("pg_score").split("_",2)[0]);
                             tvPGYear.setText(new JSONObject(jsonArray.getString(0)).getString("pg_pass_yr"));
                             tvHSCStream.setText(new JSONObject(jsonArray.getString(0)).getString("hsc_stream"));
                             tvUGStream.setText(new JSONObject(jsonArray.getString(0)).getString("ug_stram"));

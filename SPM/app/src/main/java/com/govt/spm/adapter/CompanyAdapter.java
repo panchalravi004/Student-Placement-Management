@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.govt.spm.officer.AddCompanyActivity;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
+import com.govt.spm.request.CacheRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +76,11 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
             holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDialog(jo);
+                    try {
+                        openDialog(jo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } catch (JSONException e) {
@@ -114,7 +119,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
         }
     }
 
-    private void openDialog(JSONObject jo) {
+    private void openDialog(JSONObject jo) throws JSONException {
 
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_company);
@@ -145,9 +150,9 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.VHolder>
             e.printStackTrace();
         }
 
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
-                Constants.GET_COMPANY_PROFILE,
+                Constants.GET_COMPANY_PROFILE+"/"+jo.getString("company_id"),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

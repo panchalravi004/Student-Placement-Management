@@ -1,11 +1,15 @@
 package com.govt.spm.officer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -17,6 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.govt.spm.LoginActivity;
 import com.govt.spm.R;
 import com.govt.spm.adapter.UpcomingJobsAdapter;
@@ -34,11 +39,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class OfficerDashboardActivity extends AppCompatActivity {
+public class OfficerDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private ImageButton btnMenuBar;
     private TextView tvStudentCount,tvCompanyCount,tvJobsCount,tvComingSoonCount;
     private RecyclerView view_jobs_rv;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
     private LinearLayoutManager manager;
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
@@ -50,6 +57,7 @@ public class OfficerDashboardActivity extends AppCompatActivity {
     private JSONArray jsonJob;
     private UpcomingJobsAdapter uja;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,19 +69,24 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         tvCompanyCount = (TextView) findViewById(R.id.tvODCompanyCount);
         tvJobsCount = (TextView) findViewById(R.id.tvODJobsCount);
         tvComingSoonCount = (TextView) findViewById(R.id.tvODComingSoonCount);
-
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         view_jobs_rv = (RecyclerView) findViewById(R.id.list_OD_upcoming_company);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
         jsonJob = new JSONArray();
 
+        navigationView.setNavigationItemSelectedListener(this);
+
+        setNavHeader();
+
         //Listener
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View view) {
-                openPopUpMenu();
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
     }
@@ -87,40 +100,13 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         getCompaniesCount();
     }
 
-    //open pop up menu
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private void openPopUpMenu(){
-        PopupMenu pm = new PopupMenu(getBaseContext(),btnMenuBar);
-        pm.getMenuInflater().inflate(R.menu.tpo_dashboard_menu,pm.getMenu());
-        pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if(menuItem.getTitle().equals(getResources().getString(R.string.tpo_profile))){
-                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.tpo_profile), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),OfficerProfileActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.view_student))){
-                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.view_student), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),ViewStudentActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.manage_jobs))){
-                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_jobs), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),ManageJobsActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.manage_company))){
-                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_company), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),ManageCompanyActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.logout))){
-                    Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
-                    logout();
-                }
+    //set nav header
+    public void setNavHeader(){
 
-                return true;
-            }
-        });
-        pm.setForceShowIcon(true);
-        pm.show();
+        TextView tpoName = navigationView.getHeaderView(0).findViewById(R.id.tvTPOName);
+        TextView tpoEmail = navigationView.getHeaderView(0).findViewById(R.id.tvTPOEmail);
+        tpoName.setText(userPref.getString("name","name"));
+        tpoEmail.setText(userPref.getString("email","email"));
     }
 
     //get job list and set
@@ -241,4 +227,29 @@ public class OfficerDashboardActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if(item.getTitle().equals(getResources().getString(R.string.tpo_profile))){
+            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.tpo_profile), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),OfficerProfileActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.view_student))){
+            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.view_student), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),ViewStudentActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.manage_jobs))){
+            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_jobs), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),ManageJobsActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.manage_company))){
+            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.manage_company), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),ManageCompanyActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.logout))){
+            Toast.makeText(OfficerDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
+            logout();
+        }
+
+        return true;
+    }
 }

@@ -36,6 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.Constants;
+import com.govt.spm.DialogLoading;
 import com.govt.spm.R;
 import com.govt.spm.adapter.JobsAdapter;
 import com.govt.spm.request.CacheRequest;
@@ -63,13 +64,8 @@ public class ManageJobsActivity extends AppCompatActivity {
     private ProgressBar pbLoadMore;
     private JobsAdapter ja;
     private JobLiveViewModel jobLiveViewModel;
-
-    private Boolean isScrolling = false;
-    private int currentItem;
-    private int totalItem;
-    private int scrollOutItem;
-    private int totalDbItem;
     private SharedPreferences userPref;
+    private DialogLoading dialogLoading;
 
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonJob,jsonCompany,jsonCollege,jsonDept;
@@ -90,8 +86,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         jobs_rv = (RecyclerView) findViewById(R.id.recycleViewManageJobs);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
-
-        totalDbItem = 12;
+        dialogLoading = new DialogLoading(this);
         if(userPref.getString("CAN_MAKE_JOB_POST","CAN_MAKE_JOB_POST").equals("0")){
             btnAdd.setVisibility(View.GONE);
         }else{
@@ -99,6 +94,7 @@ public class ManageJobsActivity extends AppCompatActivity {
         }
 
         //CALL METHOD
+        getJobList();
 
         //LISTENER
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -120,55 +116,12 @@ public class ManageJobsActivity extends AppCompatActivity {
                 }
             }
         });
-        jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                    isScrolling = true;
-                }
-            }
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItem = manager.getChildCount();
-                totalItem = manager.getItemCount();
-                scrollOutItem = manager.findFirstVisibleItemPosition();
-
-                if(isScrolling && (currentItem + scrollOutItem == totalItem)){
-                    isScrolling = false;
-                    if(totalItem<=totalDbItem){
-                        fetchData();
-                    }
-                }
-            }
-        });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getJobList();
-
-    }
-
-    private void fetchData(){
-        pbLoadMore.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                pbLoadMore.setVisibility(View.GONE);
-            }
-        },5000);
     }
 
     //get all jobs list
     private void getJobList(){
-
-        pbLoadMore.setVisibility(View.VISIBLE);
+        dialogLoading.show();
         jobLiveViewModel = new JobLiveViewModel();
         ja = new JobsAdapter(ManageJobsActivity.this,jsonJob);
         jobs_rv.setAdapter(ja);
@@ -177,8 +130,8 @@ public class ManageJobsActivity extends AppCompatActivity {
         jobLiveViewModel.getJob().observe(this, new Observer<JSONArray>() {
             @Override
             public void onChanged(JSONArray jsonArray) {
-                pbLoadMore.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
+                dialogLoading.dismiss();
                 if(jsonArray != null){
                     jsonJob = jsonArray;
                     ja.updateJob(jsonArray);

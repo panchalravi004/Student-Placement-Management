@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
+import com.govt.spm.request.CacheRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +76,11 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
             holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDialog(jo);
+                    try {
+                        openDialog(jo);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } catch (JSONException e) {
@@ -106,7 +111,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
     }
 
     //open dialog for company and job post details
-    private void openDialog(JSONObject jo) {
+    private void openDialog(JSONObject jo) throws JSONException {
 
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_jobs_post);
@@ -155,9 +160,9 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.VH
         }
         
         //fetch the company profile data and set it
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
-                Constants.GET_COMPANY_PROFILE,
+                Constants.GET_COMPANY_PROFILE+"/"+jo.getString("COMPANY_ID"),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -37,6 +37,7 @@ import com.govt.spm.officer.AddJobsActivity;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
 import com.govt.spm.officer.ViewAplicantActivity;
+import com.govt.spm.request.CacheRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -147,7 +148,11 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
             holder.btnView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openDialog(jo,holder.jsonArrayCompanyProfile);
+                    try {
+                        openDialog(jo,holder.jsonArrayCompanyProfile);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             holder.btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +222,7 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         return super.getItemViewType(position);
     }
 
-    private void openDialog(JSONObject jo,JSONArray jsonArrayCompanyProfile) {
+    private void openDialog(JSONObject jo,JSONArray jsonArrayCompanyProfile) throws JSONException {
         Dialog dialog = new Dialog(context,R.style.DialogStyle);
         dialog.setContentView(R.layout.dialog_details_jobs_post);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.white_all_round);
@@ -259,9 +264,9 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
         }
      
 
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
-                Constants.GET_JOB_DETAIL,
+                Constants.GET_JOB_DETAIL+"/"+jo.getString("job_id"),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

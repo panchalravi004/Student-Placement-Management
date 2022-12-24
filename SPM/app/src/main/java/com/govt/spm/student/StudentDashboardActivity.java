@@ -1,11 +1,15 @@
 package com.govt.spm.student;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -17,6 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.govt.spm.LoginActivity;
 import com.govt.spm.R;
 import com.govt.spm.adapter.UpcomingJobsAdapter;
@@ -32,13 +37,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class StudentDashboardActivity extends AppCompatActivity {
+public class StudentDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
     private ImageButton btnMenuBar,btnGoTOAppliedJob;
     private TextView tvJobsCount,tvAppliedInCount,tvSelectedInCount;
-
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
     private static final String TAG = "SPM_ERROR";
@@ -47,6 +53,7 @@ public class StudentDashboardActivity extends AppCompatActivity {
     private UpcomingJobsAdapter uja;
     private JobLiveViewModel jobLiveViewModel;
     private AppliedJobLiveViewModel appliedJobLiveViewModel;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,18 +65,23 @@ public class StudentDashboardActivity extends AppCompatActivity {
         tvAppliedInCount = (TextView) findViewById(R.id.tvSDAppliedInCount);
         tvSelectedInCount = (TextView) findViewById(R.id.tvSDSelectedInCount);
         btnGoTOAppliedJob = (ImageButton) findViewById(R.id.btnSDSelectedIn);
-
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         jsonJob = new JSONArray();
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        setNavHeader();
 
         //Listeners
         btnMenuBar.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View view) {
-                openPopUpMenu();
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
         btnGoTOAppliedJob.setOnClickListener(new View.OnClickListener() {
@@ -80,44 +92,20 @@ public class StudentDashboardActivity extends AppCompatActivity {
         });
     }
 
+    public void setNavHeader(){
+
+        TextView studentName = navigationView.getHeaderView(0).findViewById(R.id.tvStudentName);
+        TextView studentEnroll = navigationView.getHeaderView(0).findViewById(R.id.tvStudentEnroll);
+        studentName.setText(userPref.getString("name","name"));
+        studentEnroll.setText(userPref.getString("stud_id","stud_id"));
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         //CALL METHOD
         getJobList();
         getAppliedJobList(userPref.getString("stud_id","stud_id"));
-    }
-
-    //open Pop Up Menu Bar
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private void openPopUpMenu(){
-        PopupMenu pm = new PopupMenu(getBaseContext(),btnMenuBar);
-        pm.getMenuInflater().inflate(R.menu.student_dashboard_menu,pm.getMenu());
-        pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if(menuItem.getTitle().equals(getResources().getString(R.string.student_profile))){
-                    Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.student_profile), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),StudentProfileActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.view_jobs))){
-                    Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.view_jobs), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),ViewJobsActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.applied_in))){
-                    Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.applied_in), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getBaseContext(),StudentAppliedActivity.class));
-                }
-                if(menuItem.getTitle().equals(getResources().getString(R.string.logout))){
-                    Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
-                    logout();
-                }
-
-                return true;
-            }
-        });
-        pm.setForceShowIcon(true);
-        pm.show();
     }
 
     //get jobs list and set counts of jobs
@@ -213,5 +201,27 @@ public class StudentDashboardActivity extends AppCompatActivity {
         editor.apply();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if(item.getTitle().equals(getResources().getString(R.string.student_profile))){
+            Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.student_profile), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),StudentProfileActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.view_jobs))){
+            Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.view_jobs), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),ViewJobsActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.applied_in))){
+            Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.applied_in), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getBaseContext(),StudentAppliedActivity.class));
+        }
+        if(item.getTitle().equals(getResources().getString(R.string.logout))){
+            Toast.makeText(StudentDashboardActivity.this, getResources().getString(R.string.logout), Toast.LENGTH_SHORT).show();
+            logout();
+        }
+
+        return true;
     }
 }

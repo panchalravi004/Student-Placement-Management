@@ -1,24 +1,21 @@
 package com.govt.spm.officer;
 
-import androidx.annotation.NonNull;
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-
+import com.govt.spm.DialogLoading;
 import com.govt.spm.R;
 import com.govt.spm.adapter.StudentAdapter;
 import com.govt.spm.viewmodel.StudentLiveViewModel;
@@ -32,7 +29,6 @@ import java.util.Locale;
 public class ViewStudentActivity extends AppCompatActivity {
     private ImageButton btnSearch;
     private EditText etSearch;
-    private Spinner spFilterCollege,spFilterDept;
 
     private RecyclerView student_rv;
     private LinearLayoutManager manager;
@@ -43,12 +39,11 @@ public class ViewStudentActivity extends AppCompatActivity {
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonStudent;
 
-    private Boolean isScrolling = false;
-    private int currentItem,totalItem,scrolledOutItems,totaldbitem;
     private SharedPreferences userPref;
 
     private StudentLiveViewModel studentLiveViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private DialogLoading dialogLoading;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -58,16 +53,13 @@ public class ViewStudentActivity extends AppCompatActivity {
 
         btnSearch = (ImageButton) findViewById(R.id.btnViewStudentSearch);
         etSearch = (EditText) findViewById(R.id.etViewStudentSearch);
-//        spFilterCollege = (Spinner) findViewById(R.id.spViewStudentFilterOne);
-//        spFilterDept = (Spinner) findViewById(R.id.spViewStudentFilterTwo);
         pbLoadMore = (ProgressBar) findViewById(R.id.pbLoadMore);
         tvCount = (TextView) findViewById(R.id.tvViewStudentResultCount);
         student_rv = (RecyclerView) findViewById(R.id.recycleViewStudent);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-
-        totaldbitem = 10;
+        dialogLoading = new DialogLoading(this);
 
         //Call Method
         getStudents();
@@ -88,56 +80,15 @@ public class ViewStudentActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                etSearch.setText("");
                 studentLiveViewModel.makeApiCall(ViewStudentActivity.this,userPref);
             }
         });
-
-        student_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                    isScrolling = true;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItem = manager.getChildCount();
-                totalItem = manager.getItemCount();
-                scrolledOutItems = manager.findFirstVisibleItemPosition();
-                if(isScrolling && (currentItem + scrolledOutItems == totalItem)){
-                    isScrolling = false;
-                    if(totalItem<=totaldbitem){
-                        fetchData();
-                    }
-                }
-
-            }
-        });
-    }
-
-    private void fetchData() {
-        pbLoadMore.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-//                sid.add("1234560005");
-//                sname.add("Jack Fusion");
-//                ssem.add("MCA SEM 3 2022");
-//                sa.notifyDataSetChanged();
-
-                pbLoadMore.setVisibility(View.GONE);
-            }
-        }, 5000);
     }
 
     //get student list
     private void getStudents(){
-        pbLoadMore.setVisibility(View.VISIBLE);
-
+        dialogLoading.show();
         studentLiveViewModel = new StudentLiveViewModel();
 
         sa = new StudentAdapter(ViewStudentActivity.this,jsonStudent);
@@ -147,8 +98,8 @@ public class ViewStudentActivity extends AppCompatActivity {
         studentLiveViewModel.getStudent().observe(this, new Observer<JSONArray>() {
             @Override
             public void onChanged(JSONArray jsonArray) {
-                pbLoadMore.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
+                dialogLoading.dismiss();
                 if(jsonArray != null){
                     jsonStudent = jsonArray;
                     tvCount.setText("Result : "+ jsonStudent.length()+" Found");

@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.govt.spm.DialogLoading;
 import com.govt.spm.R;
 import com.govt.spm.adapter.ViewJobsAdapter;
 import com.govt.spm.viewmodel.JobLiveViewModel;
@@ -40,11 +41,9 @@ public class ViewJobsActivity extends AppCompatActivity {
     private RecyclerView view_jobs_rv;
     private LinearLayoutManager manager;
     private ProgressBar pbLoadMore;
-    private Boolean isScrolling = false;
     private ViewJobsAdapter vja;
     private JobLiveViewModel jobLiveViewModel;
-
-    private int currentItem,totalItem,scrollOutItem,totalDBItem;
+    private DialogLoading dialogLoading;
     private SharedPreferences userPref;
     private static final String TAG = "SPM_ERROR";
     private JSONArray jsonJob;
@@ -64,8 +63,7 @@ public class ViewJobsActivity extends AppCompatActivity {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         manager = new LinearLayoutManager(this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
-
-        totalDBItem = 10;
+        dialogLoading = new DialogLoading(this);
         jsonJob = new JSONArray();
         //CALL METHOD
         getJobList();
@@ -90,48 +88,11 @@ public class ViewJobsActivity extends AppCompatActivity {
                 jobLiveViewModel.makeApiCall(ViewJobsActivity.this,userPref);
             }
         });
-        view_jobs_rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-                    isScrolling = true;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentItem = manager.getChildCount();
-                totalItem = manager.getItemCount();
-                scrollOutItem = manager.findFirstVisibleItemPosition();
-                if(isScrolling && (currentItem + scrollOutItem == totalItem)){
-                    isScrolling = false;
-                    if(totalItem<=totalDBItem){
-                        fetchData();
-                    }
-                }
-            }
-        });
-
-    }
-
-    private void fetchData() {
-        pbLoadMore.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                company_name.add("ABCD Four Technology");
-//                register_end_date.add("28-09-2022");
-//                college_name.add("AMPICS");
-                pbLoadMore.setVisibility(View.GONE);
-            }
-        }, 5000);
     }
 
     //get jobs list by university
     private void getJobList(){
-        pbLoadMore.setVisibility(View.VISIBLE);
+        dialogLoading.show();
         jobLiveViewModel = new JobLiveViewModel();
 
         vja = new ViewJobsAdapter(ViewJobsActivity.this,jsonJob);
@@ -141,8 +102,8 @@ public class ViewJobsActivity extends AppCompatActivity {
         jobLiveViewModel.getJob().observe(this, new Observer<JSONArray>() {
             @Override
             public void onChanged(JSONArray jsonArray) {
-                pbLoadMore.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
+                dialogLoading.dismiss();
                 if(jsonArray != null){
                     jsonJob = jsonArray;
                     vja.updateJob(jsonArray);

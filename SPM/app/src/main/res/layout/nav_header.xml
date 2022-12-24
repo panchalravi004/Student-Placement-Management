@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/spm_blue_30_bottom_round"
+    android:elevation="4sp"
+    android:orientation="vertical"
+    android:paddingLeft="15sp"
+    android:paddingTop="35sp"
+    android:paddingRight="15sp"
+    android:paddingBottom="15sp">
+
+    <TextView
+        android:id="@+id/tvTPOName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:text="Ravi Panchal"
+        android:textColor="@color/white"
+        android:textSize="@dimen/activity_heading" />
+
+    <TextView
+        android:id="@+id/tvTPOEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5sp"
+        android:text="ravi@gmail.com"
+        android:textColor="@color/white"
+        android:textSize="@dimen/title" />
+</LinearLayout>
