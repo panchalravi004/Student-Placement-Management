@@ -88,6 +88,14 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".notification.NotificationFirebaseService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
         <!--   This was added for email sent     -->
         <provider
             android:name="androidx.core.content.FileProvider"

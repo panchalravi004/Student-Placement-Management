@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -83,6 +85,8 @@ public class JobsAdapter extends RecyclerView.Adapter<JobsAdapter.VHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull JobsAdapter.VHolder holder, int position) {
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(),android.R.anim.slide_in_left);
+        holder.itemView.setAnimation(animation);
         try {
             JSONObject jo = new JSONObject(jobs.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));

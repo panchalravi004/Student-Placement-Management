@@ -153,13 +153,22 @@ public class AddJobsActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddJobsActivity.this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        boolean equals = String.valueOf(String.valueOf(i1).length()).equals("1");
                         if(String.valueOf(String.valueOf(i2).length()).equals("1")){
-                            etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                            if(equals){
+                                etStartDate.setText(String.valueOf(i)+"-0"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                            }else{
+                                etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                            }
                         }else{
-                            etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                            if(equals){
+                                etStartDate.setText(String.valueOf(i)+"-0"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                            }else{
+                                etStartDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                            }
                         }
                     }
-                }, 2022, 10, 2);
+                }, 2023, 01, 20);
                 dpd.show();
             }
         });
@@ -169,13 +178,22 @@ public class AddJobsActivity extends AppCompatActivity {
                 DatePickerDialog dpd = new DatePickerDialog(AddJobsActivity.this,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        boolean equals = String.valueOf(String.valueOf(i1).length()).equals("1");
                         if(String.valueOf(String.valueOf(i2).length()).equals("1")){
-                            etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                            if(equals){
+                                etEndDate.setText(String.valueOf(i)+"-0"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                            }else{
+                                etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-0"+String.valueOf(i2));
+                            }
                         }else{
-                            etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                            if(equals){
+                                etEndDate.setText(String.valueOf(i)+"-0"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                            }else{
+                                etEndDate.setText(String.valueOf(i)+"-"+String.valueOf(i1+1)+"-"+String.valueOf(i2));
+                            }
                         }
                     }
-                }, 2022, 10, 2);
+                }, 2023, 01, 20);
                 dpd.show();
             }
         });

@@ -160,7 +160,6 @@ public class ManageJobsActivity extends AppCompatActivity {
                 btnCloseFilter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.onSaveInstanceState();
                         dialog.dismiss();
                     }
                 });
@@ -293,7 +292,7 @@ public class ManageJobsActivity extends AppCompatActivity {
     private void fetchColleges(String univ_id){
         CacheRequest request = new CacheRequest(
                 Request.Method.POST,
-                Constants.GET_COLLEGES,
+                Constants.GET_COLLEGES+"/"+univ_id,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -344,9 +343,9 @@ public class ManageJobsActivity extends AppCompatActivity {
 
     //Fetch Dept as per Colleges
     private void fetchCollegeWiseDept(String college_id){
-        StringRequest request = new StringRequest(
+        CacheRequest request = new CacheRequest(
                 Request.Method.POST,
-                Constants.GET_DEPARTMENTS,
+                Constants.GET_DEPARTMENTS+"/"+college_id,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

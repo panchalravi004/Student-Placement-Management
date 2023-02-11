@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -172,9 +173,11 @@ public class OfficerDashboardActivity extends AppCompatActivity implements Navig
     private int getComingSoonJobCount(JSONArray ja){
         int count = 0;
         LocalDate date = LocalDate.now();
+        Log.i(TAG, "getComingSoonJobCount: "+String.valueOf(date));
         for (int i = 0; i < ja.length(); i++) {
             try {
                 JSONObject jo = new JSONObject(ja.getString(i));
+                Log.i(TAG, "getComingSoonJobCount: "+jo.getString("reg_start_date"));
                 if(LocalDate.parse(jo.getString("reg_start_date")).compareTo(date) >= 0){
                     count++;
                 }

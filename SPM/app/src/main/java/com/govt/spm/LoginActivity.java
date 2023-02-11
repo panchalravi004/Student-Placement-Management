@@ -1,11 +1,16 @@
 package com.govt.spm;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +26,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.govt.spm.officer.OfficerDashboardActivity;
 import com.govt.spm.student.StudentDashboardActivity;
 
@@ -32,11 +40,13 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "102";
     private EditText etUserId,etPassword;
     private Button btnLogin;
     private SharedPreferences userPref;
     private SharedPreferences.Editor editor;
     private ProgressDialog dialog;
+    private String USER_TOKEN = "";
     final static String TAG = "SPM_ERROR";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         dialog = new ProgressDialog(LoginActivity.this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
         editor = userPref.edit();
+
+        createNotificationChannel();
+        getToken();
 
     }
     //Do login when click
@@ -185,6 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("user_id",id);
                 params.put("password",pass);
+                params.put("user_token",USER_TOKEN);
                 return params;
             }
         };
@@ -221,5 +235,33 @@ public class LoginActivity extends AppCompatActivity {
     //if account is not created the create the account for faculty only
     public void goToCreateAccount(View view) {
         startActivity(new Intent(LoginActivity.this,CreateOfficerActivity.class));
+    }
+
+    private void getToken(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(!task.isSuccessful()){
+                    Log.i(TAG, "onComplete: Fail to get Token");
+                }
+                USER_TOKEN = task.getResult();
+                Log.i(TAG, "onComplete: "+USER_TOKEN);
+            }
+        });
+    }
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "firebaseNotificationChannel";
+            String description = "Receive Firebase notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

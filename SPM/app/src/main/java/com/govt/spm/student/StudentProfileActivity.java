@@ -48,6 +48,7 @@ public class StudentProfileActivity extends AppCompatActivity {
     private EditText etID,etName,etMobile,etGender,etAddress,etZipCode,etPrimarySkill,etSecondarySkill,etTertiarySkill,etSession,etSSCSCore,etSSCYear,etHSCScore,etHSCYear,etUGScore,etUGYear,etPGScore,etPGYear,etDob;
     private EditText etCountry,etState,etCity,etUniv,etCollege,etDept;
     private SharedPreferences userPref;
+    private SharedPreferences.Editor editor;
     private Button btnUpdate;
     private ImageButton btnSelectProfileImage,btnUploadProfileImage,btnStudentProfileUploadResume,btnStudentProfileSelectResume;
     private ImageView ivProfileImage;
@@ -100,7 +101,7 @@ public class StudentProfileActivity extends AppCompatActivity {
 
         dialog = new ProgressDialog(StudentProfileActivity.this);
         userPref = getSharedPreferences("user",MODE_PRIVATE);
-
+        editor = userPref.edit();
         //CALL METHOD
         setProfile();
 
@@ -267,8 +268,17 @@ public class StudentProfileActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.i(TAG, "updateProfile: "+response);
                         dialog.dismiss();
+
                         try {
                             JSONObject jo = new JSONObject(response);
+                            if(jo.has("message") && !jo.getBoolean("error")){
+                                editor.putString("mob",etMobile.getText().toString());
+                                editor.putString("stud_address",etAddress.getText().toString());
+                                editor.putString("primary_skill",etPrimarySkill.getText().toString());
+                                editor.putString("secondary_skill",etSecondarySkill.getText().toString());
+                                editor.putString("tertiary_skill",etTertiarySkill.getText().toString());
+                                editor.apply();
+                            }
                             Toast.makeText(StudentProfileActivity.this, jo.getString("message"), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -287,20 +297,16 @@ public class StudentProfileActivity extends AppCompatActivity {
                 Map<String, String> param = new HashMap<>();
                 param.put("user_role",userPref.getString("role","role"));
                 param.put("user_id",userPref.getString("stud_id","stud_id"));
-                param.put("user_mob",userPref.getString("mob","mob"));
-                param.put("stud_address",userPref.getString("stud_address","stud_address"));
-                param.put("primary_skill",userPref.getString("primary_skill","primary_skill"));
-                param.put("secondary_skill",userPref.getString("secondary_skill","secondary_skill"));
-                param.put("tertiary_skill",userPref.getString("tertiary_skill","tertiary_skill"));
+                param.put("user_mob",etMobile.getText().toString());
+                param.put("stud_address",etAddress.getText().toString());
+                param.put("primary_skill",etPrimarySkill.getText().toString());
+                param.put("secondary_skill",etSecondarySkill.getText().toString());
+                param.put("tertiary_skill",etTertiarySkill.getText().toString());
                 return param;
             }
         };
-        DefaultRetryPolicy retryPolicy = new DefaultRetryPolicy(6000,DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(retryPolicy);
-        request.setShouldCache(false);
         RequestQueue requestQueue = Volley.newRequestQueue(StudentProfileActivity.this);
         requestQueue.add(request);
-        Log.i(TAG, "updateProfile: "+request);
     }
 
     //set Student Profile Information
