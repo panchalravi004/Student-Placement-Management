@@ -29,6 +29,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.govt.spm.Constants;
 import com.govt.spm.R;
 
@@ -154,6 +156,9 @@ public class StudentProfileActivity extends AppCompatActivity {
                             pd.dismiss();
                             Log.i(TAG, "uploadFile: " + response);
                             Toast.makeText(StudentProfileActivity.this, "File Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                            if(command.equals("PROFILE_IMAGE")){
+                                editor.putString("photo",userPref.getString("stud_id","stud_id")+"_PROFILE.jpeg");
+                            }
                         }
                     },
                     new Response.ErrorListener() {
@@ -168,7 +173,7 @@ public class StudentProfileActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     if(command.equals("RESUME")){
-                        params.put("file_name", userPref.getString("stud_id","stud_id")+"_RESUME_"+etName.getText().toString().trim()+".pdf");
+                        params.put("file_name", userPref.getString("stud_id","stud_id")+"_RESUME.pdf");
                         params.put("upload_type", Constants.UPLOAD_TYPE_RESUME);
                         try {
                             params.put("uploaded_file", getPDFString(filePath));
@@ -177,7 +182,7 @@ public class StudentProfileActivity extends AppCompatActivity {
                         }
 
                     }else if(command.equals("PROFILE_IMAGE")){
-                        params.put("file_name", userPref.getString("stud_id","stud_id")+"_PROFILE_"+etName.getText().toString().trim()+".jpeg");
+                        params.put("file_name", userPref.getString("stud_id","stud_id")+"_PROFILE.jpeg");
                         params.put("upload_type", Constants.UPLOAD_TYPE_PROFILE);
                         params.put("uploaded_file", getBitmapString(bitmap));
                     }
@@ -338,6 +343,10 @@ public class StudentProfileActivity extends AppCompatActivity {
         etCollege.setText(userPref.getString("college","college"));
         etDept.setText(userPref.getString("dept","dept"));
 
+        Glide.with(this)
+                .load(Constants.FILE_ROOT_URL + "profile_pic/"+ userPref.getString("photo","photo"))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).into(ivProfileImage);
     }
 
     //go back to dashboard

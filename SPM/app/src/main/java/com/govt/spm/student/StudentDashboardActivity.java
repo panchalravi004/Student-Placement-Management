@@ -17,11 +17,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.navigation.NavigationView;
+import com.govt.spm.Constants;
 import com.govt.spm.LoginActivity;
 import com.govt.spm.R;
 import com.govt.spm.adapter.UpcomingJobsAdapter;
@@ -96,8 +100,14 @@ public class StudentDashboardActivity extends AppCompatActivity implements Navig
 
         TextView studentName = navigationView.getHeaderView(0).findViewById(R.id.tvStudentName);
         TextView studentEnroll = navigationView.getHeaderView(0).findViewById(R.id.tvStudentEnroll);
+        ImageView studentPhoto = navigationView.getHeaderView(0).findViewById(R.id.imgStudentProfile);
         studentName.setText(userPref.getString("name","name"));
         studentEnroll.setText(userPref.getString("stud_id","stud_id"));
+
+        Glide.with(this)
+                .load(Constants.FILE_ROOT_URL + "profile_pic/"+ userPref.getString("photo","photo"))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).into(studentPhoto);
     }
 
     @Override
