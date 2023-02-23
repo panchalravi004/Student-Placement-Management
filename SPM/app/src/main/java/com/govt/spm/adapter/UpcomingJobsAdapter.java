@@ -68,6 +68,13 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
             JSONObject jo = new JSONObject(job.getString(position));
             holder.rEDate.setText("Ends on : "+jo.getString("reg_end_date"));
             holder.clgName.setText(jo.getString("min_qualification").toUpperCase(Locale.ROOT));
+
+            if(jo.getString("company_name").length()>20){
+                holder.cName.setText(jo.getString("company_name").substring(0,25)+"...");
+            }else{
+                holder.cName.setText(jo.getString("company_name"));
+            }
+
             StringRequest request = new StringRequest(
                     Request.Method.POST,
                     Constants.GET_COMPANY_PROFILE,
@@ -77,11 +84,7 @@ public class UpcomingJobsAdapter extends RecyclerView.Adapter<UpcomingJobsAdapte
                             Log.i(TAG, "Fetch Company Profile: "+response);
                             try {
                                 holder.jsonArrayCompanyProfile = new JSONArray(response);
-                                if(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").length()>20){
-                                    holder.cName.setText(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").substring(0,25)+"...");
-                                }else{
-                                    holder.cName.setText(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME"));
-                                }
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

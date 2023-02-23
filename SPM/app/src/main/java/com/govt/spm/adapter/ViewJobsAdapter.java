@@ -70,7 +70,11 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
 
             holder.rEDate.setText("Ends on : "+joJob.getString("reg_end_date"));
             holder.clgName.setText(joJob.getString("min_qualification").toUpperCase(Locale.ROOT));
-
+            if(joJob.getString("company_name").length()>20){
+                holder.cName.setText(joJob.getString("company_name").substring(0,25)+"...");
+            }else{
+                holder.cName.setText(joJob.getString("company_name"));
+            }
             //fetch company profile
             StringRequest request = new StringRequest(
                     Request.Method.POST,
@@ -81,11 +85,6 @@ public class ViewJobsAdapter extends RecyclerView.Adapter<ViewJobsAdapter.VHolde
                             Log.i(TAG, "Fetch Company Profile: "+response);
                             try {
                                 holder.jsonArrayCompanyProfile = new JSONArray(response);
-                                if(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").length()>20){
-                                    holder.cName.setText(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME").substring(0,25)+"...");
-                                }else{
-                                    holder.cName.setText(new JSONObject(holder.jsonArrayCompanyProfile.getString(0)).getString("COMPANY_NAME"));
-                                }
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
