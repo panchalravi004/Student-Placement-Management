@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5sp"
+    android:background="@drawable/spm_blue_10_all_round"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="15sp"
+    android:paddingTop="10sp"
+    android:paddingRight="15sp"
+    android:paddingBottom="10sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvVJACompanyName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/spm_blue_40_left_round"
+            android:gravity="center_vertical"
+            android:paddingLeft="15sp"
+            android:text="Info it Solution Pvt. ltd."
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title" />
+
+        <LinearLayout
+            android:layout_width="120sp"
+            android:layout_height="match_parent"
+            android:background="@drawable/spm_blue_30_right_round"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp">
+
+            <TextView
+                android:id="@+id/tvVJACollegeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="2sp"
+                android:text="AMPICS"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="8sp"
+                android:layout_height="8sp"
+                android:layout_marginLeft="5sp"
+                android:background="@drawable/white_all_round">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvVJARegisterEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="15sp"
+            android:text="End on: 20-09-2022"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/title" />
+
+
+        <ImageButton
+            android:id="@+id/btnVJAView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/spm_green_all_round"
+            android:padding="3sp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:srcCompat="@drawable/icon_eye_white" />
+    </LinearLayout>
+</LinearLayout>

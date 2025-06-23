@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="300sp"
+    android:background="@drawable/white_all_round"
+    android:elevation="5sp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spm_blue_40_top_round"
+        android:elevation="5sp"
+        android:orientation="vertical"
+        android:padding="10sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvCInfoName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5sp"
+                android:layout_weight="1"
+                android:text="Info IT Solution Pvt. Ltd."
+                android:textColor="@color/white"
+                android:textSize="@dimen/activity_heading" />
+
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="@null"
+                app:srcCompat="@drawable/icon_close_white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCInfoDomain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="www.demo.com"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title" />
+
+        <TextView
+            android:id="@+id/tvCInfoAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="hadiyol, Himmatnagar, Gujarat, 383001"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5sp">
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:text="HR Information"
+                android:textColor="@color/black"
+                android:textSize="@dimen/main_title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10sp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvCInfoHR1Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ravi Panchal"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tvCInfoHR1Email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ravi@gmail.com"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvCInfoHR2Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ravi Panchal"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tvCInfoHR2Email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ravi@gmail.com"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:text="About"
+                android:textColor="@color/black"
+                android:textSize="@dimen/main_title" />
+
+            <TextView
+                android:id="@+id/tvCInfoAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is the demo post of the jobs"
+                android:textAlignment="center"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15sp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/spm_blue_20_all_round"
+                    android:paddingLeft="20sp"
+                    android:paddingTop="5sp"
+                    android:paddingRight="20sp"
+                    android:paddingBottom="5sp"
+                    app:srcCompat="@drawable/icon_edit_white" />
+
+                <ImageButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
+                    android:background="@drawable/spm_red_all_round"
+                    android:paddingLeft="20sp"
+                    android:paddingTop="5sp"
+                    android:paddingRight="20sp"
+                    android:paddingBottom="5sp"
+                    app:srcCompat="@drawable/icon_delete" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

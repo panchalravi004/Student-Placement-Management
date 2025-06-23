@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="300sp"
+    android:background="@drawable/spm_blue_40_all_round"
+    android:elevation="5sp"
+    android:orientation="vertical"
+    android:padding="10sp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5sp">
+
+            <CheckBox
+                android:id="@+id/cbFilterMyOwned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Owned Job"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5sp">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="120sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Company"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/spJobFilterCompany"
+                    android:layout_width="170sp"
+                    android:layout_height="35sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/filter"
+                    android:padding="5sp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5sp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="120sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="University"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/spJobFilterUniversity"
+                    android:layout_width="170sp"
+                    android:layout_height="35sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/filter"
+                    android:padding="5sp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5sp">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="120sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="College"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/spJobFilterCollege"
+                    android:layout_width="170sp"
+                    android:layout_height="35sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/filter"
+                    android:padding="5sp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5sp">
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="120sp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Department"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/spJobFilterDept"
+                    android:layout_width="170sp"
+                    android:layout_height="35sp"
+                    android:layout_margin="5sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/filter"
+                    android:padding="5sp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/btnFilterGoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="5sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_close_white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

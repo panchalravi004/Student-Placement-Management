@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">SPM</string>
+
+
+    <!--  Student String  -->
+    <string name="student_dashboard">Student Dashboard</string>
+    <string name="student_profile">Profile</string>
+
+    <!--  TPO String  -->
+    <string name="tpo_dashboard">TPO Dashboard</string>
+    <string name="tpo_profile">TPO Profile</string>
+    <string name="view_student">View Student</string>
+    <string name="view_jobs">View Jobs</string>
+    <string name="manage_jobs">Manage Jobs</string>
+    <string name="manage_activity">Manage Activity</string>
+    <string name="manage_company">Manage Company</string>
+    <string name="view_activity">View Activity</string>
+    <string name="add_jobs">Add Jobs</string>
+    <string name="add_company">Add Company</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+    <string name="create_tpo">Create TPO Account</string>
+    <string name="create_tpo_profile">Create TPO Profile</string>
+
+
+    <!--  TPO/Student Dashboard String  -->
+    <string name="students">Students</string>
+    <string name="jobs">Jobs</string>
+    <string name="company">Company</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="activity">Activity</string>
+    <string name="selected_students">Selected Students</string>
+    <string name="upcoming_jobs">Upcoming Jobs</string>
+    <string name="type_here">Type here to search any</string>
+
+    <string name="applied_in">Applied In</string>
+    <string name="selected_in">Selected In</string>
+    <string name="company_info">Company Info</string>
+    <string name="apply_now">Apply Now</string>
+
+    <!--  All Input String  -->
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="role_of_user">Role of User</string>
+    <string name="enter_email">Enter Email Address</string>
+    <string name="enter_number">Enter Mobile Number</string>
+
+    <!--  Some Button String  -->
+    <string name="apply">Apply</string>
+    <string name="applied">Applied</string>
+    <string name="add_new">Add New</string>
+    <string name="update">Update</string>
+    <string name="view">View</string>
+    <string name="edit">Edit</string>
+
+    <!--  String array for role of user   -->
+    <string-array name="role_of_user">
+        <item>Role of User</item>
+        <item>Student</item>
+        <item>TPO</item>
+    </string-array>
+
+    <!--  String array for gender   -->
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <!--  String array for University   -->
+    <string-array name="university">
+        <item>GUNI TEST</item>
+    </string-array>
+
+    <!--  String array for College   -->
+    <string-array name="college">
+        <item>Select University First</item>
+    </string-array>
+
+    <!--  String array for Dept.   -->
+    <string-array name="dept">
+        <item>Select College First</item>
+    </string-array>
+
+    <!--  String array for filter.   -->
+    <string-array name="filter">
+        <item>filter</item>
+    </string-array>
+
+    <string-array name="cmp_filter">
+        <item>ALL</item>
+    </string-array>
+
+    <!--  String array for status.   -->
+    <string-array name="status">
+        <item>Publish</item>
+        <item>Draft</item>
+    </string-array>
+
+    <!--  String array for company sample.   -->
+    <string-array name="company">
+        <item>ABCD</item>
+        <item>ABCD</item>
+    </string-array>
+
+    <!--  String array for city.   -->
+    <string-array name="city">
+        <item>No Data Found</item>
+    </string-array>
+
+    <string name="file_provider_authority"
+        translatable="false">com.govt.spm.provider
+</string>
+
+</resources>

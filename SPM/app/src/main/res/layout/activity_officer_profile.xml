@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".officer.OfficerProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spm_blue_30_bottom_round"
+        android:elevation="5sp"
+        android:orientation="vertical"
+        android:paddingLeft="20sp"
+        android:paddingTop="35sp"
+        android:paddingRight="20sp"
+        android:paddingBottom="15sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnTPOBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="@null"
+                android:onClick="goToDashboard"
+                app:srcCompat="@drawable/icon_arrow_left" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15sp"
+                android:layout_weight="0"
+                android:text="@string/tpo_profile"
+                android:textColor="@color/white"
+                android:textSize="@dimen/activity_heading" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10sp">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:text="Access"
+                    android:textSize="@dimen/title" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/create_post"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@drawable/spm_green_all_round">
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="C"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/update_post"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@drawable/spm_green_all_round">
+
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="U"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/delete_post"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_marginLeft="5sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@drawable/spm_red_all_round">
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="R"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:padding="10sp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TPO ID"
+                        android:textSize="@dimen/title" />
+
+                    <EditText
+                        android:id="@+id/etTPOId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:enabled="false"
+                        android:hint="Enter ID"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Name"
+                        android:textSize="@dimen/title" />
+
+                    <EditText
+                        android:id="@+id/etTPOName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:hint="Enter Name"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Gender"
+                        android:textSize="@dimen/title" />
+
+                    <EditText
+                        android:id="@+id/etTPOGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:enabled="false"
+                        android:hint="Gender"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mobile"
+                        android:textSize="@dimen/title" />
+
+                    <EditText
+                        android:id="@+id/etTPOMobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:hint="@string/enter_number"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Email"
+                        android:textSize="@dimen/title" />
+
+                    <EditText
+                        android:id="@+id/etTPOEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:hint="@string/enter_email"
+                        android:inputType="textEmailAddress"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:id="@+id/textView27"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="University"
+                        android:textSize="@dimen/title" />
+
+                    <EditText
+                        android:id="@+id/etTPOUniversity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5sp"
+                        android:background="@drawable/white_all_round_blue_border"
+                        android:elevation="2sp"
+                        android:ems="12"
+                        android:enabled="false"
+                        android:hint="University"
+                        android:inputType="textPersonName"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/spTPOCollege"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_margin="5sp"
+                            android:layout_weight="1"
+                            android:background="@drawable/white_all_round_blue_border"
+                            android:elevation="2sp"
+                            android:entries="@array/college"
+                            android:paddingTop="10sp"
+                            android:paddingBottom="10sp"
+                            android:spinnerMode="dialog"
+                            android:textAlignment="center" />
+
+                        <Spinner
+                            android:id="@+id/spTPODept"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_margin="5sp"
+                            android:layout_weight="1"
+                            android:background="@drawable/white_all_round_blue_border"
+                            android:elevation="2sp"
+                            android:entries="@array/dept"
+                            android:paddingTop="10sp"
+                            android:paddingBottom="10sp"
+                            android:spinnerMode="dialog"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15sp"
+                    android:layout_marginBottom="15sp"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btnTPOUpdateProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/spm_green"
+                        android:text="@string/update"
+                        app:cornerRadius="20sp" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

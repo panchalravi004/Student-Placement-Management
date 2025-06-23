@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5sp"
+    android:background="@drawable/spm_blue_10_all_round"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="15sp"
+    android:paddingTop="10sp"
+    android:paddingRight="15sp"
+    android:paddingBottom="10sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvCompanyAdapterCompanyName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/spm_blue_30_left_round"
+            android:gravity="center"
+            android:paddingLeft="15sp"
+            android:text="Info it Solution Pvt. ltd."
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title" />
+
+        <ImageButton
+            android:id="@+id/btnCompanyAdapterView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spm_green_right_round"
+            android:paddingLeft="15sp"
+            android:paddingTop="3sp"
+            android:paddingRight="15sp"
+            android:paddingBottom="3sp"
+            app:srcCompat="@drawable/icon_eye_white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="5sp"
+        android:paddingTop="5sp"
+        android:paddingRight="5sp">
+
+        <TextView
+            android:id="@+id/tvCompanyAdapterCompanyDomain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="15sp"
+            android:text="www.demo.com"
+            android:textAlignment="viewStart" />
+    </LinearLayout>
+
+</LinearLayout>

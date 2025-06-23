@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/spm_blue_40"
+    android:orientation="vertical"
+    tools:context=".CreateOfficerProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20sp"
+        android:paddingTop="35sp"
+        android:paddingRight="20sp"
+        android:paddingBottom="20sp">
+
+        <ImageButton
+            android:id="@+id/btnCreateTPOProfileBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:onClick="goToBack"
+            app:srcCompat="@drawable/icon_arrow_left" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15sp"
+            android:layout_weight="1"
+            android:text="@string/create_tpo_profile"
+            android:textColor="@color/white"
+            android:textSize="@dimen/activity_heading" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_top_round"
+        android:elevation="5sp"
+        android:orientation="vertical"
+        android:padding="15sp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarSize="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etCreateTPOProfileID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round_blue_border"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="Enter TPO ID"
+                    android:inputType="textPersonName"
+                    android:padding="15sp"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/etCreateTPOProfileUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round_blue_border"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="@string/enter_username"
+                    android:inputType="textPersonName"
+                    android:padding="15sp"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spCreateTPOProfileGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/gender"
+                    android:padding="15sp"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/etCreateTPOProfileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round_blue_border"
+                    android:elevation="5sp"
+                    android:ems="10"
+                    android:hint="@string/enter_number"
+                    android:inputType="textPersonName"
+                    android:padding="15sp"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spCreateTPOProfileUniversity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/university"
+                    android:padding="5sp"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spCreateTPOProfileCollege"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/college"
+                    android:padding="5sp"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spCreateTPOProfileDept"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:background="@drawable/white_all_round"
+                    android:elevation="5sp"
+                    android:entries="@array/dept"
+                    android:padding="5sp"
+                    android:textAlignment="center" />
+
+                <Button
+                    android:id="@+id/btnCreateTPOProfileCreate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:text="Create"
+                    app:cornerRadius="20sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
